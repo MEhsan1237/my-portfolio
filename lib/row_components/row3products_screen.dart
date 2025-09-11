@@ -12,7 +12,7 @@ class Row3ProjectScreen extends StatelessWidget {
     return MyCustomWidgetScreen(
       index: 4,
       child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 485.0),
+        padding: const EdgeInsets.symmetric(horizontal: 4.0),
         child:    HoveredAnimationScreen(
           onPressed: () {},
           color: Colors.red,

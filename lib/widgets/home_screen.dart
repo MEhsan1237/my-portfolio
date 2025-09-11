@@ -1,12 +1,17 @@
 import 'package:animated_text_kit/animated_text_kit.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:practice_web/widgets/sun_image.dart';
 
 import '../animation/hover_animation.dart';
 import '../animation/slide_fade_animation.dart';
 import '../components/new2_launch_url.dart';
 import '../components/new3_launch_url.dart';
 import '../components/new_launch_url.dart';
+import '../row_components/row1products_screen.dart';
+import '../row_components/row2products_screen.dart';
+import '../row_components/row3products_screen.dart';
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({super.key});
@@ -134,7 +139,7 @@ class HomeScreen extends StatelessWidget {
                           ),
                         ),
                         Padding(
-                          padding: const EdgeInsets.only(top: 40.0),
+                          padding: const EdgeInsets.only(top: 50.0),
                           child: Positioned(
                             top: 50,
                             left: 60,
@@ -154,7 +159,7 @@ class HomeScreen extends StatelessWidget {
                                 backgroundImage: AssetImage(
                                   "assets/images/man3.png",
                                 ),
-                                radius: 100,
+                                radius: 120,
                               ),
                             ),
                           ),
@@ -164,7 +169,7 @@ class HomeScreen extends StatelessWidget {
                     Column(
                       children: [
                         Padding(
-                          padding: const EdgeInsets.only(right: 700.0,top: 30),
+                          padding: const EdgeInsets.only(right: 700.0,top: 10),
                           child: Text(
                             "Social Media Accounts",
                             style: TextStyle(
@@ -176,7 +181,7 @@ class HomeScreen extends StatelessWidget {
                         ),
 
                         Padding(
-                          padding: const EdgeInsets.symmetric(vertical: 18,horizontal: 200.0),
+                          padding: const EdgeInsets.symmetric(vertical: 10,horizontal: 200.0),
                           child: Row(
                             children: [
                               NewRowLaunchScreen(icon: FontAwesomeIcons.github,),
@@ -189,9 +194,11 @@ class HomeScreen extends StatelessWidget {
                         )
                       ],
                     ),
+
                   ],
                 ),
               ),
+
             ],
           ),
         ),
