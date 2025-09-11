@@ -21,8 +21,7 @@ class Row2ProjectScreen extends StatelessWidget {
             width: 300,
             height: 450,
             child: Container(
-              width: 280,
-              height: 320,
+
 
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.center,
