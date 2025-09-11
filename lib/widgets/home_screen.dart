@@ -157,7 +157,7 @@ class HomeScreen extends StatelessWidget {
                               ),
                               child: CircleAvatar(
                                 backgroundImage: AssetImage(
-                                  "assets/images/man3.png",
+                                  "assets/images/me_dp.one.png",
                                 ),
                                 radius: 120,
                               ),

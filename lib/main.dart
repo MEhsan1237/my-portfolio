@@ -104,7 +104,7 @@ class _MyWebAppState extends State<MyWebApp> {
             HoveredAnimationScreen(
               onPressed: () => _onMenuClick(4),
               color: Colors.red,
-              width: 80,
+              width: 90,
               height: 25,
               child: Text(
                 textAlign: TextAlign.center,
@@ -112,6 +112,7 @@ class _MyWebAppState extends State<MyWebApp> {
                 style: TextStyle(color: Colors.white),
               ),
             ),
+            SizedBox(width: 50,),
           ],),
         body: _screens[_selectedIndex],
 

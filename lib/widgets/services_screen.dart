@@ -19,48 +19,88 @@ class ServicesScreen extends StatelessWidget {
         child: Align(
           alignment: Alignment.topCenter,
           child: AnimationLimiter(
-            child: MyCustomWidgetScreen(
-              index: 1,
-              child: HoveredAnimationScreen(
-                onPressed: () {  },
-                color: Colors.red,
-                width: 400,
-                height: 420,
-                child: Column(
-                  mainAxisAlignment:  MainAxisAlignment.center,
-                  crossAxisAlignment: CrossAxisAlignment.center, // sab ek hi line se start
-                  children: const [
+            child: ListView(
+              children:[ MyCustomWidgetScreen(
+                index: 1,
+                child: Padding(
+                  padding: const EdgeInsets.only(top: 20.0),
+                  child: Row(
+                    mainAxisAlignment:  MainAxisAlignment.center,
+                     crossAxisAlignment:  CrossAxisAlignment.center,
+                    children: [
 
-                    Text(
-                      "CORE SERVICES WHICH I CAN DO",
-                      style: TextStyle(
-                        color: Colors.white,
-                        fontSize: 22,
-                        fontWeight: FontWeight.w600,
+                      HoveredAnimationScreen(
+                        onPressed: () {  },
+                        color: Colors.red,
+                        width: 220,
+                        height: 320,
+                        child: Column(
+                          mainAxisAlignment:  MainAxisAlignment.center,
+                          crossAxisAlignment: CrossAxisAlignment.center, // sab ek hi line se start
+                          children: const [
+
+                            Text(
+                              "Front-End Services",
+                              style: TextStyle(
+                                color: Colors.white,
+                                fontSize: 22,
+                                fontWeight: FontWeight.w600,
+                              ),
+                            ),
+                            SizedBox(height: 10),
+                            Text("• Android Development",style: TextStyle(color: Colors.white),),
+                            Text("• UI Implementation",style: TextStyle(color: Colors.white)),
+                            Text("• API Integration",style: TextStyle(color: Colors.white)),
+                            Text("• State Management (Provider)",style: TextStyle(color: Colors.white)),
+                            Text("• Custom Widgets Understanding",style: TextStyle(color: Colors.white)),
+                            Text("• Themes Implementation",style: TextStyle(color: Colors.white)),
+                            Text("• Custom UI for real life projects",style: TextStyle(color: Colors.white)),
+                            Text("• Routes and Navigation",style: TextStyle(color: Colors.white)),
+                            Text("• Animations(hero,tween etc)",style: TextStyle(color: Colors.white)),
+                            Text("• Performance Optimization",style: TextStyle(color: Colors.white)),
+
+                          ],
+                        ),
                       ),
-                    ),
-                    SizedBox(height: 10),
-                    Text("• Android Development",style: TextStyle(color: Colors.white),),
-                    Text("• UI/UX Implementation",style: TextStyle(color: Colors.white)),
-                    Text("• API Integration",style: TextStyle(color: Colors.white)),
-                    Text("• State Management (Provider)",style: TextStyle(color: Colors.white)),
-                    Text("• Firebase Integration",style: TextStyle(color: Colors.white)),
-                    Text("• Custom Widgets Understanding",style: TextStyle(color: Colors.white)),
-                    Text("• Authentication, FireStore",style: TextStyle(color: Colors.white)),
-                    Text("• Dark/Light Theme Implementation",style: TextStyle(color: Colors.white)),
-                    Text("• Custom UI for real life projects",style: TextStyle(color: Colors.white)),
-                    Text("• Routes and Navigation",style: TextStyle(color: Colors.white)),
-                    Text("• Animations(hero,tween etc)",style: TextStyle(color: Colors.white)),
-                    Text("• Performance Optimization",style: TextStyle(color: Colors.white)),
-                    Text("• Google Maps Integration",style: TextStyle(color: Colors.white)),
-                    Text("• Stripe Payment Gateway",style: TextStyle(color: Colors.white)),
-                    Text("• Social Media Logins",style: TextStyle(color: Colors.white)),
-                    Text("• CI/CD(integration)",style: TextStyle(color: Colors.white)),
-                    Text("• App Deployment",style: TextStyle(color: Colors.white)),
+                      SizedBox(width: 20,),
+                      HoveredAnimationScreen(
+                        onPressed: () {  },
+                        color: Colors.red,
+                        width: 220,
+                        height: 320,
+                        child: Column(
+                          mainAxisAlignment:  MainAxisAlignment.center,
+                          crossAxisAlignment: CrossAxisAlignment.center, // sab ek hi line se start
+                          children: const [
 
-                  ],
+                            Text(
+                              "Back-End Services",
+                              style: TextStyle(
+                                color: Colors.white,
+                                fontSize: 22,
+                                fontWeight: FontWeight.w600,
+                              ),
+                            ),
+                            SizedBox(height: 10),
+                            Text("• Android Development",style: TextStyle(color: Colors.white),),
+                            Text("• UX Implementation",style: TextStyle(color: Colors.white)),
+                            Text("• Firebase Integration",style: TextStyle(color: Colors.white)),
+                            Text("• Authentication, FireStore",style: TextStyle(color: Colors.white)),
+                            Text("• Performance Optimization",style: TextStyle(color: Colors.white)),
+                            Text("• Google Maps Integration",style: TextStyle(color: Colors.white)),
+                            Text("• Stripe Payment Gateway",style: TextStyle(color: Colors.white)),
+                            Text("• Social Media Logins",style: TextStyle(color: Colors.white)),
+                            Text("• CI/CD(integration)",style: TextStyle(color: Colors.white)),
+                            Text("• App Deployment",style: TextStyle(color: Colors.white)),
+
+                          ],
+                        ),
+                      ),
+                    ],
+                  ),
                 ),
               ),
+            ]
             ),
           ),
         ),
