@@ -181,7 +181,7 @@ class HomeScreen extends StatelessWidget {
                         ),
 
                         Padding(
-                          padding: const EdgeInsets.symmetric(vertical: 10,horizontal: 200.0),
+                          padding: const EdgeInsets.symmetric(horizontal: 200.0),
                           child: Row(
                             children: [
                               NewRowLaunchScreen(icon: FontAwesomeIcons.github,),

@@ -50,6 +50,7 @@ class ServicesScreen extends StatelessWidget {
                             SizedBox(height: 10),
                             Text("• Android Development",style: TextStyle(color: Colors.white),),
                             Text("• UI Implementation",style: TextStyle(color: Colors.white)),
+                            Text("• Rive Animation",style: TextStyle(color: Colors.white)),
                             Text("• API Integration",style: TextStyle(color: Colors.white)),
                             Text("• State Management (Provider)",style: TextStyle(color: Colors.white)),
                             Text("• Custom Widgets Understanding",style: TextStyle(color: Colors.white)),
@@ -62,7 +63,7 @@ class ServicesScreen extends StatelessWidget {
                           ],
                         ),
                       ),
-                      SizedBox(width: 20,),
+                      SizedBox(width: 30,),
                       HoveredAnimationScreen(
                         onPressed: () {  },
                         color: Colors.red,
@@ -91,6 +92,7 @@ class ServicesScreen extends StatelessWidget {
                             Text("• Stripe Payment Gateway",style: TextStyle(color: Colors.white)),
                             Text("• Social Media Logins",style: TextStyle(color: Colors.white)),
                             Text("• CI/CD(integration)",style: TextStyle(color: Colors.white)),
+                            Text("• Storage Process",style: TextStyle(color: Colors.white)),
                             Text("• App Deployment",style: TextStyle(color: Colors.white)),
 
                           ],

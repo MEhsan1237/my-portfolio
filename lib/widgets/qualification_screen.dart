@@ -69,6 +69,7 @@ class _QualificationRequiredWidgetState
                   ],
                 ),
               ),
+              SizedBox(height: 1,),
               Row(
                 crossAxisAlignment: CrossAxisAlignment.center,
                 mainAxisAlignment:  MainAxisAlignment.center,
