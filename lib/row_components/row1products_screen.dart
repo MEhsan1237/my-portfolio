@@ -20,39 +20,45 @@ class RowProjectScreen extends StatelessWidget {
             color: Colors.red,
             width: 300,
             height: 450,
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.center,
-              mainAxisAlignment: MainAxisAlignment.start,
-              children: [
-                Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: ClipRRect(
-                    borderRadius: BorderRadius.circular(15),
-                    child: Image.asset(
-                      "assets/images/doctoe.one.png",
-                      width: 280,
-                      height: 160,
-                      fit: BoxFit.cover,
+            child: Container(
+
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(15),
+              ),
+
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: ClipRRect(
+                      borderRadius: BorderRadius.circular(15),
+                      child: Image.asset(
+                        "assets/images/news.one.png",
+                        width: 300,
+                        height: 160,
+                        fit: BoxFit.cover,
+                      ),
                     ),
                   ),
-                ),
-                Text(
-                  textAlign: TextAlign.center,
-                  "Doctor Consultant\nApp",
-                  style: TextStyle(
-                    color: Colors.white,
-                    fontSize: 22,
-                    fontWeight: FontWeight.w600,
+                  Text(
+                    "News App",
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontSize: 22,
+                      fontWeight: FontWeight.w600,
+                    ),
                   ),
-                ),
-                Text(
-                  textAlign: TextAlign.center,
-                  style: TextStyle(color: Colors.white),
-                  "Our Doctor Consultant App makes healthcare accessible and convenient by connecting patients with doctors anytime, anywhere. Users can book appointments, consult through chat or video calls, and receive prescriptions online.",
-                ),
-                SizedBox(height: 10,),
-                RowLaunchScreen(url: 'https://github.com/MEhsan1237/doctor-UI', icon: Icons.arrow_forward,),
-              ],
+                  Text(
+                    textAlign: TextAlign.center,
+                    style: TextStyle(color: Colors.white),
+                    "Our News App is a simple and reliable source for staying updated with the latest headlines. It provides real-time news from categories like politics, sports, technology, and entertainment with an easy-to-use interface. Designed for all ages, it helps users stay informed about events quickly and conveniently.",
+                  ),
+                  SizedBox(height: 10,),
+                  RowLaunchScreen(url: 'https://github.com/MEhsan1237/news-app', icon:Icons.arrow_forward,),
+                ],
+              ),
             ),
           ),
           HoveredAnimationScreen(

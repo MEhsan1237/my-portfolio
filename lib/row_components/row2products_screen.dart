@@ -20,6 +20,46 @@ class Row2ProjectScreen extends StatelessWidget {
             color: Colors.red,
             width: 300,
             height: 450,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              mainAxisAlignment: MainAxisAlignment.start,
+              children: [
+                Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: ClipRRect(
+                    borderRadius: BorderRadius.circular(15),
+                    child: Image.asset(
+                      "assets/images/doctoe.one.png",
+                      width: 280,
+                      height: 160,
+                      fit: BoxFit.cover,
+                    ),
+                  ),
+                ),
+                Text(
+                  textAlign: TextAlign.center,
+                  "Doctor Consultant\nApp",
+                  style: TextStyle(
+                    color: Colors.white,
+                    fontSize: 22,
+                    fontWeight: FontWeight.w600,
+                  ),
+                ),
+                Text(
+                  textAlign: TextAlign.center,
+                  style: TextStyle(color: Colors.white),
+                  "Our Doctor Consultant App makes healthcare accessible and convenient by connecting patients with doctors anytime, anywhere. Users can book appointments, consult through chat or video calls, and receive prescriptions online.",
+                ),
+                SizedBox(height: 10,),
+                RowLaunchScreen(url: 'https://github.com/MEhsan1237/doctor-UI', icon: Icons.arrow_forward,),
+              ],
+            ),
+          ),
+          HoveredAnimationScreen(
+            onPressed: () {},
+            color: Colors.red,
+            width: 300,
+            height: 450,
             child: Container(
 
 
