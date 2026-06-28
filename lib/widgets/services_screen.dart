@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
+import 'package:flutter_animate/flutter_animate.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import '../animation/hover_animation.dart';
-import '../animation/slide_fade_animation.dart';
+import 'package:google_fonts/google_fonts.dart';
+import 'package:practice_web/utils/constants.dart';
 
 class ServicesScreen extends StatelessWidget {
   const ServicesScreen({super.key});
@@ -10,218 +10,221 @@ class ServicesScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
-    final bool isSmallScreen = size.width < 950;
-    
-    // Card width calculation for 2x2 grid
-    final double cardWidth = isSmallScreen ? size.width * 0.9 : (size.width * 0.42);
+    final bool isMobile = size.width < 900;
 
     return Container(
-      padding: const EdgeInsets.symmetric(vertical: 100.0, horizontal: 20),
+      padding: EdgeInsets.symmetric(
+        vertical: 100,
+        horizontal: isMobile ? 20 : size.width * 0.1,
+      ),
       child: Column(
         children: [
-          MyCustomWidgetScreen(
-            index: 0,
-            direction: RevealDirection.top,
-            child: Column(
-              children: [
-                const Text(
-                  "SERVICES",
-                  style: TextStyle(
-                    color: Colors.deepPurpleAccent,
-                    fontSize: 14,
-                    letterSpacing: 3,
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
-                const SizedBox(height: 15),
-                const Text(
-                  "High-Quality Digital Solutions",
-                  textAlign: TextAlign.center,
-                  style: TextStyle(
-                    color: Colors.white,
-                    fontSize: 40,
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
-                const SizedBox(height: 20),
-                Container(
-                  height: 4,
-                  width: 100,
-                  decoration: BoxDecoration(
-                    color: Colors.deepPurpleAccent,
-                    borderRadius: BorderRadius.circular(10),
-                  ),
-                ),
-              ],
-            ),
-          ),
+          _buildHeader(),
           const SizedBox(height: 80),
-          AnimationLimiter(
-            child: Wrap(
-              spacing: 40,
-              runSpacing: 40,
-              alignment: WrapAlignment.center,
-              children: [
-                _buildModernService(
-                  1,
-                  RevealDirection.left,
-                  "Mobile App Development",
-                  FontAwesomeIcons.mobileScreenButton,
-                  const Color(0xFF6C63FF),
-                  cardWidth,
-                  [
-                    "Expert Flutter Cross-platform Apps",
-                    "Native Performance & Smooth UI",
-                    "Complex Firebase Integrations",
-                    "Custom Animations & Rive Assets",
-                    "Responsive Mobile Architecture",
-                  ],
-                ),
-                _buildModernService(
-                  2,
-                  RevealDirection.right,
-                  "Front-End Web Development",
-                  FontAwesomeIcons.laptopCode,
-                  const Color(0xFF00D2FF),
-                  cardWidth,
-                  [
-                    "Modern Responsive Web Apps",
-                    "React.js & Next.js Expertise",
-                    "Tailwind CSS & Material UI",
-                    "Pixel-Perfect Figma to Code",
-                    "Interactive User Experiences",
-                  ],
-                ),
-                _buildModernService(
-                  3,
-                  RevealDirection.left,
-                  "MERN Stack Development",
-                  FontAwesomeIcons.layerGroup,
-                  const Color(0xFF00F260),
-                  cardWidth,
-                  [
-                    "End-to-End Full Stack Solutions",
-                    "Robust Node.js & Express Backends",
-                    "MongoDB Database Architecture",
-                    "Secure Authentication Systems",
-                    "Scalable Web Infrastructure",
-                  ],
-                ),
-                _buildModernService(
-                  4,
-                  RevealDirection.right,
-                  "Cloud & API Services",
-                  FontAwesomeIcons.cloudArrowUp,
-                  const Color(0xFFF7971E),
-                  cardWidth,
-                  [
-                    "Firebase & Supabase Ecosystem",
-                    "Restful & GraphQL API Design",
-                    "Real-time Data Synchronizations",
-                    "Serverless Functions & Storage",
-                    "Secure Payment Integrations",
-                  ],
-                ),
-              ],
-            ),
+          LayoutBuilder(
+            builder: (context, constraints) {
+              // Calculate width to force 2 per row on Desktop/Tablet
+              final double spacing = 40;
+              final double cardWidth = isMobile 
+                  ? constraints.maxWidth 
+                  : (constraints.maxWidth - spacing) / 2;
+
+              return Wrap(
+                spacing: spacing,
+                runSpacing: spacing,
+                alignment: WrapAlignment.center,
+                children: [
+                  _serviceCard(
+                    "Mobile App Development",
+                    "Creating high-performance, native-like cross-platform applications with Flutter.",
+                    [
+                      "Custom UI/UX Animations",
+                      "Firebase & API Integration",
+                      "State Management (Riverpod/Bloc)",
+                      "App Store & Play Store Deployment"
+                    ],
+                    FontAwesomeIcons.mobileScreenButton,
+                    AppColors.primary,
+                    cardWidth,
+                  ).animate().fadeIn(delay: 100.ms).slideX(begin: -0.2),
+                  _serviceCard(
+                    "Web Development",
+                    "Building responsive, SEO-friendly, and modern web applications using the latest tech.",
+                    [
+                      "React & Next.js Expertise",
+                      "Flutter Web Solutions",
+                      "Tailwind CSS Styling",
+                      "Performance Optimization"
+                    ],
+                    FontAwesomeIcons.laptopCode,
+                    AppColors.accent,
+                    cardWidth,
+                  ).animate().fadeIn(delay: 200.ms).slideX(begin: 0.2),
+                  _serviceCard(
+                    "MERN Stack Solutions",
+                    "Full-stack web applications with robust backends and scalable databases.",
+                    [
+                      "Scalable Node.js Backends",
+                      "MongoDB Database Design",
+                      "RESTful API Development",
+                      "Secure JWT Authentication"
+                    ],
+                    FontAwesomeIcons.layerGroup,
+                    AppColors.secondary,
+                    cardWidth,
+                  ).animate().fadeIn(delay: 300.ms).slideX(begin: -0.2),
+                  _serviceCard(
+                    "Cloud & API Services",
+                    "Enterprise-grade cloud infrastructure and seamless API integrations.",
+                    [
+                      "Firebase & Supabase Setup",
+                      "RESTful & GraphQL APIs",
+                      "Serverless Architecture",
+                      "Real-time Data Sync"
+                    ],
+                    FontAwesomeIcons.cloudArrowUp,
+                    Colors.orangeAccent,
+                    cardWidth,
+                  ).animate().fadeIn(delay: 400.ms).slideX(begin: 0.2),
+                ],
+              );
+            },
           ),
         ],
       ),
     );
   }
 
-  Widget _buildModernService(
-      int index, RevealDirection direction, String title, IconData icon, Color accentColor, double width, List<String> items) {
-    return MyCustomWidgetScreen(
-      index: index,
-      direction: direction,
-      child: HoveredAnimationScreen(
-        onPressed: () {},
-        color: accentColor.withOpacity(0.02),
-        width: width.clamp(350, 550),
-        height: 450, // Increased height to ensure no scrolling is needed
-        borderRadius: 30,
-        child: Container(
-          padding: const EdgeInsets.all(40),
+  Widget _buildHeader() {
+    return Column(
+      children: [
+        Container(
+          padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
           decoration: BoxDecoration(
-            color: Colors.grey.shade900.withOpacity(0.2),
-            borderRadius: BorderRadius.circular(30),
-            border: Border.all(color: Colors.white.withOpacity(0.05), width: 1.5),
-            boxShadow: [
-              BoxShadow(
-                color: accentColor.withOpacity(0.05),
-                blurRadius: 20,
-                offset: const Offset(0, 10),
-              )
-            ],
+            color: AppColors.primary.withValues(alpha: 0.1),
+            borderRadius: BorderRadius.circular(20),
           ),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Container(
-                    padding: const EdgeInsets.all(15),
-                    decoration: BoxDecoration(
-                      color: accentColor.withOpacity(0.1),
-                      borderRadius: BorderRadius.circular(20),
-                    ),
-                    child: Icon(icon, color: accentColor, size: 30),
-                  ),
-                  Icon(Icons.arrow_outward, color: Colors.white.withOpacity(0.2), size: 24),
-                ],
-              ),
-              const SizedBox(height: 30),
-              Text(
-                title,
-                style: const TextStyle(
-                  color: Colors.white,
-                  fontSize: 24,
-                  fontWeight: FontWeight.bold,
-                  letterSpacing: 0.5,
-                ),
-              ),
-              const SizedBox(height: 30),
-              // Replaced ListView with Column to completely remove internal scrolling
-              Column(
-                children: items.map((item) => Padding(
-                  padding: const EdgeInsets.only(bottom: 15),
-                  child: Row(
-                    children: [
-                      Container(
-                        width: 8,
-                        height: 8,
-                        decoration: BoxDecoration(
-                          color: accentColor,
-                          shape: BoxShape.circle,
-                          boxShadow: [
-                            BoxShadow(
-                              color: accentColor.withOpacity(0.5),
-                              blurRadius: 4,
-                            )
-                          ],
-                        ),
-                      ),
-                      const SizedBox(width: 15),
-                      Expanded(
-                        child: Text(
-                          item,
-                          style: TextStyle(
-                            color: Colors.white.withOpacity(0.7),
-                            fontSize: 16,
-                            fontWeight: FontWeight.w400,
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
-                )).toList(),
-              ),
-            ],
+          child: Text(
+            "WHAT I OFFER",
+            style: GoogleFonts.inter(
+              color: AppColors.primary,
+              fontSize: 12,
+              letterSpacing: 4,
+              fontWeight: FontWeight.bold,
+            ),
           ),
         ),
-      ),
+        const SizedBox(height: 16),
+        Text(
+          "High-Quality Digital Solutions",
+          textAlign: TextAlign.center,
+          style: AppStyles.heading.copyWith(fontSize: 32),
+        ),
+        const SizedBox(height: 20),
+        Container(
+          height: 4,
+          width: 40,
+          decoration: BoxDecoration(
+            gradient: AppColors.primaryGradient,
+            borderRadius: BorderRadius.circular(2),
+          ),
+        ),
+      ],
+    ).animate().fadeIn().slideY(begin: 0.2);
+  }
+
+  Widget _serviceCard(
+    String title, 
+    String desc, 
+    List<String> features, 
+    IconData icon, 
+    Color color, 
+    double cardWidth
+  ) {
+    return HoverItem(
+      builder: (isHovered) => AnimatedContainer(
+        duration: const Duration(milliseconds: 300),
+        width: cardWidth,
+        padding: const EdgeInsets.all(40),
+        decoration: BoxDecoration(
+          color: AppColors.surface,
+          borderRadius: BorderRadius.circular(32),
+          border: Border.all(
+            color: isHovered ? color.withValues(alpha: 0.5) : Colors.white.withValues(alpha: 0.05),
+            width: 2,
+          ),
+          boxShadow: [
+            BoxShadow(
+              color: isHovered ? color.withValues(alpha: 0.2) : Colors.black.withValues(alpha: 0.2),
+              blurRadius: isHovered ? 40 : 20,
+              offset: Offset(0, isHovered ? 20 : 10),
+            )
+          ],
+        ),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Container(
+                  padding: const EdgeInsets.all(20),
+                  decoration: BoxDecoration(
+                    color: color.withValues(alpha: 0.1),
+                    borderRadius: BorderRadius.circular(20),
+                  ),
+                  child: Icon(icon, color: color, size: 32),
+                ),
+                Icon(
+                  Icons.arrow_outward_rounded, 
+                  color: isHovered ? color : Colors.white.withValues(alpha: 0.2), 
+                  size: 24
+                ),
+              ],
+            ),
+            const SizedBox(height: 32),
+            Text(
+              title,
+              style: GoogleFonts.poppins(
+                color: Colors.white,
+                fontSize: 24,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+            const SizedBox(height: 16),
+            Text(
+              desc,
+              style: AppStyles.body.copyWith(
+                fontSize: 15,
+                color: Colors.white.withValues(alpha: 0.6),
+                height: 1.6,
+              ),
+            ),
+            const SizedBox(height: 32),
+            Column(
+              children: features.map((feature) => Padding(
+                padding: const EdgeInsets.only(bottom: 12),
+                child: Row(
+                  children: [
+                    Icon(Icons.check_circle_outline_rounded, color: color, size: 18),
+                    const SizedBox(width: 12),
+                    Expanded(
+                      child: Text(
+                        feature,
+                        style: GoogleFonts.inter(
+                          color: Colors.white.withValues(alpha: 0.8),
+                          fontSize: 14,
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              )).toList(),
+            ),
+          ],
+        ),
+      ).animate(target: isHovered ? 1 : 0)
+       .moveY(end: -15, duration: 400.ms, curve: Curves.easeOutCubic),
     );
   }
 }

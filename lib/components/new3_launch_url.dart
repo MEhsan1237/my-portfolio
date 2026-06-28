@@ -28,11 +28,12 @@ class _NewRowLaunchScreen3State extends State<NewRowLaunchScreen3> {
 
         SizedBox(height: 20,),
         ElevatedButton(
-
-          onPressed: _launchUrl,child: Icon(widget.icon,color: Colors.white,),
-          style: ElevatedButton.styleFrom( backgroundColor: Colors.blue,shape:  CircleBorder()),
-
-
+          onPressed: _launchUrl,
+          style: ElevatedButton.styleFrom(
+            backgroundColor: Colors.blue,
+            shape: const CircleBorder(),
+          ),
+          child: Icon(widget.icon, color: Colors.white),
         ),
       ],
     );

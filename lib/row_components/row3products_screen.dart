@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
-import '../animation/hover_animation.dart';
+import 'package:flutter_animate/flutter_animate.dart';
+import 'package:google_fonts/google_fonts.dart';
+import 'package:practice_web/utils/constants.dart';
 import '../components/launch_url.dart';
 
 class Row3ProjectScreen extends StatelessWidget {
@@ -8,75 +10,101 @@ class Row3ProjectScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Wrap(
-      spacing: 30, // Horizontal spacing
-      runSpacing: 30, // Vertical spacing when wrapping
+      spacing: 30,
+      runSpacing: 30,
       alignment: WrapAlignment.center,
       children: [
-        _buildProjectCard(
-          "Todo App with Hive",
-          "assets/images/todo.two.png",
-          "Our Todo App helps users organize daily tasks with a simple and intuitive interface. It uses Hive local storage to securely save tasks offline, allowing users to add, update, delete, and manage their todos efficiently.",
-          "https://github.com/MEhsan1237/Update_TodoApp",
-        ),
-        _buildProjectCard(
-          "Food Panda UI",
+        _projectCard(
+          "Food App UI",
           "assets/images/food.one.png",
-          "Foodpanda App clone is a reliable platform for ordering food. It connects users with a wide range of restaurants and cuisines with a convenient interface.",
+          "Delicious UI design for food delivery and restaurant booking.",
           "https://github.com/MEhsan1237/Food_Panda_App",
+          ["Flutter", "UI Kit", "Design"],
+        ),
+        _projectCard(
+          "BMI App",
+          "assets/images/calculator.one.png",
+          "Clean and simple calculator with scientific functions.",
+          "https://github.com/MEhsan1237/BMI-app",
+          ["Flutter", "Logic", "Math"],
         ),
       ],
     );
   }
 
-  Widget _buildProjectCard(String title, String image, String desc, String url) {
-    return HoveredAnimationScreen(
-      onPressed: () {},
-      color: Colors.blueAccent.withOpacity(0.1),
-      width: 320,
-      height: 480,
-      borderRadius: 20,
-      child: Container(
-        padding: const EdgeInsets.all(15),
+  Widget _projectCard(String title, String image, String desc, String url, List<String> tags) {
+    return HoverItem(
+      builder: (isHovered) => Container(
+        width: 320,
         decoration: BoxDecoration(
-          color: Colors.grey.shade900.withOpacity(0.3),
-          borderRadius: BorderRadius.circular(20),
-          border: Border.all(color: Colors.white.withOpacity(0.05)),
+          color: AppColors.surface,
+          borderRadius: BorderRadius.circular(24),
+          border: Border.all(color: Colors.white.withValues(alpha: 0.05)),
+          boxShadow: [
+            BoxShadow(
+              color: Colors.black.withValues(alpha: 0.2),
+              blurRadius: 20,
+              offset: const Offset(0, 10),
+            )
+          ],
         ),
         child: Column(
-          crossAxisAlignment: CrossAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             ClipRRect(
-              borderRadius: BorderRadius.circular(15),
+              borderRadius: const BorderRadius.vertical(top: Radius.circular(24)),
               child: Image.asset(
                 image,
-                width: 300,
-                height: 180,
+                height: 200,
+                width: double.infinity,
                 fit: BoxFit.cover,
               ),
             ),
-            const SizedBox(height: 20),
-            Text(
-              title,
-              textAlign: TextAlign.center,
-              style: const TextStyle(
-                color: Colors.white,
-                fontSize: 22,
-                fontWeight: FontWeight.bold,
+            Padding(
+              padding: const EdgeInsets.all(24),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Row(
+                    children: tags.map((tag) => Container(
+                      margin: const EdgeInsets.only(right: 8),
+                      padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
+                      decoration: BoxDecoration(
+                        color: AppColors.secondary.withValues(alpha: 0.1),
+                        borderRadius: BorderRadius.circular(8),
+                      ),
+                      child: Text(
+                        tag,
+                        style: GoogleFonts.inter(
+                          color: AppColors.secondary,
+                          fontSize: 10,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                    )).toList(),
+                  ),
+                  const SizedBox(height: 16),
+                  Text(
+                    title,
+                    style: GoogleFonts.poppins(
+                      color: Colors.white,
+                      fontSize: 22,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                  const SizedBox(height: 12),
+                  Text(
+                    desc,
+                    style: AppStyles.body.copyWith(fontSize: 14),
+                  ),
+                  const SizedBox(height: 24),
+                  RowLaunchScreen(url: url, icon: Icons.arrow_forward),
+                ],
               ),
             ),
-            const SizedBox(height: 15),
-            Expanded(
-              child: Text(
-                desc,
-                textAlign: TextAlign.center,
-                style: TextStyle(color: Colors.white.withOpacity(0.7), fontSize: 14, height: 1.5),
-              ),
-            ),
-            const SizedBox(height: 10),
-            RowLaunchScreen(url: url, icon: Icons.arrow_forward),
           ],
         ),
-      ),
+      ).animate(target: isHovered ? 1 : 0).moveY(end: -10, duration: 300.ms),
     );
   }
 }

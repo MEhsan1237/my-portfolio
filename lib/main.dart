@@ -1,5 +1,7 @@
 import 'dart:ui';
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
+import 'package:practice_web/utils/constants.dart';
 import 'package:practice_web/widgets/contact_me_screen.dart';
 import 'package:practice_web/widgets/home_screen.dart';
 import 'package:practice_web/widgets/project_screen.dart';
@@ -8,7 +10,7 @@ import 'package:practice_web/widgets/services_screen.dart';
 import 'package:practice_web/widgets/methodology_screen.dart';
 import 'package:practice_web/widgets/languages_screen.dart';
 import 'package:practice_web/widgets/stats_screen.dart';
-import 'animation/hover_animation.dart';
+import 'package:practice_web/widgets/about_me_screen.dart';
 
 void main() {
   runApp(const MyApp());
@@ -23,10 +25,11 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       title: 'Ehsan Portfolio',
       theme: ThemeData(
+        useMaterial3: true,
         brightness: Brightness.dark,
-        primaryColor: Colors.deepPurpleAccent,
-        scaffoldBackgroundColor: const Color(0xFF0F0F1A), 
-        fontFamily: 'Poppins',
+        colorSchemeSeed: AppColors.primary,
+        scaffoldBackgroundColor: AppColors.background,
+        textTheme: GoogleFonts.poppinsTextTheme(ThemeData.dark().textTheme),
       ),
       home: const MyWebApp(),
     );
@@ -42,15 +45,61 @@ class MyWebApp extends StatefulWidget {
 
 class _MyWebAppState extends State<MyWebApp> {
   final ScrollController _scrollController = ScrollController();
-  final List<GlobalKey> _keys = List.generate(7, (index) => GlobalKey());
+  final List<GlobalKey> _keys = List.generate(8, (index) => GlobalKey());
+  int _activeIndex = 0;
+  bool _showBackToTop = false;
+
+  @override
+  void initState() {
+    super.initState();
+    _scrollController.addListener(_onScroll);
+  }
+
+  @override
+  void dispose() {
+    _scrollController.removeListener(_onScroll);
+    _scrollController.dispose();
+    super.dispose();
+  }
+
+  void _onScroll() {
+    // Show/hide back to top button
+    if (_scrollController.offset > 500 && !_showBackToTop) {
+      setState(() => _showBackToTop = true);
+    } else if (_scrollController.offset <= 500 && _showBackToTop) {
+      setState(() => _showBackToTop = false);
+    }
+
+    // Update active index based on scroll position
+    double minDistance = double.infinity;
+    int closestIndex = 0;
+
+    for (int i = 0; i < _keys.length; i++) {
+      final context = _keys[i].currentContext;
+      if (context != null) {
+        final box = context.findRenderObject() as RenderBox;
+        final position = box.localToGlobal(Offset.zero).dy;
+        if (position.abs() < minDistance) {
+          minDistance = position.abs();
+          closestIndex = i;
+        }
+      }
+    }
+
+    if (closestIndex != _activeIndex) {
+      setState(() {
+        _activeIndex = closestIndex;
+      });
+    }
+  }
 
   void _onMenuClick(int index) {
     final context = _keys[index].currentContext;
     if (context != null) {
       Scrollable.ensureVisible(
         context,
-        duration: const Duration(milliseconds: 1000),
-        curve: Curves.easeInOutCubic,
+        duration: const Duration(milliseconds: 1200),
+        curve: Curves.easeInOutQuart,
       );
     }
   }
@@ -63,63 +112,70 @@ class _MyWebAppState extends State<MyWebApp> {
     return Scaffold(
       extendBodyBehindAppBar: true,
       appBar: PreferredSize(
-        preferredSize: const Size.fromHeight(70),
-        child: ClipRect(
-          child: BackdropFilter(
-            filter: ImageFilter.blur(sigmaX: 10, sigmaY: 10),
-            child: AppBar(
-              backgroundColor: Colors.black.withOpacity(0.5),
-              elevation: 0,
-              centerTitle: isMobile,
-              title: Padding(
-                padding: EdgeInsets.only(left: isMobile ? 0 : 40.0),
-                child: Row(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    Container(
-                      padding: const EdgeInsets.all(8),
-                      decoration: BoxDecoration(
-                        color: Colors.tealAccent,
-                        borderRadius: BorderRadius.circular(8),
-                      ),
-                      child: const Text("E", style: TextStyle(fontWeight: FontWeight.bold, color: Colors.black)),
-                    ),
-                    const SizedBox(width: 10),
-                    const Text(
-                      "Ehsan",
-                      style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 20),
-                    ),
-                  ],
+        preferredSize: const Size.fromHeight(80),
+        child: Container(
+          margin: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+          child: ClipRRect(
+            borderRadius: BorderRadius.circular(20),
+            child: BackdropFilter(
+              filter: ImageFilter.blur(sigmaX: 15, sigmaY: 15),
+              child: Container(
+                padding: const EdgeInsets.symmetric(horizontal: 20),
+                decoration: BoxDecoration(
+                  color: Colors.black.withValues(alpha: 0.3),
+                  borderRadius: BorderRadius.circular(20),
+                  border: Border.all(color: Colors.white.withValues(alpha: 0.1)),
+                ),
+                child: AppBar(
+                  backgroundColor: Colors.transparent,
+                  elevation: 0,
+                  centerTitle: false,
+                  title: _buildLogo(),
+                  actions: isMobile 
+                    ? null 
+                    : [
+                        _navItem("Home", 0),
+                        _navItem("About", 1),
+                        _navItem("Projects", 2),
+                        _navItem("Services", 3),
+                        _navItem("Skills", 4),
+                        _navItem("Experience", 6),
+                        _navItem("Contact", 7),
+                        const SizedBox(width: 20),
+                      ],
                 ),
               ),
-              actions: isMobile 
-                ? null 
-                : [
-                    _navItem("Home", 0),
-                    _navItem("Projects", 1),
-                    _navItem("Skills", 2),
-                    _navItem("Services", 3),
-                    _navItem("Languages", 4),
-                    _navItem("Experience", 5),
-                    _navItem("Contact", 6),
-                    const SizedBox(width: 50),
-                  ],
             ),
           ),
         ),
       ),
       drawer: isMobile ? _buildDrawer() : null,
+      floatingActionButton: _showBackToTop 
+        ? FloatingActionButton(
+            onPressed: () => _onMenuClick(0),
+            backgroundColor: AppColors.primary,
+            child: const Icon(Icons.arrow_upward, color: Colors.white),
+          )
+        : null,
       body: Stack(
         children: [
+          // Dynamic Background
+          Container(
+            decoration: const BoxDecoration(
+              gradient: AppColors.backgroundGradient,
+            ),
+          ),
+          
+          // Floating background elements
           Positioned(
             top: -100,
             right: -100,
             child: Container(
-              width: 400,
-              height: 400,
+              width: 500,
+              height: 500,
               decoration: BoxDecoration(
                 shape: BoxShape.circle,
-                color: Colors.deepPurpleAccent.withOpacity(0.05),
+                color: AppColors.primary.withValues(alpha: 0.1),
               ),
             ),
           ),
@@ -129,14 +185,15 @@ class _MyWebAppState extends State<MyWebApp> {
             child: Column(
               children: [
                 HomeScreen(key: _keys[0]),
-                const StatsScreen(), // New Stats Section inserted here
+                const StatsScreen(),
                 AboutMeScreen(key: _keys[1]),
-                MethodologyScreen(key: _keys[2]),
+                ProjectScreen(key: _keys[2]),
                 ServicesScreen(key: _keys[3]),
-                LanguagesScreen(key: _keys[4]),
-                QualificationRequiredWidget(key: _keys[5]),
+                MethodologyScreen(key: _keys[4]),
+                LanguagesScreen(key: _keys[5]),
+                QualificationRequiredWidget(key: _keys[6]),
                 ContactMeScreen(
-                  key: _keys[6],
+                  key: _keys[7],
                   onFooterNav: (index) => _onMenuClick(index),
                 ),
               ],
@@ -147,31 +204,94 @@ class _MyWebAppState extends State<MyWebApp> {
     );
   }
 
+  Widget _buildLogo() {
+    return Row(
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        Container(
+          padding: const EdgeInsets.all(10),
+          decoration: BoxDecoration(
+            gradient: AppColors.primaryGradient,
+            borderRadius: BorderRadius.circular(12),
+            boxShadow: [
+              BoxShadow(
+                color: AppColors.primary.withValues(alpha: 0.3),
+                blurRadius: 10,
+                offset: const Offset(0, 4),
+              ),
+            ],
+          ),
+          child: const Text(
+            "E",
+            style: TextStyle(
+              fontWeight: FontWeight.bold, 
+              color: Colors.white,
+              fontSize: 20,
+            )
+          ),
+        ),
+        const SizedBox(width: 12),
+        Text(
+          "Ehsan",
+          style: GoogleFonts.poppins(
+            color: Colors.white, 
+            fontWeight: FontWeight.bold, 
+            fontSize: 22,
+            letterSpacing: 1,
+          ),
+        ),
+      ],
+    );
+  }
+
   Widget _buildDrawer() {
     return Drawer(
-      backgroundColor: const Color(0xFF0F0F1A),
+      backgroundColor: AppColors.background,
       child: ListView(
         children: [
-          const DrawerHeader(
+          DrawerHeader(
+            decoration: const BoxDecoration(
+              gradient: AppColors.primaryGradient,
+            ),
             child: Center(
-              child: Text("EHSAN PORTFOLIO", style: TextStyle(color: Colors.tealAccent, fontWeight: FontWeight.bold)),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  const Text(
+                    "EHSAN",
+                    style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 24),
+                  ),
+                  Text(
+                    "PORTFOLIO",
+                    style: TextStyle(color: Colors.white.withValues(alpha: 0.8), letterSpacing: 2),
+                  ),
+                ],
+              ),
             ),
           ),
-          _drawerItem("Home", 0),
-          _drawerItem("Projects", 1),
-          _drawerItem("Skills", 2),
-          _drawerItem("Services", 3),
-          _drawerItem("Languages", 4),
-          _drawerItem("Experience", 5),
-          _drawerItem("Contact", 6),
+          _drawerItem("Home", 0, Icons.home_outlined),
+          _drawerItem("About", 1, Icons.person_outline),
+          _drawerItem("Projects", 2, Icons.work_outline),
+          _drawerItem("Services", 3, Icons.bolt_outlined),
+          _drawerItem("Skills", 4, Icons.code_outlined),
+          _drawerItem("Experience", 6, Icons.history_outlined),
+          _drawerItem("Contact", 7, Icons.mail_outline),
         ],
       ),
     );
   }
 
-  Widget _drawerItem(String title, int index) {
+  Widget _drawerItem(String title, int index, IconData icon) {
+    bool isActive = _activeIndex == index;
     return ListTile(
-      title: Text(title, style: const TextStyle(color: Colors.white)),
+      leading: Icon(icon, color: isActive ? AppColors.primary : Colors.white),
+      title: Text(
+        title, 
+        style: TextStyle(
+          color: isActive ? AppColors.primary : Colors.white,
+          fontWeight: isActive ? FontWeight.bold : FontWeight.normal,
+        )
+      ),
       onTap: () {
         Navigator.pop(context);
         _onMenuClick(index);
@@ -180,22 +300,38 @@ class _MyWebAppState extends State<MyWebApp> {
   }
 
   Widget _navItem(String title, int index) {
+    bool isActive = _activeIndex == index;
     return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 5),
-      child: HoveredAnimationScreen(
-        onPressed: () => _onMenuClick(index),
-        color: Colors.deepPurpleAccent.withOpacity(0.4),
-        width: 100,
-        height: 40,
-        borderRadius: 8,
-        child: Center(
-          child: Text(
-            title,
-            style: const TextStyle(
-              color: Colors.white,
-              fontWeight: FontWeight.w500,
-              fontSize: 14,
-            ),
+      padding: const EdgeInsets.symmetric(horizontal: 10),
+      child: InkWell(
+        onTap: () => _onMenuClick(index),
+        borderRadius: BorderRadius.circular(8),
+        child: AnimatedContainer(
+          duration: const Duration(milliseconds: 300),
+          padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+          decoration: BoxDecoration(
+            color: isActive ? AppColors.primary.withValues(alpha: 0.1) : Colors.transparent,
+            borderRadius: BorderRadius.circular(8),
+          ),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Text(
+                title,
+                style: GoogleFonts.inter(
+                  color: isActive ? AppColors.primary : Colors.white,
+                  fontWeight: isActive ? FontWeight.bold : FontWeight.w500,
+                  fontSize: 15,
+                ),
+              ),
+              AnimatedContainer(
+                duration: const Duration(milliseconds: 300),
+                height: 2,
+                width: isActive ? 20 : 0,
+                margin: const EdgeInsets.only(top: 4),
+                color: AppColors.primary,
+              ),
+            ],
           ),
         ),
       ),

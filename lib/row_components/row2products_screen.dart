@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
-import '../animation/hover_animation.dart';
+import 'package:flutter_animate/flutter_animate.dart';
+import 'package:google_fonts/google_fonts.dart';
+import 'package:practice_web/utils/constants.dart';
 import '../components/launch_url.dart';
 
 class Row2ProjectScreen extends StatelessWidget {
@@ -8,81 +10,108 @@ class Row2ProjectScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Wrap(
-      spacing: 30, // Horizontal spacing
-      runSpacing: 30, // Vertical spacing when wrapping
+      spacing: 30,
+      runSpacing: 30,
       alignment: WrapAlignment.center,
       children: [
-        _buildProjectCard(
-          "Doctor Consultant App",
-          "assets/images/doctoe.one.png",
-          "Our Doctor Consultant App makes healthcare accessible and convenient by connecting patients with doctors anytime, anywhere. Users can book appointments and consult through chat.",
-          "https://github.com/MEhsan1237/doctor-UI",
+        _projectCard(
+          "Task Manager",
+          "assets/images/todo.two.png",
+          "Efficient task tracking with local storage and clean architecture.",
+          "https://github.com/MEhsan1237/Update_TodoApp",
+          ["Flutter", "Hive", "Clean Code"],
         ),
-        _buildProjectCard(
+        _projectCard(
           "Quiz App",
           "assets/images/quiz.one.png",
-          "Our Quiz App is a fun and interactive way to test knowledge across different topics. With multiple-choice questions, real-time scoring, and instant feedback, it helps users learn while playing.",
+          "Interactive quiz application with real-time scoring and leaderboards.",
           "https://github.com/MEhsan1237/Quiz-App-",
+          ["Flutter", "Firebase", "Animations"],
         ),
-        _buildProjectCard(
-          "Virus Tracker App",
+        _projectCard(
+          "Covid App",
           "assets/images/virus.two.png",
-          "A COVID-19 Tracker App helps users stay updated with the latest coronavirus cases worldwide. It provides real-time statistics such as confirmed cases, recoveries, and deaths.",
+          "Real-time COVID-19 tracking application and interactive charts",
           "https://github.com/MEhsan1237/covid_app",
+          ["Flutter", "OpenWeather", "Lottie"],
         ),
       ],
     );
   }
 
-  Widget _buildProjectCard(String title, String image, String desc, String url) {
-    return HoveredAnimationScreen(
-      onPressed: () {},
-      color: Colors.blueAccent.withOpacity(0.1),
-      width: 320,
-      height: 480,
-      borderRadius: 20,
-      child: Container(
-        padding: const EdgeInsets.all(15),
+  Widget _projectCard(String title, String image, String desc, String url, List<String> tags) {
+    return HoverItem(
+      builder: (isHovered) => Container(
+        width: 320,
         decoration: BoxDecoration(
-          color: Colors.grey.shade900.withOpacity(0.3),
-          borderRadius: BorderRadius.circular(20),
-          border: Border.all(color: Colors.white.withOpacity(0.05)),
+          color: AppColors.surface,
+          borderRadius: BorderRadius.circular(24),
+          border: Border.all(color: Colors.white.withValues(alpha: 0.05)),
+          boxShadow: [
+            BoxShadow(
+              color: Colors.black.withValues(alpha: 0.2),
+              blurRadius: 20,
+              offset: const Offset(0, 10),
+            )
+          ],
         ),
         child: Column(
-          crossAxisAlignment: CrossAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             ClipRRect(
-              borderRadius: BorderRadius.circular(15),
+              borderRadius: const BorderRadius.vertical(top: Radius.circular(24)),
               child: Image.asset(
                 image,
-                width: 300,
-                height: 180,
+                height: 200,
+                width: double.infinity,
                 fit: BoxFit.cover,
               ),
             ),
-            const SizedBox(height: 20),
-            Text(
-              title,
-              textAlign: TextAlign.center,
-              style: const TextStyle(
-                color: Colors.white,
-                fontSize: 22,
-                fontWeight: FontWeight.bold,
+            Padding(
+              padding: const EdgeInsets.all(24),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Row(
+                    children: tags.map((tag) => Container(
+                      margin: const EdgeInsets.only(right: 8),
+                      padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
+                      decoration: BoxDecoration(
+                        color: AppColors.accent.withValues(alpha: 0.1),
+                        borderRadius: BorderRadius.circular(8),
+                      ),
+                      child: Text(
+                        tag,
+                        style: GoogleFonts.inter(
+                          color: AppColors.accent,
+                          fontSize: 10,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                    )).toList(),
+                  ),
+                  const SizedBox(height: 16),
+                  Text(
+                    title,
+                    style: GoogleFonts.poppins(
+                      color: Colors.white,
+                      fontSize: 22,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                  const SizedBox(height: 12),
+                  Text(
+                    desc,
+                    style: AppStyles.body.copyWith(fontSize: 14),
+                  ),
+                  const SizedBox(height: 24),
+                  RowLaunchScreen(url: url, icon: Icons.arrow_forward),
+                ],
               ),
             ),
-            const SizedBox(height: 15),
-            Expanded(
-              child: Text(
-                desc,
-                textAlign: TextAlign.center,
-                style: TextStyle(color: Colors.white.withOpacity(0.7), fontSize: 14, height: 1.5),
-              ),
-            ),
-            const SizedBox(height: 10),
-            RowLaunchScreen(url: url, icon: Icons.arrow_forward),
           ],
         ),
-      ),
+      ).animate(target: isHovered ? 1 : 0).moveY(end: -10, duration: 300.ms),
     );
   }
 }

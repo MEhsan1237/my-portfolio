@@ -1,157 +1,132 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_animate/flutter_animate.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import '../animation/hover_animation.dart';
-import '../animation/slide_fade_animation.dart';
+import 'package:google_fonts/google_fonts.dart';
+import 'package:practice_web/utils/constants.dart';
 
 class LanguagesScreen extends StatelessWidget {
   const LanguagesScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
+    final size = MediaQuery.of(context).size;
+    final bool isMobile = size.width < 900;
+
+    final skills = [
+      {"title": "Dart", "icon": FontAwesomeIcons.dartLang, "color": AppColors.primary, "level": 0.95},
+      {"title": "Node.js", "icon": FontAwesomeIcons.nodeJs, "color": Colors.green, "level": 0.85},
+      {"title": "MongoDB", "icon": FontAwesomeIcons.database, "color": Colors.greenAccent, "level": 0.80},
+      {"title": "JavaScript", "icon": FontAwesomeIcons.js, "color": Colors.yellow, "level": 0.90},
+      {"title": "HTML5", "icon": FontAwesomeIcons.html5, "color": Colors.orange, "level": 0.98},
+      {"title": "CSS3", "icon": FontAwesomeIcons.css3Alt, "color": Colors.blueAccent, "level": 0.95},
+      {"title": "Tailwind", "icon": FontAwesomeIcons.wind, "color": Colors.cyanAccent, "level": 0.90},
+      {"title": "Git", "icon": FontAwesomeIcons.github, "color": Colors.white, "level": 0.95},
+    ];
+
     return Container(
-      padding: const EdgeInsets.symmetric(vertical: 80.0, horizontal: 20),
+      padding: EdgeInsets.symmetric(
+        vertical: 80,
+        horizontal: isMobile ? 20 : size.width * 0.1,
+      ),
       child: Column(
         children: [
-          MyCustomWidgetScreen(
-            index: 0,
-            direction: RevealDirection.top,
-            child: Column(
-              children: [
-                const Text(
-                  "TECHNICAL SKILLS",
-                  style: TextStyle(
-                    color: Colors.tealAccent,
-                    fontSize: 14,
-                    letterSpacing: 3,
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
-                const SizedBox(height: 15),
-                const Text(
-                  "Languages & Technologies",
-                  textAlign: TextAlign.center,
-                  style: TextStyle(
-                    color: Colors.white,
-                    fontSize: 40,
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
-                const SizedBox(height: 20),
-                Container(
-                  height: 4,
-                  width: 80,
-                  decoration: BoxDecoration(
-                    color: Colors.tealAccent,
-                    borderRadius: BorderRadius.circular(10),
-                  ),
-                ),
-              ],
-            ),
-          ),
-          const SizedBox(height: 70),
+          _buildHeader(),
+          const SizedBox(height: 60),
           Wrap(
             spacing: 25,
             runSpacing: 25,
             alignment: WrapAlignment.center,
-            children: [
-              _buildModernSkillCard("Dart", FontAwesomeIcons.dartLang, Colors.blue, 0.90),
-              _buildModernSkillCard("Node.js", FontAwesomeIcons.nodeJs, Colors.green, 0.85),
-              _buildModernSkillCard("MongoDB", FontAwesomeIcons.database, Colors.greenAccent, 0.80),
-              _buildModernSkillCard("JavaScript", FontAwesomeIcons.js, Colors.yellow, 0.85),
-              _buildModernSkillCard("HTML5", FontAwesomeIcons.html5, Colors.orange, 0.95),
-              _buildModernSkillCard("CSS3", FontAwesomeIcons.css3Alt, Colors.blueAccent, 0.90),
-              _buildModernSkillCard("Tailwind CSS", FontAwesomeIcons.wind, Colors.cyanAccent, 0.85),
-              _buildModernSkillCard("C++", Icons.code, Colors.indigoAccent, 0.75),
-            ],
-          ),
+            children: List.generate(skills.length, (index) {
+              return _skillCard(
+                skills[index]["title"] as String,
+                skills[index]["icon"] as IconData,
+                skills[index]["color"] as Color,
+                skills[index]["level"] as double,
+                index,
+              );
+            }),
+          ).animate().fadeIn(delay: 200.ms).scale(),
         ],
       ),
     );
   }
 
-  Widget _buildModernSkillCard(String title, IconData icon, Color accentColor, double progress) {
-    return HoveredAnimationScreen(
-      onPressed: () {},
-      color: accentColor.withOpacity(0.05),
-      width: 280,
-      height: 180,
-      borderRadius: 24,
-      child: Container(
-        padding: const EdgeInsets.all(25),
+  Widget _buildHeader() {
+    return Column(
+      children: [
+        Text(
+          "TECHNICAL STACK",
+          style: GoogleFonts.inter(
+            color: AppColors.primary,
+            fontSize: 14,
+            letterSpacing: 4,
+            fontWeight: FontWeight.bold,
+          ),
+        ),
+        const SizedBox(height: 10),
+        Text(
+          "Languages & Tools",
+          textAlign: TextAlign.center,
+          style: AppStyles.heading.copyWith(fontSize: 32),
+        ),
+      ],
+    ).animate().fadeIn().slideY(begin: 0.2);
+  }
+
+  Widget _skillCard(String title, IconData icon, Color color, double level, int index) {
+    return HoverItem(
+      builder: (isHovered) => Container(
+        width: 200,
+        padding: const EdgeInsets.all(20),
         decoration: BoxDecoration(
-          color: Colors.grey.shade900.withOpacity(0.4),
-          borderRadius: BorderRadius.circular(24),
+          color: AppColors.surface,
+          borderRadius: BorderRadius.circular(20),
           border: Border.all(
-            color: accentColor.withOpacity(0.2),
+            color: isHovered ? color.withValues(alpha: 0.5) : color.withValues(alpha: 0.1),
             width: 1.5,
           ),
           boxShadow: [
             BoxShadow(
-              color: accentColor.withOpacity(0.03),
-              blurRadius: 15,
-              spreadRadius: 2,
+              color: color.withValues(alpha: isHovered ? 0.2 : 0.05),
+              blurRadius: isHovered ? 20 : 10,
+              offset: const Offset(0, 5),
             )
           ],
         ),
         child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Icon(icon, color: accentColor, size: 35),
-                Text(
-                  "${(progress * 100).toInt()}%",
-                  style: TextStyle(
-                    color: accentColor,
-                    fontWeight: FontWeight.bold,
-                    fontSize: 18,
-                  ),
-                ),
-              ],
-            ),
-            const SizedBox(height: 15),
+            Icon(icon, color: isHovered ? Colors.white : color, size: 40)
+                .animate(target: isHovered ? 1 : 0)
+                .scale(end: const Offset(1.2, 1.2)),
+            const SizedBox(height: 16),
             Text(
               title,
-              style: const TextStyle(
+              style: GoogleFonts.poppins(
                 color: Colors.white,
-                fontSize: 22,
                 fontWeight: FontWeight.bold,
               ),
             ),
-            const SizedBox(height: 10),
-            Stack(
-              children: [
-                Container(
-                  height: 8,
-                  width: double.infinity,
-                  decoration: BoxDecoration(
-                    color: Colors.white.withOpacity(0.05),
-                    borderRadius: BorderRadius.circular(10),
-                  ),
-                ),
-                AnimatedContainer(
-                  duration: const Duration(seconds: 1),
-                  height: 8,
-                  width: 230 * progress, // Approximation for the bar width
-                  decoration: BoxDecoration(
-                    gradient: LinearGradient(
-                      colors: [accentColor, accentColor.withOpacity(0.5)],
-                    ),
-                    borderRadius: BorderRadius.circular(10),
-                    boxShadow: [
-                      BoxShadow(
-                        color: accentColor.withOpacity(0.3),
-                        blurRadius: 5,
-                      )
-                    ],
-                  ),
-                ),
-              ],
+            const SizedBox(height: 12),
+            ClipRRect(
+              borderRadius: BorderRadius.circular(4),
+              child: LinearProgressIndicator(
+                value: level,
+                backgroundColor: Colors.white.withValues(alpha: 0.05),
+                valueColor: AlwaysStoppedAnimation<Color>(color),
+                minHeight: 4,
+              ),
             ),
           ],
         ),
+      )
+      .animate(target: isHovered ? 1 : 0)
+      .moveY(end: -10, duration: 300.ms, curve: Curves.easeOut)
+      .animate(onPlay: (c) => c.repeat(reverse: true))
+      .moveY(
+        begin: -4, 
+        end: 4, 
+        duration: (2.0 + (index * 0.3)).seconds, 
+        curve: Curves.easeInOut,
       ),
     );
   }

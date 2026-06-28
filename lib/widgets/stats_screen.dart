@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_animate/flutter_animate.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import '../animation/hover_animation.dart';
-import '../animation/slide_fade_animation.dart';
+import 'package:google_fonts/google_fonts.dart';
+import 'package:practice_web/utils/constants.dart';
 
 class StatsScreen extends StatelessWidget {
   const StatsScreen({super.key});
@@ -9,70 +10,41 @@ class StatsScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
-    final bool isSmallScreen = size.width < 900;
+    final bool isMobile = size.width < 900;
 
     return Container(
-      padding: const EdgeInsets.symmetric(vertical: 60.0, horizontal: 20),
-      child: MyCustomWidgetScreen(
-        index: 1,
-        direction: RevealDirection.bottom,
-        child: Wrap(
-          spacing: 30,
-          runSpacing: 30,
-          alignment: WrapAlignment.center,
-          children: [
-            _buildStatCard(
-              "12+",
-              "Projects Completed",
-              FontAwesomeIcons.checkDouble,
-              Colors.tealAccent,
-              isSmallScreen ? size.width * 0.9 : 280,
-            ),
-            _buildStatCard(
-              "2+",
-              "Years Learning & Dev",
-              FontAwesomeIcons.laptopCode,
-              Colors.blueAccent,
-              isSmallScreen ? size.width * 0.9 : 280,
-            ),
-            _buildStatCard(
-              "8+",
-              "Flutter Applications",
-              FontAwesomeIcons.mobileScreenButton,
-              Colors.deepPurpleAccent,
-              isSmallScreen ? size.width * 0.9 : 280,
-            ),
-            _buildStatCard(
-              "5+",
-              "Web Applications",
-              FontAwesomeIcons.globe,
-              Colors.orangeAccent,
-              isSmallScreen ? size.width * 0.9 : 280,
-            ),
-          ],
-        ),
+      padding: EdgeInsets.symmetric(
+        vertical: 60,
+        horizontal: isMobile ? 20 : size.width * 0.1,
       ),
+      child: Wrap(
+        spacing: 30,
+        runSpacing: 30,
+        alignment: WrapAlignment.center,
+        children: [
+          _buildStatCard("20+", "Projects Completed", FontAwesomeIcons.checkDouble, AppColors.primary),
+          _buildStatCard("3+", "Years of Experience", FontAwesomeIcons.laptopCode, AppColors.accent),
+          _buildStatCard("15+", "Global Clients", FontAwesomeIcons.users, AppColors.secondary),
+          _buildStatCard("10+", "Technologies Mastered", FontAwesomeIcons.layerGroup, Colors.orangeAccent),
+        ],
+      ).animate().fadeIn(duration: 800.ms).slideY(begin: 0.2),
     );
   }
 
-  Widget _buildStatCard(String value, String label, IconData icon, Color accentColor, double width) {
-    return HoveredAnimationScreen(
-      onPressed: () {},
-      color: accentColor.withOpacity(0.05),
-      width: width,
-      height: 160,
-      borderRadius: 25,
-      child: Container(
-        padding: const EdgeInsets.all(25),
+  Widget _buildStatCard(String value, String label, IconData icon, Color color) {
+    return HoverItem(
+      builder: (isHovered) => Container(
+        width: 260,
+        padding: const EdgeInsets.all(24),
         decoration: BoxDecoration(
-          color: Colors.grey.shade900.withOpacity(0.3),
-          borderRadius: BorderRadius.circular(25),
-          border: Border.all(color: accentColor.withOpacity(0.2), width: 1.5),
+          color: AppColors.surface,
+          borderRadius: BorderRadius.circular(20),
+          border: Border.all(color: color.withValues(alpha: 0.1)),
           boxShadow: [
             BoxShadow(
-              color: accentColor.withOpacity(0.05),
-              blurRadius: 15,
-              offset: const Offset(0, 8),
+              color: color.withValues(alpha: 0.05),
+              blurRadius: 20,
+              offset: const Offset(0, 10),
             )
           ],
         ),
@@ -81,36 +53,29 @@ class StatsScreen extends StatelessWidget {
             Container(
               padding: const EdgeInsets.all(12),
               decoration: BoxDecoration(
-                color: accentColor.withOpacity(0.1),
-                borderRadius: BorderRadius.circular(15),
+                color: color.withValues(alpha: 0.1),
+                borderRadius: BorderRadius.circular(12),
               ),
-              child: Icon(icon, color: accentColor, size: 28),
+              child: Icon(icon, color: color, size: 24),
             ),
-            const SizedBox(width: 20),
+            const SizedBox(width: 16),
             Expanded(
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
-                mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   Text(
                     value,
-                    style: TextStyle(
+                    style: GoogleFonts.poppins(
                       color: Colors.white,
-                      fontSize: 32,
+                      fontSize: 24,
                       fontWeight: FontWeight.bold,
-                      letterSpacing: 1,
-                      shadows: [
-                        Shadow(color: accentColor.withOpacity(0.5), blurRadius: 10)
-                      ],
                     ),
                   ),
-                  const SizedBox(height: 5),
                   Text(
                     label,
-                    style: TextStyle(
-                      color: Colors.white.withOpacity(0.5),
-                      fontSize: 14,
-                      fontWeight: FontWeight.w500,
+                    style: GoogleFonts.inter(
+                      color: AppColors.textSecondary,
+                      fontSize: 12,
                     ),
                   ),
                 ],
@@ -118,7 +83,7 @@ class StatsScreen extends StatelessWidget {
             ),
           ],
         ),
-      ),
+      ).animate(target: isHovered ? 1 : 0).scale(end: const Offset(1.05, 1.05)),
     );
   }
 }

@@ -1,7 +1,9 @@
 import 'package:animated_text_kit/animated_text_kit.dart';
 import 'package:flutter/material.dart';
-import '../animation/hover_animation.dart';
-import '../animation/slide_fade_animation.dart';
+import 'package:flutter_animate/flutter_animate.dart';
+import 'package:google_fonts/google_fonts.dart';
+import 'package:practice_web/utils/constants.dart';
+import 'package:simple_gradient_text/simple_gradient_text.dart';
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({super.key});
@@ -9,37 +11,32 @@ class HomeScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
-    final bool isSmallScreen = size.width < 900;
+    final bool isMobile = size.width < 900;
     
     return Container(
-      constraints: BoxConstraints(minHeight: size.height * 0.8),
+      constraints: BoxConstraints(minHeight: size.height),
       width: double.infinity,
-      // Increased top padding to give space from AppBar
-      padding: EdgeInsets.only(
-        top: 120, 
-        bottom: 50,
-        left: isSmallScreen ? 20 : size.width * 0.1,
-        right: isSmallScreen ? 20 : size.width * 0.1,
+      padding: EdgeInsets.symmetric(
+        horizontal: isMobile ? 20 : size.width * 0.1,
       ),
-      child: MyCustomWidgetScreen(
-        index: 0,
-        direction: RevealDirection.left,
-        child: isSmallScreen 
-          ? Column(
-              children: [
-                _buildProfileImage(size),
-                const SizedBox(height: 60),
-                _buildTextContent(context, true),
-              ],
-            )
-          : Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Expanded(flex: 3, child: _buildTextContent(context, false)),
-                Expanded(flex: 2, child: _buildProfileImage(size)),
-              ],
-            ),
-      ),
+      child: isMobile 
+        ? Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              const SizedBox(height: 120),
+              _buildProfileImage(size),
+              const SizedBox(height: 40),
+              _buildTextContent(context, true),
+              const SizedBox(height: 50),
+            ],
+          )
+        : Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Expanded(flex: 3, child: _buildTextContent(context, false)),
+              Expanded(flex: 2, child: _buildProfileImage(size)),
+            ],
+          ),
     );
   }
 
@@ -48,140 +45,187 @@ class HomeScreen extends StatelessWidget {
       mainAxisAlignment: MainAxisAlignment.center,
       crossAxisAlignment: centered ? CrossAxisAlignment.center : CrossAxisAlignment.start,
       children: [
-        const Text(
-          "WELCOME TO MY PORTFOLIO",
-          style: TextStyle(
-            color: Colors.tealAccent,
-            fontSize: 14,
-            letterSpacing: 3,
+        Container(
+          padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+          decoration: BoxDecoration(
+            color: AppColors.primary.withValues(alpha: 0.1),
+            borderRadius: BorderRadius.circular(20),
+            border: Border.all(color: AppColors.primary.withValues(alpha: 0.2)),
+          ),
+          child: Text(
+            "WELCOME TO MY PORTFOLIO",
+            style: GoogleFonts.inter(
+              color: AppColors.primary,
+              fontSize: 12,
+              letterSpacing: 2,
+              fontWeight: FontWeight.bold,
+            ),
+          ),
+        ).animate().fadeIn(duration: 600.ms).slideX(begin: -0.2),
+        const SizedBox(height: 24),
+        GradientText(
+          "Muhammad Ehsan",
+          style: GoogleFonts.poppins(
+            fontSize: centered ? 40 : 64,
             fontWeight: FontWeight.bold,
+            height: 1.1,
           ),
-        ),
-        const SizedBox(height: 20),
-        RichText(
-          textAlign: centered ? TextAlign.center : TextAlign.start,
-          text: TextSpan(
-            children: [
-              const TextSpan(
-                text: "Hi, I'm ",
-                style: TextStyle(color: Colors.white, fontSize: 40, fontWeight: FontWeight.bold),
-              ),
-              const TextSpan(
-                text: "Muhammad Ehsan",
-                style: TextStyle(color: Colors.deepPurpleAccent, fontSize: 40, fontWeight: FontWeight.bold),
-              ),
-            ],
-          ),
-        ),
-        const SizedBox(height: 10),
-        // Wrapped in Wrap for responsiveness to prevent overflow
-        Wrap(
-          alignment: centered ? WrapAlignment.center : WrapAlignment.start,
-          crossAxisAlignment: WrapCrossAlignment.center,
+          colors: const [
+            AppColors.primary,
+            AppColors.secondary,
+            AppColors.accent,
+          ],
+        ).animate().fadeIn(delay: 200.ms, duration: 600.ms).slideX(begin: -0.2),
+        const SizedBox(height: 16),
+        Row(
+          mainAxisAlignment: centered ? MainAxisAlignment.center : MainAxisAlignment.start,
           children: [
-            const Text(
-              "a ",
-              style: TextStyle(color: Colors.white, fontSize: 26, fontWeight: FontWeight.bold),
+            Text(
+              "I'm a ",
+              style: GoogleFonts.inter(
+                fontSize: centered ? 20 : 28,
+                color: Colors.white,
+                fontWeight: FontWeight.w500,
+              ),
             ),
             DefaultTextStyle(
-              style: const TextStyle(
-                fontSize: 26,
+              style: GoogleFonts.inter(
+                fontSize: centered ? 20 : 28,
                 fontWeight: FontWeight.bold,
-                color: Colors.tealAccent,
+                color: AppColors.accent,
               ),
               child: AnimatedTextKit(
                 repeatForever: true,
                 animatedTexts: [
-                  TypewriterAnimatedText("Front End Web Developer."),
                   TypewriterAnimatedText("Flutter Developer."),
-                  TypewriterAnimatedText("Mobile Application Developer."),
+                  TypewriterAnimatedText("Front End Web Developer."),
                   TypewriterAnimatedText("MERN Stack Developer."),
+                  TypewriterAnimatedText("UI/UX Enthusiast."),
                 ],
               ),
             ),
           ],
-        ),
-        const SizedBox(height: 25),
+        ).animate().fadeIn(delay: 400.ms, duration: 600.ms).slideX(begin: -0.2),
+        const SizedBox(height: 24),
         Text(
-          "I build high-performance, beautiful, and scalable mobile & web applications. "
-          "Specialized in Flutter and MERN stack with a passion for creating seamless user experiences.",
+          "I craft high-performance, visually stunning, and user-centric mobile and web applications. Turning complex problems into elegant digital solutions.",
           textAlign: centered ? TextAlign.center : TextAlign.start,
-          style: const TextStyle(color: Colors.white70, fontSize: 16, height: 1.6),
-        ),
+          style: AppStyles.body.copyWith(fontSize: 18),
+        ).animate().fadeIn(delay: 600.ms, duration: 600.ms).slideX(begin: -0.2),
         const SizedBox(height: 40),
-        _buildDownloadCVButton(),
+        _buildActionButtons(centered).animate().fadeIn(delay: 800.ms, duration: 600.ms).slideY(begin: 0.2),
       ],
     );
   }
 
-  Widget _buildProfileImage(Size size) {
-    double imgSize = size.width < 600 ? 250 : 300;
-    return MyCustomWidgetScreen(
-      index: 1,
-      direction: RevealDirection.right,
-      child: Center(
-        child: Stack(
-          alignment: Alignment.center,
-          children: [
-            Container(
-              width: imgSize + 20,
-              height: imgSize + 20,
-              decoration: BoxDecoration(
-                shape: BoxShape.circle,
-                gradient: LinearGradient(
-                  colors: [Colors.deepPurpleAccent.withOpacity(0.5), Colors.tealAccent.withOpacity(0.5)],
-                ),
-                boxShadow: [
-                  BoxShadow(
-                    color: Colors.deepPurpleAccent.withOpacity(0.3),
-                    blurRadius: 50,
-                    spreadRadius: 10,
-                  )
-                ],
-              ),
-            ),
-            Container(
-              width: imgSize,
-              height: imgSize,
-              decoration: BoxDecoration(
-                shape: BoxShape.circle,
-                border: Border.all(color: Colors.white10, width: 8),
-                image: const DecorationImage(
-                  image: AssetImage("assets/images/me_dp.one.png"),
-                  fit: BoxFit.cover,
-                ),
-              ),
-            ),
-          ],
-        ),
-      ),
+  Widget _buildActionButtons(bool centered) {
+    return Wrap(
+      spacing: 20,
+      runSpacing: 20,
+      alignment: centered ? WrapAlignment.center : WrapAlignment.start,
+      children: [
+        _buildButton("Download CV", Icons.download, true),
+      ],
     );
   }
 
-  Widget _buildDownloadCVButton() {
-    return HoveredAnimationScreen(
-      onPressed: () {},
-      color: Colors.deepPurpleAccent,
-      width: 180,
-      height: 55,
-      borderRadius: 12,
-      child: Container(
+  Widget _buildButton(String label, IconData icon, bool primary) {
+    return HoverItem(
+      builder: (isHovered) => Container(
+        height: 48,
+        padding: const EdgeInsets.symmetric(horizontal: 24),
         decoration: BoxDecoration(
+          gradient: isHovered 
+            ? LinearGradient(
+                colors: [AppColors.accent, AppColors.primary],
+                begin: Alignment.topLeft,
+                end: Alignment.bottomRight,
+              )
+            : AppColors.primaryGradient,
           borderRadius: BorderRadius.circular(12),
-          border: Border.all(color: Colors.deepPurpleAccent, width: 2),
-        ),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: const [
-            Icon(Icons.download, color: Colors.white, size: 20),
-            SizedBox(width: 10),
-            Text(
-              "DOWNLOAD CV",
-              style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 14),
-            ),
+          boxShadow: [
+            BoxShadow(
+              color: AppColors.primary.withValues(alpha: isHovered ? 0.5 : 0.3),
+              blurRadius: isHovered ? 20 : 15,
+              offset: Offset(0, isHovered ? 10 : 6),
+            )
           ],
         ),
-      ),
+        child: Center(
+          child: Row(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Icon(icon, color: Colors.white, size: 18),
+              const SizedBox(width: 10),
+              Text(
+                label,
+                style: GoogleFonts.inter(
+                  color: Colors.white,
+                  fontWeight: FontWeight.bold,
+                  fontSize: 14,
+                ),
+              ),
+            ],
+          ),
+        ),
+      ).animate(target: isHovered ? 1 : 0)
+       .moveY(end: -8, duration: 300.ms, curve: Curves.easeOut)
+       .animate(onPlay: (c) => c.repeat())
+       .shimmer(delay: 2.seconds, duration: 1500.ms, color: Colors.white24),
     );
+  }
+
+  Widget _buildProfileImage(Size size) {
+    double imgSize = size.width < 600 ? 280 : 400;
+    return Stack(
+      alignment: Alignment.center,
+      children: [
+        // Decorative background glow
+        Container(
+          width: imgSize * 0.8,
+          height: imgSize * 0.8,
+          decoration: BoxDecoration(
+            shape: BoxShape.circle,
+            boxShadow: [
+              BoxShadow(
+                color: AppColors.primary.withValues(alpha: 0.2),
+                blurRadius: 100,
+                spreadRadius: 20,
+              ),
+              BoxShadow(
+                color: AppColors.secondary.withValues(alpha: 0.2),
+                blurRadius: 100,
+                spreadRadius: 20,
+              ),
+            ],
+          ),
+        ).animate(onPlay: (c) => c.repeat()).rotate(duration: 10.seconds),
+        
+        // Floating image container
+        Container(
+          width: imgSize,
+          height: imgSize,
+          decoration: BoxDecoration(
+            shape: BoxShape.circle,
+            border: Border.all(color: Colors.white.withValues(alpha: 0.1), width: 8),
+            boxShadow: [
+              BoxShadow(
+                color: Colors.black.withValues(alpha: 0.5),
+                blurRadius: 30,
+                offset: const Offset(0, 20),
+              )
+            ],
+          ),
+          child: ClipRRect(
+            borderRadius: BorderRadius.circular(imgSize),
+            child: Image.asset(
+              "assets/images/me_dp.one.png",
+              fit: BoxFit.cover,
+            ),
+          ),
+        ).animate(onPlay: (c) => c.repeat(reverse: true))
+         .moveY(begin: -15, end: 15, duration: 3.seconds, curve: Curves.easeInOut),
+      ],
+    ).animate().fadeIn(duration: 1.seconds).scale(begin: const Offset(0.8, 0.8));
   }
 }
