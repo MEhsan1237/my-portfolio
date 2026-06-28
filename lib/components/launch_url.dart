@@ -23,30 +23,40 @@ class _RowLaunchScreenState extends State<RowLaunchScreen> {
   Widget build(BuildContext context) {
     return Column(
       children: [
-        Text(
-          widget.url,
-          style: TextStyle(
-            color: Colors.blue,
-
-          ),
-          overflow: TextOverflow.ellipsis,
-        ),
-        SizedBox(height: 20,),
-        Row(
-          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-          children: [
-            Text(
-              "Click here",
-              style: TextStyle(
-                color: Colors.deepPurple.shade400,
-                fontSize: 18,
-                fontWeight: FontWeight.bold,
+        InkWell(
+          onTap: _launchUrl,
+          borderRadius: BorderRadius.circular(12),
+          child: Container(
+            padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 25),
+            decoration: BoxDecoration(
+              gradient: LinearGradient(
+                colors: [Colors.deepPurpleAccent, Colors.deepPurple.shade700],
               ),
+              borderRadius: BorderRadius.circular(12),
+              boxShadow: [
+                BoxShadow(
+                  color: Colors.deepPurpleAccent.withOpacity(0.3),
+                  blurRadius: 8,
+                  offset: const Offset(0, 4),
+                )
+              ],
             ),
-
-            ElevatedButton(onPressed: _launchUrl,
-            style: ElevatedButton.styleFrom( backgroundColor: Colors.deepPurple.shade400),child: Icon(widget.icon,color: Colors.white,),)
-          ],
+            child: Row(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                const Text(
+                  "View Project",
+                  style: TextStyle(
+                    color: Colors.white,
+                    fontSize: 14,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+                const SizedBox(width: 10),
+                Icon(widget.icon, color: Colors.white, size: 18),
+              ],
+            ),
+          ),
         ),
       ],
     );

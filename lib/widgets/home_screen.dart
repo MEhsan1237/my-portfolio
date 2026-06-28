@@ -1,206 +1,185 @@
 import 'package:animated_text_kit/animated_text_kit.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:practice_web/widgets/sun_image.dart';
-
 import '../animation/hover_animation.dart';
 import '../animation/slide_fade_animation.dart';
-import '../components/new2_launch_url.dart';
-import '../components/new3_launch_url.dart';
-import '../components/new_launch_url.dart';
-import '../row_components/row1products_screen.dart';
-import '../row_components/row2products_screen.dart';
-import '../row_components/row3products_screen.dart';
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({super.key});
+
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding:   EdgeInsets.symmetric(vertical:  50.0, horizontal: MediaQuery.of(context).size.width * 0.1),
+    final size = MediaQuery.of(context).size;
+    final bool isSmallScreen = size.width < 900;
+    
+    return Container(
+      constraints: BoxConstraints(minHeight: size.height * 0.8),
+      width: double.infinity,
+      // Increased top padding to give space from AppBar
+      padding: EdgeInsets.only(
+        top: 120, 
+        bottom: 50,
+        left: isSmallScreen ? 20 : size.width * 0.1,
+        right: isSmallScreen ? 20 : size.width * 0.1,
+      ),
       child: MyCustomWidgetScreen(
         index: 0,
-        child: HoveredAnimationScreen(
-          onPressed: () {  },
-          color: Colors.red,
-          width: double.infinity,
-          height: 400,
-          child: Stack(
+        direction: RevealDirection.left,
+        child: isSmallScreen 
+          ? Column(
+              children: [
+                _buildProfileImage(size),
+                const SizedBox(height: 60),
+                _buildTextContent(context, true),
+              ],
+            )
+          : Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Expanded(flex: 3, child: _buildTextContent(context, false)),
+                Expanded(flex: 2, child: _buildProfileImage(size)),
+              ],
+            ),
+      ),
+    );
+  }
+
+  Widget _buildTextContent(BuildContext context, bool centered) {
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.center,
+      crossAxisAlignment: centered ? CrossAxisAlignment.center : CrossAxisAlignment.start,
+      children: [
+        const Text(
+          "WELCOME TO MY PORTFOLIO",
+          style: TextStyle(
+            color: Colors.tealAccent,
+            fontSize: 14,
+            letterSpacing: 3,
+            fontWeight: FontWeight.bold,
+          ),
+        ),
+        const SizedBox(height: 20),
+        RichText(
+          textAlign: centered ? TextAlign.center : TextAlign.start,
+          text: TextSpan(
             children: [
-              Container(
-                decoration: BoxDecoration(
-
-                  borderRadius: BorderRadius.circular(15),
-                ),
-                child: Column(
-                  children: [
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Padding(
-                          padding: const EdgeInsets.only(left: 16.0),
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-
-                            children: [
-                              Padding(
-                                padding:   EdgeInsets.symmetric(
-                                  horizontal: MediaQuery.of(context).size.width * 0.1,
-                                  vertical: 14,
-                                ),
-                                child: Text(
-                                  "Muhammad Ehsan",
-                                  style: TextStyle(
-                                    color: Colors.white,
-                                    fontSize: 20,
-                                    decoration: TextDecoration.none,
-                                  ),
-                                ),
-                              ),
-                              Padding(
-                                padding: const EdgeInsets.only(left: 120.0),
-                                child: Positioned(
-                                  top: 200,
-                                  left: 20,
-                                  child: Row(
-                                    children: [
-                                      Text(
-                                        "I am",
-                                        style: TextStyle(
-                                          color: Colors.white,
-                                          decoration: TextDecoration.none,
-                                          fontSize: 20,
-                                          fontWeight: FontWeight.w600,
-                                        ),
-                                      ),
-                                      DefaultTextStyle(
-                                        style: TextStyle(
-                                          fontSize: 20,
-                                          fontWeight: FontWeight.w600,
-                                          foreground:
-                                          Paint()
-                                            ..shader = const LinearGradient(
-                                              colors: [
-                                                Colors.teal,
-                                                Colors.deepPurple,
-                                              ],
-                                            ).createShader(
-                                              const Rect.fromLTWH(
-                                                150.0,
-                                                0.0,
-                                                200.0,
-                                                70.0,
-                                              ),
-                                            ),
-                                        ),
-                                        child: Padding(
-                                          padding: const EdgeInsets.only(left: 4.0),
-                                          child: AnimatedTextKit(
-                                            repeatForever: true,
-                                            pause: Duration(seconds: 1),
-                                            animatedTexts: [
-                                              TyperAnimatedText(
-                                                "Full Stack Developer",
-                                              ),
-                                              TyperAnimatedText(
-                                                "Flutter Developer",
-                                              ),
-                                              TyperAnimatedText(
-                                                "Android Developer",
-                                              ),
-                                              TyperAnimatedText("Web Developer"),
-                                            ],
-                                          ),
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                              ),
-                              Padding(
-                                padding: const EdgeInsets.only(left: 8.0, top: 16),
-                                child: Text(
-                                  style: TextStyle(
-                                    color: Colors.white,
-                                    fontSize: 14,
-                                    decoration: TextDecoration.none,
-                                  ),
-                                  textAlign: TextAlign.center,
-                                  "I am a Full Stack Flutter Developer skilled in building cross-platform apps \n"
-                                      "with all Flutter widgets, Provider state management, and Google Maps. \n"
-                                      "I specialize in Firebase (Auth, Firestore, Realtime DB, Storage, Cloud.) \n"
-                                      "API integration to deliver secure, real-time, and scalable solutions. \n"
-                                      "My focus is on creating real-world projects, CRUD features, \n"
-                                      "payment systems, and smooth performance.",
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.only(top: 50.0),
-                          child: Positioned(
-                            top: 50,
-                            left: 60,
-                            child: Container(
-                              margin: EdgeInsets.symmetric(horizontal: MediaQuery.of(context).size.width * 0.1),
-                              decoration: BoxDecoration(
-                                shape: BoxShape.circle,
-                                boxShadow: [
-                                  BoxShadow(
-                                    color: Colors.tealAccent,
-                                    spreadRadius: 4,
-                                    blurRadius: 5,
-                                  ),
-                                ],
-                              ),
-                              child: CircleAvatar(
-                                backgroundImage: AssetImage(
-                                  "assets/images/me_dp.one.png",
-                                ),
-                                radius: 120,
-                              ),
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
-                    Column(
-                      children: [
-                        Padding(
-                          padding: const EdgeInsets.only(right: 700.0,top: 10),
-                          child: Text(
-                            "Social Media Accounts",
-                            style: TextStyle(
-                              color: Colors.white,
-                              fontSize: 18,
-                              decoration: TextDecoration.none,
-                            ),
-                          ),
-                        ),
-
-                        Padding(
-                          padding: const EdgeInsets.symmetric(horizontal: 200.0),
-                          child: Row(
-                            children: [
-                              NewRowLaunchScreen(icon: FontAwesomeIcons.github,),
-                              SizedBox(width: 10,),
-                              NewRowLaunchScreen2(icon: FontAwesomeIcons.tiktok,),
-                              SizedBox(width: 10,),
-                              NewRowLaunchScreen3(icon: FontAwesomeIcons.linkedin,)
-
-                            ],),
-                        )
-                      ],
-                    ),
-
-                  ],
-                ),
+              const TextSpan(
+                text: "Hi, I'm ",
+                style: TextStyle(color: Colors.white, fontSize: 40, fontWeight: FontWeight.bold),
               ),
-
+              const TextSpan(
+                text: "Muhammad Ehsan",
+                style: TextStyle(color: Colors.deepPurpleAccent, fontSize: 40, fontWeight: FontWeight.bold),
+              ),
             ],
           ),
+        ),
+        const SizedBox(height: 10),
+        // Wrapped in Wrap for responsiveness to prevent overflow
+        Wrap(
+          alignment: centered ? WrapAlignment.center : WrapAlignment.start,
+          crossAxisAlignment: WrapCrossAlignment.center,
+          children: [
+            const Text(
+              "a ",
+              style: TextStyle(color: Colors.white, fontSize: 26, fontWeight: FontWeight.bold),
+            ),
+            DefaultTextStyle(
+              style: const TextStyle(
+                fontSize: 26,
+                fontWeight: FontWeight.bold,
+                color: Colors.tealAccent,
+              ),
+              child: AnimatedTextKit(
+                repeatForever: true,
+                animatedTexts: [
+                  TypewriterAnimatedText("Front End Web Developer."),
+                  TypewriterAnimatedText("Flutter Developer."),
+                  TypewriterAnimatedText("Mobile Application Developer."),
+                  TypewriterAnimatedText("MERN Stack Developer."),
+                ],
+              ),
+            ),
+          ],
+        ),
+        const SizedBox(height: 25),
+        Text(
+          "I build high-performance, beautiful, and scalable mobile & web applications. "
+          "Specialized in Flutter and MERN stack with a passion for creating seamless user experiences.",
+          textAlign: centered ? TextAlign.center : TextAlign.start,
+          style: const TextStyle(color: Colors.white70, fontSize: 16, height: 1.6),
+        ),
+        const SizedBox(height: 40),
+        _buildDownloadCVButton(),
+      ],
+    );
+  }
+
+  Widget _buildProfileImage(Size size) {
+    double imgSize = size.width < 600 ? 250 : 300;
+    return MyCustomWidgetScreen(
+      index: 1,
+      direction: RevealDirection.right,
+      child: Center(
+        child: Stack(
+          alignment: Alignment.center,
+          children: [
+            Container(
+              width: imgSize + 20,
+              height: imgSize + 20,
+              decoration: BoxDecoration(
+                shape: BoxShape.circle,
+                gradient: LinearGradient(
+                  colors: [Colors.deepPurpleAccent.withOpacity(0.5), Colors.tealAccent.withOpacity(0.5)],
+                ),
+                boxShadow: [
+                  BoxShadow(
+                    color: Colors.deepPurpleAccent.withOpacity(0.3),
+                    blurRadius: 50,
+                    spreadRadius: 10,
+                  )
+                ],
+              ),
+            ),
+            Container(
+              width: imgSize,
+              height: imgSize,
+              decoration: BoxDecoration(
+                shape: BoxShape.circle,
+                border: Border.all(color: Colors.white10, width: 8),
+                image: const DecorationImage(
+                  image: AssetImage("assets/images/me_dp.one.png"),
+                  fit: BoxFit.cover,
+                ),
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget _buildDownloadCVButton() {
+    return HoveredAnimationScreen(
+      onPressed: () {},
+      color: Colors.deepPurpleAccent,
+      width: 180,
+      height: 55,
+      borderRadius: 12,
+      child: Container(
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(12),
+          border: Border.all(color: Colors.deepPurpleAccent, width: 2),
+        ),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: const [
+            Icon(Icons.download, color: Colors.white, size: 20),
+            SizedBox(width: 10),
+            Text(
+              "DOWNLOAD CV",
+              style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 14),
+            ),
+          ],
         ),
       ),
     );

@@ -74,6 +74,8 @@ flutter:
     - assets/images/me_dp.one.png
     - assets/images/news.one.png
     - assets/images/food.one.png
+    - assets/images/blood.one.png
+    - assets/images/todo.two.png
   #   - images/a_dot_burr.jpeg
   #   - images/a_dot_ham.jpeg
 
