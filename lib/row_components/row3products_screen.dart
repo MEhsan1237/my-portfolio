@@ -42,9 +42,9 @@ class Row3ProjectScreen extends StatelessWidget {
           border: Border.all(color: Colors.white.withValues(alpha: 0.05)),
           boxShadow: [
             BoxShadow(
-              color: Colors.black.withValues(alpha: 0.2),
-              blurRadius: 20,
-              offset: const Offset(0, 10),
+              color: isHovered ? AppColors.secondary.withValues(alpha: 0.4) : Colors.black.withValues(alpha: 0.2),
+              blurRadius: isHovered ? 30 : 20,
+              offset: isHovered ? const Offset(0, 15) : const Offset(0, 10),
             )
           ],
         ),

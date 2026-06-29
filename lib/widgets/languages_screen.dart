@@ -82,7 +82,12 @@ class LanguagesScreen extends StatelessWidget {
         padding: const EdgeInsets.all(24),
         decoration: BoxDecoration(
           color: isHovered ? color.withValues(alpha: 0.04) : AppColors.surface,
-          borderRadius: BorderRadius.circular(24),
+          borderRadius: const BorderRadius.only(
+            topRight: Radius.circular(24),
+            bottomRight: Radius.circular(24),
+            topLeft: Radius.circular(24),
+            bottomLeft: Radius.circular(24),
+          ),
           border: Border.all(
             color: isHovered ? color.withValues(alpha: 0.4) : color.withValues(alpha: 0.1),
             width: 1.5,
@@ -97,8 +102,8 @@ class LanguagesScreen extends StatelessWidget {
         ),
         transform: isHovered 
           ? (Matrix4.identity()
-            ..translate(0.0, -12.0) // Deep lift
-            ..rotateZ(0.04)) // Signature senior curved rotation
+            ..translate(10.0, -10.0) // Education card style lift
+            ..rotateZ(0.02)) // Education card style rotation
           : Matrix4.identity(),
         child: Column(
           children: [

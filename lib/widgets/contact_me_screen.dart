@@ -199,11 +199,11 @@ class ContactMeScreen extends StatelessWidget {
       ),
       child: Column(
         children: [
-          _textField("Name", Icons.person_outline),
+          _textField("Name"),
           const SizedBox(height: 20),
-          _textField("Email", Icons.email_outlined),
+          _textField("Email"),
           const SizedBox(height: 20),
-          _textField("Message", Icons.message_outlined, maxLines: 5),
+          _textField("Message", maxLines: 5),
           const SizedBox(height: 30),
           _submitButton(),
         ],
@@ -211,7 +211,7 @@ class ContactMeScreen extends StatelessWidget {
     ).animate().fadeIn(delay: 400.ms).slideX(begin: 0.1);
   }
 
-  Widget _textField(String label, IconData icon, {int maxLines = 1}) {
+  Widget _textField(String label, {int maxLines = 1}) {
     return TextField(
       maxLines: maxLines,
       style: const TextStyle(color: Colors.white),
@@ -219,20 +219,7 @@ class ContactMeScreen extends StatelessWidget {
         labelText: label,
         labelStyle: TextStyle(color: Colors.white.withValues(alpha: 0.5)),
         alignLabelWithHint: true,
-        prefixIcon: Container(
-          padding: const EdgeInsets.only(top: 14), // Always at top
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.start,
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              Icon(icon, color: AppColors.primary, size: 20),
-            ],
-          ),
-        ),
-        prefixIconConstraints: const BoxConstraints(
-          minWidth: 48,
-          minHeight: 48,
-        ),
+        contentPadding: const EdgeInsets.symmetric(horizontal: 24, vertical: 20),
         filled: true,
         fillColor: AppColors.background.withValues(alpha: 0.5),
         border: OutlineInputBorder(
@@ -367,7 +354,9 @@ class ContactMeScreen extends StatelessWidget {
           _footerLink("About", 1),
           _footerLink("Projects", 2),
           _footerLink("Skills", 4),
-          _footerLink("Contact", 6),
+          _footerLink("Education", 6),
+          _footerLink("Reviews", 7),
+          _footerLink("Contact", 8),
         ]),
         _footerLinkColumn("TECH STACK", [
           _footerLink("Flutter & Dart", 4),

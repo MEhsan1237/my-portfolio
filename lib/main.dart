@@ -11,6 +11,7 @@ import 'package:practice_web/widgets/methodology_screen.dart';
 import 'package:practice_web/widgets/languages_screen.dart';
 import 'package:practice_web/widgets/stats_screen.dart';
 import 'package:practice_web/widgets/about_me_screen.dart';
+import 'package:practice_web/widgets/reviews_screen.dart';
 
 void main() {
   runApp(const MyApp());
@@ -45,7 +46,7 @@ class MyWebApp extends StatefulWidget {
 
 class _MyWebAppState extends State<MyWebApp> {
   final ScrollController _scrollController = ScrollController();
-  final List<GlobalKey> _keys = List.generate(8, (index) => GlobalKey());
+  final List<GlobalKey> _keys = List.generate(9, (index) => GlobalKey());
   int _activeIndex = 0;
   bool _showBackToTop = false;
 
@@ -140,7 +141,8 @@ class _MyWebAppState extends State<MyWebApp> {
                         _navItem("Services", 3),
                         _navItem("Skills", 4),
                         _navItem("Education", 6),
-                        _navItem("Contact", 7),
+                        _navItem("Reviews", 7),
+                        _navItem("Contact", 8),
                         const SizedBox(width: 20),
                       ],
                 ),
@@ -191,8 +193,9 @@ class _MyWebAppState extends State<MyWebApp> {
                 MethodologyScreen(key: _keys[4]),
                 LanguagesScreen(key: _keys[5]),
                 QualificationRequiredWidget(key: _keys[6]),
+                ReviewsScreen(key: _keys[7]),
                 ContactMeScreen(
-                  key: _keys[7],
+                  key: _keys[8],
                   onFooterNav: (index) => _onMenuClick(index),
                 ),
               ],
@@ -273,8 +276,9 @@ class _MyWebAppState extends State<MyWebApp> {
           _drawerItem("Projects", 2, Icons.work_outline),
           _drawerItem("Services", 3, Icons.bolt_outlined),
           _drawerItem("Skills", 4, Icons.code_outlined),
-          _drawerItem("Experience", 6, Icons.history_outlined),
-          _drawerItem("Contact", 7, Icons.mail_outline),
+          _drawerItem("Education", 6, Icons.history_outlined),
+          _drawerItem("Reviews", 7, Icons.star_outline),
+          _drawerItem("Contact", 8, Icons.mail_outline),
         ],
       ),
     );
