@@ -4,86 +4,92 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:practice_web/utils/constants.dart';
 
-class StatsScreen extends StatelessWidget {
-  const StatsScreen({super.key});
+class StatsSection extends StatelessWidget {
+  const StatsSection({super.key});
 
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
     final bool isMobile = size.width < 900;
 
-    return Container(
-      padding: EdgeInsets.symmetric(
-        vertical: 60,
-        horizontal: isMobile ? 20 : size.width * 0.1,
-      ),
-      child: Wrap(
-        spacing: 30,
-        runSpacing: 30,
-        alignment: WrapAlignment.center,
-        children: [
-          _buildStatCard("20+", "Projects Completed", FontAwesomeIcons.checkDouble, AppColors.primary),
-          _buildStatCard("3+", "Years of Experience", FontAwesomeIcons.laptopCode, AppColors.accent),
-          _buildStatCard("15+", "Global Clients", FontAwesomeIcons.users, AppColors.secondary),
-          _buildStatCard("10+", "Technologies Mastered", FontAwesomeIcons.layerGroup, Colors.orangeAccent),
-        ],
-      ).animate().fadeIn(duration: 800.ms).slideY(begin: 0.2),
-    );
+    return isMobile
+        ? Column(
+            children: [
+              _buildPremiumStatCard("20+", "Projects Completed", FontAwesomeIcons.diagramProject, AppColors.primary, 0, true),
+              const SizedBox(height: 24),
+              _buildPremiumStatCard("3+", "Years of Experience", FontAwesomeIcons.laptopCode, AppColors.accent, 1, true),
+              const SizedBox(height: 24),
+              _buildPremiumStatCard("10+", "Technologies Used", FontAwesomeIcons.stackOverflow, AppColors.secondary, 2, true),
+            ],
+          )
+        : Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Expanded(child: _buildPremiumStatCard("20+", "Projects Completed", FontAwesomeIcons.diagramProject, AppColors.primary, 0, false)),
+              const SizedBox(width: 20),
+              Expanded(child: _buildPremiumStatCard("3+", "Years of Experience", FontAwesomeIcons.laptopCode, AppColors.accent, 1, false)),
+              const SizedBox(width: 20),
+              Expanded(child: _buildPremiumStatCard("10+", "Technologies Used", FontAwesomeIcons.stackOverflow, AppColors.secondary, 2, false)),
+            ],
+          );
   }
 
-  Widget _buildStatCard(String value, String label, IconData icon, Color color) {
+  Widget _buildPremiumStatCard(String value, String label, IconData icon, Color color, int index, bool isMobile) {
     return HoverItem(
-      builder: (isHovered) => Container(
-        width: 260,
-        padding: const EdgeInsets.all(24),
+      builder: (isHovered) => AnimatedContainer(
+        duration: const Duration(milliseconds: 400),
+        padding: EdgeInsets.symmetric(vertical: isMobile ? 24 : 32, horizontal: 16),
         decoration: BoxDecoration(
           color: AppColors.surface,
-          borderRadius: BorderRadius.circular(20),
-          border: Border.all(color: color.withValues(alpha: 0.1)),
+          borderRadius: BorderRadius.circular(24),
+          border: Border.all(
+            color: isHovered ? color.withValues(alpha: 0.5) : Colors.white.withValues(alpha: 0.05),
+            width: 1.5,
+          ),
           boxShadow: [
             BoxShadow(
-              color: color.withValues(alpha: 0.05),
-              blurRadius: 20,
-              offset: const Offset(0, 10),
+              color: isHovered ? color.withValues(alpha: 0.15) : Colors.black.withValues(alpha: 0.2),
+              blurRadius: isHovered ? 30 : 15,
+              offset: Offset(0, isHovered ? 15 : 5),
             )
           ],
         ),
-        child: Row(
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
           children: [
             Container(
               padding: const EdgeInsets.all(12),
               decoration: BoxDecoration(
                 color: color.withValues(alpha: 0.1),
-                borderRadius: BorderRadius.circular(12),
+                shape: BoxShape.circle,
               ),
               child: Icon(icon, color: color, size: 24),
-            ),
-            const SizedBox(width: 16),
-            Expanded(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    value,
-                    style: GoogleFonts.poppins(
-                      color: Colors.white,
-                      fontSize: 24,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                  Text(
-                    label,
-                    style: GoogleFonts.inter(
-                      color: AppColors.textSecondary,
-                      fontSize: 12,
-                    ),
-                  ),
-                ],
+            ).animate(target: isHovered ? 1 : 0).scale(end: const Offset(1.1, 1.1)),
+            const SizedBox(height: 16),
+            Text(
+              value,
+              style: GoogleFonts.poppins(
+                color: color,
+                fontSize: isMobile ? 32 : 36,
+                fontWeight: FontWeight.w800,
+                letterSpacing: -1,
+                height: 1,
+              ),
+            ).animate().fadeIn(delay: (200 + index * 100).ms).slideY(begin: 0.2, end: 0),
+            const SizedBox(height: 8),
+            Text(
+              label,
+              textAlign: TextAlign.center,
+              style: GoogleFonts.inter(
+                color: Colors.white.withValues(alpha: 0.7),
+                fontSize: 12,
+                fontWeight: FontWeight.w600,
               ),
             ),
           ],
         ),
-      ).animate(target: isHovered ? 1 : 0).scale(end: const Offset(1.05, 1.05)),
+      ).animate(target: isHovered ? 1 : 0)
+       .moveY(end: -10, duration: 400.ms, curve: Curves.easeOutCubic),
     );
   }
 }

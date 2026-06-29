@@ -33,7 +33,7 @@ class Row2ProjectScreen extends StatelessWidget {
           "assets/images/virus.two.png",
           "Real-time COVID-19 tracking application and interactive charts",
           "https://github.com/MEhsan1237/covid_app",
-          ["Flutter", "OpenWeather", "Lottie"],
+          ["Flutter", "Vaccine", "Graphs"],
         ),
       ],
     );

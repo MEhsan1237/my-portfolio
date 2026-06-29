@@ -16,14 +16,16 @@ class HomeScreen extends StatelessWidget {
     return Container(
       constraints: BoxConstraints(minHeight: size.height),
       width: double.infinity,
-      padding: EdgeInsets.symmetric(
-        horizontal: isMobile ? 20 : size.width * 0.1,
+      padding: EdgeInsets.only(
+        top: 150, // Increased top padding to move content further below AppBar
+        left: isMobile ? 20 : size.width * 0.1,
+        right: isMobile ? 20 : size.width * 0.1,
+        bottom: 50,
       ),
       child: isMobile 
         ? Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              const SizedBox(height: 120),
               _buildProfileImage(size),
               const SizedBox(height: 40),
               _buildTextContent(context, true),
@@ -66,7 +68,7 @@ class HomeScreen extends StatelessWidget {
         GradientText(
           "Muhammad Ehsan",
           style: GoogleFonts.poppins(
-            fontSize: centered ? 40 : 64,
+            fontSize: centered ? 34 : 54, // Slightly smaller to ensure it stays on one line
             fontWeight: FontWeight.bold,
             height: 1.1,
           ),

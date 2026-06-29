@@ -24,7 +24,7 @@ class Row3ProjectScreen extends StatelessWidget {
         _projectCard(
           "BMI App",
           "assets/images/calculator.one.png",
-          "Clean and simple calculator with scientific functions.",
+          "A BMI calculates Body Mass using the user's height and weight.",
           "https://github.com/MEhsan1237/BMI-app",
           ["Flutter", "Logic", "Math"],
         ),

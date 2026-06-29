@@ -139,7 +139,7 @@ class _MyWebAppState extends State<MyWebApp> {
                         _navItem("Projects", 2),
                         _navItem("Services", 3),
                         _navItem("Skills", 4),
-                        _navItem("Experience", 6),
+                        _navItem("Education", 6),
                         _navItem("Contact", 7),
                         const SizedBox(width: 20),
                       ],
@@ -185,7 +185,6 @@ class _MyWebAppState extends State<MyWebApp> {
             child: Column(
               children: [
                 HomeScreen(key: _keys[0]),
-                const StatsScreen(),
                 AboutMeScreen(key: _keys[1]),
                 ProjectScreen(key: _keys[2]),
                 ServicesScreen(key: _keys[3]),
@@ -283,6 +282,10 @@ class _MyWebAppState extends State<MyWebApp> {
 
   Widget _drawerItem(String title, int index, IconData icon) {
     bool isActive = _activeIndex == index;
+    if (index == 4 && (_activeIndex == 4 || _activeIndex == 5)) {
+      isActive = true;
+    }
+    
     return ListTile(
       leading: Icon(icon, color: isActive ? AppColors.primary : Colors.white),
       title: Text(
@@ -301,6 +304,10 @@ class _MyWebAppState extends State<MyWebApp> {
 
   Widget _navItem(String title, int index) {
     bool isActive = _activeIndex == index;
+    if (index == 4 && (_activeIndex == 4 || _activeIndex == 5)) {
+      isActive = true;
+    }
+
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 10),
       child: InkWell(

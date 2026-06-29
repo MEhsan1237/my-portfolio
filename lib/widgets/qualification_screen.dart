@@ -30,25 +30,32 @@ class QualificationRequiredWidget extends StatelessWidget {
   Widget _buildHeader() {
     return Column(
       children: [
-        Text(
-          "MY JOURNEY",
-          style: GoogleFonts.inter(
-            color: AppColors.primary,
-            fontSize: 14,
-            letterSpacing: 4,
-            fontWeight: FontWeight.bold,
+        Container(
+          padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+          decoration: BoxDecoration(
+            color: AppColors.primary.withValues(alpha: 0.1),
+            borderRadius: BorderRadius.circular(20),
+          ),
+          child: Text(
+            "MY JOURNEY",
+            style: GoogleFonts.inter(
+              color: AppColors.primary,
+              fontSize: 12,
+              letterSpacing: 4,
+              fontWeight: FontWeight.bold,
+            ),
           ),
         ),
-        const SizedBox(height: 10),
+        const SizedBox(height: 16),
         Text(
-          "Experience & Education",
+          "Education & Background",
           textAlign: TextAlign.center,
           style: AppStyles.heading.copyWith(fontSize: 32),
         ),
         const SizedBox(height: 20),
         Container(
           height: 4,
-          width: 60,
+          width: 40,
           decoration: BoxDecoration(
             gradient: AppColors.primaryGradient,
             borderRadius: BorderRadius.circular(2),
@@ -65,17 +72,11 @@ class QualificationRequiredWidget extends StatelessWidget {
           "2023 - Present",
           "BS Software Engineering",
           "The Islamia University of Bahawalpur",
-          "Currently pursuing my degree with a focus on advanced software architecture and mobile development. Maintaining a 3.86 CGPA.",
+          "Specializing in software architecture and mobile development. Maintaining a 3.86 CGPA with focus on scalable applications.",
           FontAwesomeIcons.graduationCap,
-          true,
-        ),
-        _timelineItem(
-          "2022 - 2023",
-          "Freelance Flutter Developer",
-          "Self-Employed",
-          "Developed several cross-platform mobile applications for local and international clients, focusing on clean UI and robust performance.",
-          FontAwesomeIcons.laptopCode,
+          AppColors.primary,
           false,
+          isMobile,
         ),
         _timelineItem(
           "2020 - 2022",
@@ -83,83 +84,190 @@ class QualificationRequiredWidget extends StatelessWidget {
           "Superior Group of Colleges",
           "Completed higher secondary education with major focus on Mathematics and Physics, securing 936/1100 marks.",
           FontAwesomeIcons.userGraduate,
+          AppColors.accent,
           false,
+          isMobile,
+        ),
+        _timelineItem(
+          "2018 - 2020",
+          "Matriculation",
+          "Dawn Science School",
+          "Completed secondary education with high honors, securing 1011/1100 marks in Science group.",
+          FontAwesomeIcons.school,
+          AppColors.secondary,
+          true,
+          isMobile,
         ),
       ],
     );
   }
 
-  Widget _timelineItem(String period, String title, String subtitle, String desc, IconData icon, bool isLast) {
-    return IntrinsicHeight(
-      child: Row(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Expanded(
-            flex: 1,
-            child: Text(
-              period,
-              textAlign: TextAlign.right,
-              style: GoogleFonts.inter(
-                color: AppColors.primary,
-                fontWeight: FontWeight.bold,
-                fontSize: 14,
+  Widget _timelineItem(
+    String period, 
+    String title, 
+    String subtitle, 
+    String desc, 
+    IconData icon, 
+    Color color,
+    bool isLast,
+    bool isMobile,
+  ) {
+    return Row(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        if (!isMobile)
+          SizedBox(
+            width: 120,
+            child: Padding(
+              padding: const EdgeInsets.only(top: 20),
+              child: Text(
+                period,
+                textAlign: TextAlign.right,
+                style: GoogleFonts.inter(
+                  color: color,
+                  fontWeight: FontWeight.bold,
+                  fontSize: 14,
+                ),
               ),
             ),
           ),
-          const SizedBox(width: 30),
-          Column(
-            children: [
+        if (!isMobile) const SizedBox(width: 30),
+        Column(
+          children: [
+            AnimatedContainer(
+              duration: const Duration(milliseconds: 300),
+              padding: const EdgeInsets.all(12),
+              decoration: BoxDecoration(
+                color: color.withValues(alpha: 0.1),
+                shape: BoxShape.circle,
+                border: Border.all(color: color, width: 2),
+              ),
+              child: Icon(icon, color: color, size: 18),
+            ),
+            if (!isLast)
               Container(
-                padding: const EdgeInsets.all(8),
+                width: 2,
+                height: isMobile ? 180 : 150, // Fixed height for the line to avoid IntrinsicHeight issues
+                margin: const EdgeInsets.symmetric(vertical: 10),
                 decoration: BoxDecoration(
-                  color: AppColors.primary.withValues(alpha: 0.1),
-                  shape: BoxShape.circle,
-                  border: Border.all(color: AppColors.primary, width: 2),
+                  gradient: LinearGradient(
+                    begin: Alignment.topCenter,
+                    end: Alignment.bottomCenter,
+                    colors: [color, color.withValues(alpha: 0.1)],
+                  ),
                 ),
-                child: Icon(icon, color: AppColors.primary, size: 16),
               ),
-              if (!isLast)
-                Expanded(
-                  child: Container(
-                    width: 2,
-                    color: AppColors.primary.withValues(alpha: 0.3),
-                  ),
-                ),
-            ],
-          ),
-          const SizedBox(width: 30),
-          Expanded(
-            flex: 3,
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  title,
-                  style: GoogleFonts.poppins(
-                    color: Colors.white,
-                    fontSize: 20,
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
-                Text(
-                  subtitle,
-                  style: GoogleFonts.inter(
-                    color: AppColors.accent,
-                    fontSize: 14,
-                    fontWeight: FontWeight.w500,
-                  ),
-                ),
-                const SizedBox(height: 12),
-                Text(
-                  desc,
-                  style: AppStyles.body.copyWith(fontSize: 14),
-                ),
-                const SizedBox(height: 40),
-              ],
+          ],
+        ),
+        const SizedBox(width: 20),
+        Expanded(
+          child: Padding(
+            padding: const EdgeInsets.only(bottom: 30),
+            child: _EducationCard(
+              period: period,
+              title: title,
+              subtitle: subtitle,
+              desc: desc,
+              color: color,
+              isMobile: isMobile,
             ),
           ),
-        ],
-      ),
+        ),
+      ],
     ).animate().fadeIn(delay: 200.ms).slideX(begin: 0.1);
+  }
+}
+
+class _EducationCard extends StatelessWidget {
+  final String period;
+  final String title;
+  final String subtitle;
+  final String desc;
+  final Color color;
+  final bool isMobile;
+
+  const _EducationCard({
+    required this.period,
+    required this.title,
+    required this.subtitle,
+    required this.desc,
+    required this.color,
+    required this.isMobile,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return HoverItem(
+      builder: (isHovered) => AnimatedContainer(
+        duration: const Duration(milliseconds: 500),
+        curve: Curves.easeOutQuart,
+        padding: EdgeInsets.all(isMobile ? 20 : 32),
+        decoration: BoxDecoration(
+          color: AppColors.surface,
+          borderRadius: BorderRadius.circular(24),
+          border: Border.all(
+            color: isHovered ? color.withValues(alpha: 0.5) : Colors.white.withValues(alpha: 0.05),
+            width: 1.5,
+          ),
+          boxShadow: [
+            BoxShadow(
+              color: isHovered ? color.withValues(alpha: 0.15) : Colors.black.withValues(alpha: 0.2),
+              blurRadius: isHovered ? 40 : 20,
+              offset: Offset(0, isHovered ? 20 : 10),
+            )
+          ],
+        ),
+        transform: !isMobile && isHovered 
+          ? (Matrix4.identity()
+            ..translate(10.0, -10.0)
+            ..rotateZ(0.02))
+          : Matrix4.identity(),
+        child: Column(
+          mainAxisSize: MainAxisSize.min, // Added to prevent vertical overflow
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            if (isMobile)
+              Padding(
+                padding: const EdgeInsets.only(bottom: 8),
+                child: Text(
+                  period,
+                  style: GoogleFonts.inter(
+                    color: color,
+                    fontWeight: FontWeight.bold,
+                    fontSize: 12,
+                  ),
+                ),
+              ),
+            Text(
+              title,
+              style: GoogleFonts.poppins(
+                color: Colors.white,
+                fontSize: isMobile ? 18 : 22,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+            const SizedBox(height: 8),
+            Text(
+              subtitle,
+              style: GoogleFonts.inter(
+                color: color,
+                fontSize: isMobile ? 13 : 14,
+                fontWeight: FontWeight.w600,
+              ),
+            ),
+            const SizedBox(height: 16),
+            Text(
+              desc,
+              softWrap: true, // Ensures text wraps correctly
+              style: AppStyles.body.copyWith(
+                fontSize: isMobile ? 13 : 14,
+                color: Colors.white.withValues(alpha: 0.5),
+                height: 1.6,
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
   }
 }

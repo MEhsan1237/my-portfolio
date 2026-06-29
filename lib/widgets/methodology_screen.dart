@@ -25,17 +25,17 @@ class MethodologyScreen extends StatelessWidget {
             ? Column(
                 children: [
                   _buildSkillsList("Development", [
-                    _skillItem("Flutter", 0.95),
-                    _skillItem("React.js", 0.85),
-                    _skillItem("Node.js", 0.80),
-                    _skillItem("Dart", 0.90),
+                    _AnimatedSkillItem(title: "Flutter & Dart", level: 0.95, icon: FontAwesomeIcons.flutter, color: Colors.blue),
+                    _AnimatedSkillItem(title: "React.js & Next.js", level: 0.85, icon: FontAwesomeIcons.react, color: Colors.cyan),
+                    _AnimatedSkillItem(title: "Node.js & Express", level: 0.80, icon: FontAwesomeIcons.nodeJs, color: Colors.green),
+                    _AnimatedSkillItem(title: "Clean Architecture", level: 0.90, icon: FontAwesomeIcons.code, color: Colors.indigoAccent),
                   ]),
                   const SizedBox(height: 40),
                   _buildSkillsList("Tools & DB", [
-                    _skillItem("Firebase", 0.90),
-                    _skillItem("MongoDB", 0.85),
-                    _skillItem("Git", 0.95),
-                    _skillItem("Figma", 0.75),
+                    _AnimatedSkillItem(title: "Firebase & Supabase", level: 0.90, icon: FontAwesomeIcons.fire, color: Colors.orange),
+                    _AnimatedSkillItem(title: "MongoDB & SQL", level: 0.85, icon: FontAwesomeIcons.database, color: Colors.greenAccent),
+                    _AnimatedSkillItem(title: "Git & CI/CD", level: 0.95, icon: FontAwesomeIcons.github, color: Colors.white),
+                    _AnimatedSkillItem(title: "UI/UX (Figma)", level: 0.75, icon: FontAwesomeIcons.figma, color: Colors.pinkAccent),
                   ]),
                 ],
               )
@@ -44,19 +44,19 @@ class MethodologyScreen extends StatelessWidget {
                 children: [
                   Expanded(
                     child: _buildSkillsList("Core Development", [
-                      _skillItem("Flutter & Dart", 0.95),
-                      _skillItem("React.js & Next.js", 0.85),
-                      _skillItem("Node.js & Express", 0.80),
-                      _skillItem("Clean Architecture", 0.90),
+                      _AnimatedSkillItem(title: "Flutter & Dart", level: 0.95, icon: FontAwesomeIcons.flutter, color: Colors.blue),
+                      _AnimatedSkillItem(title: "React.js & Next.js", level: 0.85, icon: FontAwesomeIcons.react, color: Colors.cyan),
+                      _AnimatedSkillItem(title: "Node.js & Express", level: 0.80, icon: FontAwesomeIcons.nodeJs, color: Colors.green),
+                      _AnimatedSkillItem(title: "Clean Architecture", level: 0.90, icon: FontAwesomeIcons.code, color: Colors.indigoAccent),
                     ]),
                   ),
                   const SizedBox(width: 60),
                   Expanded(
                     child: _buildSkillsList("Tools & Infrastructure", [
-                      _skillItem("Firebase & Supabase", 0.90),
-                      _skillItem("MongoDB & SQL", 0.85),
-                      _skillItem("Git & CI/CD", 0.95),
-                      _skillItem("UI/UX (Figma)", 0.75),
+                      _AnimatedSkillItem(title: "Firebase & Supabase", level: 0.90, icon: FontAwesomeIcons.fire, color: Colors.orange),
+                      _AnimatedSkillItem(title: "MongoDB & SQL", level: 0.85, icon: FontAwesomeIcons.database, color: Colors.greenAccent),
+                      _AnimatedSkillItem(title: "Git & CI/CD", level: 0.95, icon: FontAwesomeIcons.github, color: Colors.white),
+                      _AnimatedSkillItem(title: "UI/UX (Figma)", level: 0.75, icon: FontAwesomeIcons.figma, color: Colors.pinkAccent),
                     ]),
                   ),
                 ],
@@ -117,67 +117,6 @@ class MethodologyScreen extends StatelessWidget {
     ).animate().fadeIn(delay: 200.ms).slideX(begin: -0.1);
   }
 
-  Widget _skillItem(String title, double level) {
-    return Padding(
-      padding: const EdgeInsets.only(bottom: 25),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Text(
-                title,
-                style: GoogleFonts.inter(color: Colors.white, fontWeight: FontWeight.w500),
-              ),
-              Text(
-                "${(level * 100).toInt()}%",
-                style: GoogleFonts.inter(color: AppColors.primary, fontWeight: FontWeight.bold),
-              ),
-            ],
-          ),
-          const SizedBox(height: 10),
-          Stack(
-            children: [
-              Container(
-                height: 8,
-                width: double.infinity,
-                decoration: BoxDecoration(
-                  color: Colors.white.withValues(alpha: 0.05),
-                  borderRadius: BorderRadius.circular(4),
-                ),
-              ),
-              Container(
-                height: 8,
-                width: double.infinity,
-                decoration: const BoxDecoration(
-                  color: Colors.transparent,
-                ),
-                child: FractionallySizedBox(
-                  alignment: Alignment.centerLeft,
-                  widthFactor: level,
-                  child: Container(
-                    decoration: BoxDecoration(
-                      gradient: AppColors.primaryGradient,
-                      borderRadius: BorderRadius.circular(4),
-                      boxShadow: [
-                        BoxShadow(
-                          color: AppColors.primary.withValues(alpha: 0.3),
-                          blurRadius: 4,
-                          offset: const Offset(0, 2),
-                        )
-                      ],
-                    ),
-                  ),
-                ),
-              ).animate().shimmer(duration: 2.seconds, color: Colors.white24),
-            ],
-          ),
-        ],
-      ),
-    );
-  }
-
   Widget _buildTechIcons() {
     return Wrap(
       spacing: 25,
@@ -202,12 +141,12 @@ class MethodologyScreen extends StatelessWidget {
           color: AppColors.surface,
           shape: BoxShape.circle,
           border: Border.all(
-            color: isHovered ? color : color.withValues(alpha: 0.2),
+            color: isHovered ? color.withValues(alpha: 0.5) : color.withValues(alpha: 0.1),
             width: 2,
           ),
           boxShadow: [
             BoxShadow(
-              color: color.withValues(alpha: isHovered ? 0.3 : 0.1),
+              color: color.withValues(alpha: isHovered ? 0.2 : 0.05),
               blurRadius: isHovered ? 20 : 10,
             )
           ],
@@ -223,6 +162,136 @@ class MethodologyScreen extends StatelessWidget {
         duration: (1.5 + (index * 0.2)).seconds, 
         curve: Curves.easeInOut,
       ),
+    );
+  }
+}
+
+class _AnimatedSkillItem extends StatelessWidget {
+  final String title;
+  final double level;
+  final IconData icon;
+  final Color color;
+
+  const _AnimatedSkillItem({
+    required this.title, 
+    required this.level,
+    required this.icon,
+    required this.color,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return HoverItem(
+      builder: (isHovered) => AnimatedContainer(
+        duration: const Duration(milliseconds: 400),
+        curve: Curves.easeOutQuint,
+        margin: const EdgeInsets.only(bottom: 20),
+        padding: const EdgeInsets.all(20),
+        decoration: BoxDecoration(
+          color: isHovered ? color.withValues(alpha: 0.05) : const Color(0xFF0F172A),
+          borderRadius: BorderRadius.circular(20),
+          border: Border.all(
+            color: isHovered ? color.withValues(alpha: 0.4) : Colors.white.withValues(alpha: 0.03),
+            width: 1.5,
+          ),
+          boxShadow: isHovered ? [
+            BoxShadow(
+              color: color.withValues(alpha: 0.1),
+              blurRadius: 20,
+              offset: const Offset(0, 10),
+            )
+          ] : [],
+        ),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Row(
+              children: [
+                AnimatedContainer(
+                  duration: const Duration(milliseconds: 300),
+                  padding: const EdgeInsets.all(10),
+                  decoration: BoxDecoration(
+                    color: isHovered ? color.withValues(alpha: 0.1) : Colors.white.withValues(alpha: 0.05),
+                    borderRadius: BorderRadius.circular(12),
+                  ),
+                  child: Icon(icon, color: isHovered ? color : Colors.white54, size: 20),
+                ),
+                const SizedBox(width: 16),
+                Expanded(
+                  child: Text(
+                    title,
+                    style: GoogleFonts.inter(
+                      color: isHovered ? Colors.white : Colors.white70, 
+                      fontWeight: isHovered ? FontWeight.w700 : FontWeight.w500,
+                      fontSize: 15,
+                    ),
+                  ),
+                ),
+                Animate(
+                  effects: [
+                    CustomEffect(
+                      duration: 1500.ms,
+                      curve: Curves.easeOutQuart,
+                      builder: (context, value, child) => Text(
+                        "${(value * level * 100).toInt()}%",
+                        style: GoogleFonts.inter(
+                          color: isHovered ? Colors.white : color, 
+                          fontWeight: FontWeight.bold,
+                          fontSize: 16,
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ],
+            ),
+            const SizedBox(height: 16),
+            Stack(
+              children: [
+                Container(
+                  height: 8,
+                  width: double.infinity,
+                  decoration: BoxDecoration(
+                    color: Colors.white.withValues(alpha: 0.05),
+                    borderRadius: BorderRadius.circular(10),
+                  ),
+                ),
+                Animate(
+                  effects: [
+                    CustomEffect(
+                      duration: 1500.ms,
+                      curve: Curves.easeOutQuart,
+                      builder: (context, value, child) => FractionallySizedBox(
+                        alignment: Alignment.centerLeft,
+                        widthFactor: value * level,
+                        child: AnimatedContainer(
+                          duration: const Duration(milliseconds: 300),
+                          height: 8,
+                          decoration: BoxDecoration(
+                            gradient: LinearGradient(
+                              colors: [color, color.withValues(alpha: 0.6)],
+                              begin: Alignment.centerLeft,
+                              end: Alignment.centerRight,
+                            ),
+                            borderRadius: BorderRadius.circular(10),
+                            boxShadow: [
+                              BoxShadow(
+                                color: color.withValues(alpha: isHovered ? 0.5 : 0.2),
+                                blurRadius: isHovered ? 12 : 6,
+                                offset: const Offset(0, 2),
+                              )
+                            ],
+                          ),
+                        ),
+                      ),
+                    ),
+                  ],
+                ).animate(onPlay: (c) => c.repeat()).shimmer(delay: 2.seconds, duration: 2.seconds, color: Colors.white24),
+              ],
+            ),
+          ],
+        ),
+      ).animate(target: isHovered ? 1 : 0).scale(end: const Offset(1.02, 1.02), curve: Curves.easeOutCubic),
     );
   }
 }

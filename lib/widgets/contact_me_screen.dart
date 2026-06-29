@@ -42,7 +42,7 @@ class ContactMeScreen extends StatelessWidget {
                   ],
                 ),
           const SizedBox(height: 100),
-          _buildFooter(context),
+          _buildEliteFooter(context, isMobile),
         ],
       ),
     );
@@ -101,7 +101,7 @@ class ContactMeScreen extends StatelessWidget {
         const SizedBox(height: 20),
         _contactItem(Icons.phone_outlined, "Phone", "+92 303 9095463"),
         const SizedBox(height: 20),
-        _contactItem(Icons.location_on_outlined, "Location", "Burewala, Punjab, Pakistan"),
+        _contactItem(Icons.location_on_outlined, "Location", "Lahore, Punjab, Pakistan"),
         const SizedBox(height: 40),
         Row(
           children: [
@@ -218,7 +218,21 @@ class ContactMeScreen extends StatelessWidget {
       decoration: InputDecoration(
         labelText: label,
         labelStyle: TextStyle(color: Colors.white.withValues(alpha: 0.5)),
-        prefixIcon: Icon(icon, color: AppColors.primary, size: 20),
+        alignLabelWithHint: true,
+        prefixIcon: Container(
+          padding: const EdgeInsets.only(top: 14), // Always at top
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.start,
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Icon(icon, color: AppColors.primary, size: 20),
+            ],
+          ),
+        ),
+        prefixIconConstraints: const BoxConstraints(
+          minWidth: 48,
+          minHeight: 48,
+        ),
         filled: true,
         fillColor: AppColors.background.withValues(alpha: 0.5),
         border: OutlineInputBorder(
@@ -239,17 +253,25 @@ class ContactMeScreen extends StatelessWidget {
 
   Widget _submitButton() {
     return HoverItem(
-      builder: (isHovered) => Container(
+      builder: (isHovered) => AnimatedContainer(
+        duration: const Duration(milliseconds: 300),
         width: double.infinity,
-        height: 56,
+        height: 48,
         decoration: BoxDecoration(
-          gradient: AppColors.primaryGradient,
+          gradient: isHovered 
+            ? AppColors.primaryGradient 
+            : LinearGradient(
+                colors: [
+                  AppColors.primary.withValues(alpha: 0.3),
+                  AppColors.secondary.withValues(alpha: 0.3),
+                ],
+              ),
           borderRadius: BorderRadius.circular(16),
           boxShadow: [
             BoxShadow(
-              color: AppColors.primary.withValues(alpha: 0.3),
-              blurRadius: 15,
-              offset: const Offset(0, 8),
+              color: AppColors.primary.withValues(alpha: isHovered ? 0.4 : 0.1),
+              blurRadius: isHovered ? 20 : 10,
+              offset: isHovered ? const Offset(0, 8) : const Offset(0, 4),
             )
           ],
         ),
@@ -257,7 +279,7 @@ class ContactMeScreen extends StatelessWidget {
           child: Text(
             "Send Message",
             style: GoogleFonts.inter(
-              color: Colors.white,
+              color: isHovered ? Colors.white : Colors.white.withValues(alpha: 0.7),
               fontWeight: FontWeight.bold,
               fontSize: 16,
             ),
@@ -267,49 +289,181 @@ class ContactMeScreen extends StatelessWidget {
     );
   }
 
-  Widget _buildFooter(BuildContext context) {
+  Widget _buildEliteFooter(BuildContext context, bool isMobile) {
     return Container(
-      padding: const EdgeInsets.symmetric(vertical: 40),
+      width: double.infinity,
+      padding: const EdgeInsets.symmetric(vertical: 80),
       decoration: BoxDecoration(
         border: Border(top: BorderSide(color: Colors.white.withValues(alpha: 0.05))),
       ),
       child: Column(
         children: [
-          Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Text(
-                "© 2026 Ehsan Portfolio. Made with ",
-                style: AppStyles.body.copyWith(fontSize: 14),
+          isMobile 
+            ? Column(
+                children: [
+                  _footerBrandSection(),
+                  const SizedBox(height: 50),
+                  _footerLinksGrid(isMobile),
+                ],
+              )
+            : Row(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Expanded(flex: 2, child: _footerBrandSection()),
+                  const SizedBox(width: 80),
+                  Expanded(flex: 3, child: _footerLinksGrid(isMobile)),
+                ],
               ),
-              const Icon(Icons.favorite, color: Colors.red, size: 16),
-              Text(
-                " using Flutter",
-                style: AppStyles.body.copyWith(fontSize: 14),
-              ),
-            ],
-          ),
-          const SizedBox(height: 20),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              _footerLink("Home", 0),
-              _footerLink("Projects", 2),
-              _footerLink("Skills", 4),
-              _footerLink("Contact", 6),
-            ],
-          ),
+          const SizedBox(height: 80),
+          _footerBottomBar(),
         ],
       ),
     );
   }
 
+  Widget _footerBrandSection() {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Row(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Container(
+              padding: const EdgeInsets.all(10),
+              decoration: BoxDecoration(
+                gradient: AppColors.primaryGradient,
+                borderRadius: BorderRadius.circular(12),
+              ),
+              child: const Text("E", style: TextStyle(fontWeight: FontWeight.bold, color: Colors.white, fontSize: 18)),
+            ),
+            const SizedBox(width: 15),
+            Text(
+              "EHSAN PORTFOLIO",
+              style: GoogleFonts.poppins(
+                color: Colors.white, 
+                fontWeight: FontWeight.bold, 
+                fontSize: 20,
+                letterSpacing: 1.5,
+              ),
+            ),
+          ],
+        ),
+        const SizedBox(height: 24),
+        Text(
+          "A passionate developer focused on building high-end, production-ready applications with Flutter and the MERN stack. Turning complex problems into elegant digital solutions.",
+          style: AppStyles.body.copyWith(fontSize: 14, height: 1.8),
+        ),
+      ],
+    );
+  }
+
+  Widget _footerLinksGrid(bool isMobile) {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        _footerLinkColumn("PAGES", [
+          _footerLink("Home", 0),
+          _footerLink("About", 1),
+          _footerLink("Projects", 2),
+          _footerLink("Skills", 4),
+          _footerLink("Contact", 6),
+        ]),
+        _footerLinkColumn("TECH STACK", [
+          _footerLink("Flutter & Dart", 4),
+          _footerLink("MERN Stack", 3),
+          _footerLink("REST APIs", 3),
+          _footerLink("Firebase & SQL", 4),
+          _footerLink("UI/UX Design", 3),
+        ]),
+        if (!isMobile) _footerLinkColumn("LATEST PROJECTS", [
+          _footerText("News Insight Pro"),
+          _footerText("LifeLine Blood"),
+          _footerText("UrbanStore"),
+          _footerText("SwiftTask"),
+        ]),
+      ],
+    );
+  }
+
+  Widget _footerLinkColumn(String title, List<Widget> children) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(
+          title,
+          style: GoogleFonts.inter(
+            color: AppColors.primary,
+            fontSize: 12,
+            fontWeight: FontWeight.bold,
+            letterSpacing: 2,
+          ),
+        ),
+        const SizedBox(height: 24),
+        ...children,
+      ],
+    );
+  }
+
   Widget _footerLink(String label, int index) {
-    return TextButton(
-      onPressed: () => onFooterNav?.call(index),
+    return HoverItem(
+      builder: (isHovered) => GestureDetector(
+        onTap: () => onFooterNav?.call(index),
+        child: Padding(
+          padding: const EdgeInsets.only(bottom: 12),
+          child: Text(
+            label,
+            style: GoogleFonts.inter(
+              color: isHovered ? AppColors.accent : Colors.white.withValues(alpha: 0.5),
+              fontSize: 14,
+              fontWeight: isHovered ? FontWeight.bold : FontWeight.normal,
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget _footerText(String label) {
+    return Padding(
+      padding: const EdgeInsets.only(bottom: 12),
       child: Text(
         label,
-        style: GoogleFonts.inter(color: Colors.white.withValues(alpha: 0.5), fontSize: 13),
+        style: GoogleFonts.inter(
+          color: Colors.white.withValues(alpha: 0.5),
+          fontSize: 14,
+        ),
+      ),
+    );
+  }
+
+  Widget _footerBottomBar() {
+    return Container(
+      padding: const EdgeInsets.only(top: 40),
+      decoration: BoxDecoration(
+        border: Border(top: BorderSide(color: Colors.white.withValues(alpha: 0.05))),
+      ),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          Text(
+            "© 2026 Ehsan Portfolio. All rights reserved.",
+            style: GoogleFonts.inter(color: Colors.white.withValues(alpha: 0.3), fontSize: 13),
+          ),
+          Row(
+            children: [
+              Text(
+                "Designed with ",
+                style: GoogleFonts.inter(color: Colors.white.withValues(alpha: 0.3), fontSize: 13),
+              ),
+              const Icon(Icons.favorite, color: Colors.red, size: 14),
+              Text(
+                " by Ehsan",
+                style: GoogleFonts.inter(color: Colors.white.withValues(alpha: 0.3), fontSize: 13),
+              ),
+            ],
+          ),
+        ],
       ),
     );
   }
