@@ -72,16 +72,18 @@ class _MyWebAppState extends State<MyWebApp> {
     }
 
     // Update active index based on scroll position
-    double minDistance = double.infinity;
     int closestIndex = 0;
+    double viewportHeight = MediaQuery.of(context).size.height;
 
     for (int i = 0; i < _keys.length; i++) {
       final context = _keys[i].currentContext;
       if (context != null) {
         final box = context.findRenderObject() as RenderBox;
         final position = box.localToGlobal(Offset.zero).dy;
-        if (position.abs() < minDistance) {
-          minDistance = position.abs();
+        
+        // If the top of the section is in the top 30% of the screen
+        // or if the section is currently covering the top of the screen
+        if (position <= viewportHeight * 0.3) {
           closestIndex = i;
         }
       }

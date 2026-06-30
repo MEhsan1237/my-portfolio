@@ -65,19 +65,7 @@ class HomeScreen extends StatelessWidget {
           ),
         ).animate().fadeIn(duration: 600.ms).slideX(begin: -0.2),
         const SizedBox(height: 24),
-        GradientText(
-          "Muhammad Ehsan",
-          style: GoogleFonts.poppins(
-            fontSize: centered ? 34 : 54, // Slightly smaller to ensure it stays on one line
-            fontWeight: FontWeight.bold,
-            height: 1.1,
-          ),
-          colors: const [
-            AppColors.primary,
-            AppColors.secondary,
-            AppColors.accent,
-          ],
-        ).animate().fadeIn(delay: 200.ms, duration: 600.ms).slideX(begin: -0.2),
+        _buildAnimatedName(centered).animate().fadeIn(delay: 200.ms, duration: 600.ms).slideX(begin: -0.2),
         const SizedBox(height: 16),
         Row(
           mainAxisAlignment: centered ? MainAxisAlignment.center : MainAxisAlignment.start,
@@ -117,6 +105,40 @@ class HomeScreen extends StatelessWidget {
         const SizedBox(height: 40),
         _buildActionButtons(centered).animate().fadeIn(delay: 800.ms, duration: 600.ms).slideY(begin: 0.2),
       ],
+    );
+  }
+
+  Widget _buildAnimatedName(bool centered) {
+    const String name = "Muhammad Ehsan";
+    return Wrap(
+      alignment: centered ? WrapAlignment.center : WrapAlignment.start,
+      children: name.split('').map((char) {
+        if (char == ' ') {
+          return SizedBox(width: centered ? 10 : 15);
+        }
+        return HoverItem(
+          builder: (isHovered) => AnimatedContainer(
+            duration: const Duration(milliseconds: 200),
+            curve: Curves.easeOutCubic,
+            transform: isHovered ? Matrix4.translationValues(0, -10, 0) : Matrix4.identity(),
+            child: GradientText(
+              char,
+              style: GoogleFonts.poppins(
+                fontSize: centered ? 34 : 54,
+                fontWeight: FontWeight.bold,
+                height: 1.1,
+              ),
+              colors: isHovered 
+                ? [const Color(0xFF1E1B4B), const Color(0xFF312E81)] // Darker professional colors
+                : const [
+                    AppColors.primary,
+                    AppColors.secondary,
+                    AppColors.accent,
+                  ],
+            ),
+          ),
+        );
+      }).toList(),
     );
   }
 
