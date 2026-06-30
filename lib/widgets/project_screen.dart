@@ -15,26 +15,28 @@ class ProjectScreen extends StatelessWidget {
     final bool isMobile = size.width < 900;
 
     return Container(
-      padding: EdgeInsets.symmetric(
-        vertical: 100,
-        horizontal: isMobile ? 20 : size.width * 0.05,
+      padding: EdgeInsets.only(
+        top: size.height * 0.06,
+        bottom: 50,
+        left: isMobile ? 20 : size.width * 0.05,
+        right: isMobile ? 20 : size.width * 0.05,
       ),
       child: Column(
         children: [
-          _buildHeader(),
-          const SizedBox(height: 80),
+          _buildHeader(size),
+          SizedBox(height: size.height * 0.08),
           // Row 1
           const RowProjectScreen()
             .animate()
             .fadeIn(duration: 600.ms)
             .slideY(begin: 0.2, end: 0),
-          const SizedBox(height: 40),
+          SizedBox(height: size.height * 0.04),
           // Row 2
           const Row2ProjectScreen()
             .animate()
             .fadeIn(delay: 200.ms, duration: 600.ms)
             .slideY(begin: 0.2, end: 0),
-          const SizedBox(height: 40),
+          SizedBox(height: size.height * 0.04),
           // Row 3
           const Row3ProjectScreen()
             .animate()
@@ -45,7 +47,7 @@ class ProjectScreen extends StatelessWidget {
     );
   }
 
-  Widget _buildHeader() {
+  Widget _buildHeader(Size size) {
     return Column(
       children: [
         Container(
@@ -64,12 +66,12 @@ class ProjectScreen extends StatelessWidget {
             ),
           ),
         ),
-        const SizedBox(height: 16),
+        SizedBox(height: size.height * 0.016),
         Text(
           "Featured Projects",
           style: AppStyles.heading.copyWith(fontSize: 32),
         ),
-        const SizedBox(height: 20),
+        SizedBox(height: size.height * 0.02),
         Container(
           height: 4,
           width: 40,

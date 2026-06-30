@@ -13,14 +13,17 @@ class MethodologyScreen extends StatelessWidget {
     final bool isMobile = size.width < 900;
 
     return Container(
-      padding: EdgeInsets.symmetric(
-        vertical: 100,
-        horizontal: isMobile ? 20 : size.width * 0.1,
+      padding: EdgeInsets.only(
+        top: size.height * 0.06,
+        bottom: 50,
+        left: isMobile ? 20 : size.width * 0.1,
+        right: isMobile ? 20 : size.width * 0.1,
       ),
       child: Column(
+
         children: [
-          _buildHeader(),
-          const SizedBox(height: 60),
+          _buildHeader(size),
+          SizedBox(height: size.height * 0.06),
           isMobile 
             ? Column(
                 children: [
@@ -29,14 +32,14 @@ class MethodologyScreen extends StatelessWidget {
                     _AnimatedSkillItem(title: "React.js & Next.js", level: 0.85, icon: FontAwesomeIcons.react, color: Colors.cyan),
                     _AnimatedSkillItem(title: "Node.js & Express", level: 0.80, icon: FontAwesomeIcons.nodeJs, color: Colors.green),
                     _AnimatedSkillItem(title: "Clean Architecture", level: 0.90, icon: FontAwesomeIcons.code, color: Colors.indigoAccent),
-                  ]),
-                  const SizedBox(height: 40),
+                  ], size),
+                  SizedBox(height: size.height * 0.04),
                   _buildSkillsList("Tools & DB", [
                     _AnimatedSkillItem(title: "Firebase & Supabase", level: 0.90, icon: FontAwesomeIcons.fire, color: Colors.orange),
                     _AnimatedSkillItem(title: "MongoDB & SQL", level: 0.85, icon: FontAwesomeIcons.database, color: Colors.greenAccent),
                     _AnimatedSkillItem(title: "Git & CI/CD", level: 0.95, icon: FontAwesomeIcons.github, color: Colors.white),
                     _AnimatedSkillItem(title: "UI/UX (Figma)", level: 0.75, icon: FontAwesomeIcons.figma, color: Colors.pinkAccent),
-                  ]),
+                  ], size),
                 ],
               )
             : Row(
@@ -48,27 +51,27 @@ class MethodologyScreen extends StatelessWidget {
                       _AnimatedSkillItem(title: "React.js & Next.js", level: 0.85, icon: FontAwesomeIcons.react, color: Colors.cyan),
                       _AnimatedSkillItem(title: "Node.js & Express", level: 0.80, icon: FontAwesomeIcons.nodeJs, color: Colors.green),
                       _AnimatedSkillItem(title: "Clean Architecture", level: 0.90, icon: FontAwesomeIcons.code, color: Colors.indigoAccent),
-                    ]),
+                    ], size),
                   ),
-                  const SizedBox(width: 60),
+                  SizedBox(width: size.width * 0.06),
                   Expanded(
                     child: _buildSkillsList("Tools & Infrastructure", [
                       _AnimatedSkillItem(title: "Firebase & Supabase", level: 0.90, icon: FontAwesomeIcons.fire, color: Colors.orange),
                       _AnimatedSkillItem(title: "MongoDB & SQL", level: 0.85, icon: FontAwesomeIcons.database, color: Colors.greenAccent),
                       _AnimatedSkillItem(title: "Git & CI/CD", level: 0.95, icon: FontAwesomeIcons.github, color: Colors.white),
                       _AnimatedSkillItem(title: "UI/UX (Figma)", level: 0.75, icon: FontAwesomeIcons.figma, color: Colors.pinkAccent),
-                    ]),
+                    ], size),
                   ),
                 ],
               ),
-          const SizedBox(height: 80),
+          SizedBox(height: size.height * 0.08),
           _buildTechIcons(),
         ],
       ),
     );
   }
 
-  Widget _buildHeader() {
+  Widget _buildHeader(Size size) {
     return Column(
       children: [
         Text(
@@ -80,13 +83,13 @@ class MethodologyScreen extends StatelessWidget {
             fontWeight: FontWeight.bold,
           ),
         ),
-        const SizedBox(height: 10),
+        SizedBox(height: size.height * 0.01),
         Text(
           "Technologies I Master",
           textAlign: TextAlign.center,
           style: AppStyles.heading.copyWith(fontSize: 32),
         ),
-        const SizedBox(height: 20),
+        SizedBox(height: size.height * 0.02),
         Container(
           height: 4,
           width: 60,
@@ -99,7 +102,7 @@ class MethodologyScreen extends StatelessWidget {
     ).animate().fadeIn().slideY(begin: 0.2);
   }
 
-  Widget _buildSkillsList(String category, List<Widget> skills) {
+  Widget _buildSkillsList(String category, List<Widget> skills, Size size) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -113,7 +116,7 @@ class MethodologyScreen extends StatelessWidget {
             ),
           ),
         ),
-        const SizedBox(height: 30),
+        SizedBox(height: size.height * 0.03),
         ...skills,
       ],
     ).animate().fadeIn(delay: 200.ms).slideX(begin: -0.1);
@@ -183,6 +186,7 @@ class _AnimatedSkillItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final size = MediaQuery.of(context).size;
     return HoverItem(
       builder: (isHovered) => AnimatedContainer(
         duration: const Duration(milliseconds: 400),
@@ -218,7 +222,7 @@ class _AnimatedSkillItem extends StatelessWidget {
                   ),
                   child: Icon(icon, color: isHovered ? color : Colors.white54, size: 20),
                 ),
-                const SizedBox(width: 16),
+                SizedBox(width: size.width * 0.016),
                 Expanded(
                   child: Text(
                     title,
@@ -247,7 +251,7 @@ class _AnimatedSkillItem extends StatelessWidget {
                 ),
               ],
             ),
-            const SizedBox(height: 16),
+            SizedBox(height: size.height * 0.016),
             Stack(
               children: [
                 Container(

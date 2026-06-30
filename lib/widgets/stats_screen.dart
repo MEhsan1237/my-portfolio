@@ -15,26 +15,26 @@ class StatsSection extends StatelessWidget {
     return isMobile
         ? Column(
             children: [
-              _buildPremiumStatCard("20+", "Projects Completed", FontAwesomeIcons.diagramProject, AppColors.primary, 0, true),
-              const SizedBox(height: 24),
-              _buildPremiumStatCard("3+", "Years of Experience", FontAwesomeIcons.laptopCode, AppColors.accent, 1, true),
-              const SizedBox(height: 24),
-              _buildPremiumStatCard("10+", "Technologies Used", FontAwesomeIcons.stackOverflow, AppColors.secondary, 2, true),
+              _buildPremiumStatCard("20+", "Projects Completed", FontAwesomeIcons.diagramProject, AppColors.primary, 0, true, size),
+              SizedBox(height: size.height * 0.015),
+              _buildPremiumStatCard("3+", "Years of Experience", FontAwesomeIcons.laptopCode, AppColors.accent, 1, true, size),
+              SizedBox(height: size.height * 0.015),
+              _buildPremiumStatCard("10+", "Technologies Used", FontAwesomeIcons.stackOverflow, AppColors.secondary, 2, true, size),
             ],
           )
         : Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              Expanded(child: _buildPremiumStatCard("20+", "Projects Completed", FontAwesomeIcons.diagramProject, AppColors.primary, 0, false)),
-              const SizedBox(width: 20),
-              Expanded(child: _buildPremiumStatCard("3+", "Years of Experience", FontAwesomeIcons.laptopCode, AppColors.accent, 1, false)),
-              const SizedBox(width: 20),
-              Expanded(child: _buildPremiumStatCard("10+", "Technologies Used", FontAwesomeIcons.stackOverflow, AppColors.secondary, 2, false)),
+              Expanded(child: _buildPremiumStatCard("20+", "Projects Completed", FontAwesomeIcons.diagramProject, AppColors.primary, 0, false, size)),
+              SizedBox(width: size.width * 0.015),
+              Expanded(child: _buildPremiumStatCard("3+", "Years of Experience", FontAwesomeIcons.laptopCode, AppColors.accent, 1, false, size)),
+              SizedBox(width: size.width * 0.015),
+              Expanded(child: _buildPremiumStatCard("10+", "Technologies Used", FontAwesomeIcons.stackOverflow, AppColors.secondary, 2, false, size)),
             ],
           );
   }
 
-  Widget _buildPremiumStatCard(String value, String label, IconData icon, Color color, int index, bool isMobile) {
+  Widget _buildPremiumStatCard(String value, String label, IconData icon, Color color, int index, bool isMobile, Size size) {
     return HoverItem(
       builder: (isHovered) => AnimatedContainer(
         duration: const Duration(milliseconds: 400),
@@ -65,7 +65,7 @@ class StatsSection extends StatelessWidget {
               ),
               child: Icon(icon, color: color, size: 24),
             ).animate(target: isHovered ? 1 : 0).scale(end: const Offset(1.1, 1.1)),
-            const SizedBox(height: 16),
+            SizedBox(height: size.height * 0.02),
             Text(
               value,
               style: GoogleFonts.poppins(
@@ -76,7 +76,7 @@ class StatsSection extends StatelessWidget {
                 height: 1,
               ),
             ).animate().fadeIn(delay: (200 + index * 100).ms).slideY(begin: 0.2, end: 0),
-            const SizedBox(height: 8),
+            SizedBox(height: size.height * 0.01),
             Text(
               label,
               textAlign: TextAlign.center,

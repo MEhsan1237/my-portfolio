@@ -97,17 +97,19 @@ class _ReviewsScreenState extends State<ReviewsScreen> {
     final bool isMobile = size.width < 900;
 
     return Container(
-      padding: EdgeInsets.symmetric(
-        vertical: isMobile ? 60 : 100,
-        horizontal: isMobile ? 0 : size.width * 0.05,
+      padding: EdgeInsets.only(
+        top: size.height * 0.06,
+        bottom: 50,
+        left: isMobile ? 0 : size.width * 0.05,
+        right: isMobile ? 0 : size.width * 0.05,
       ),
       child: Column(
         children: [
           Padding(
             padding: EdgeInsets.symmetric(horizontal: isMobile ? 20 : 0),
-            child: _buildHeader(),
+            child: _buildHeader(size),
           ),
-          const SizedBox(height: 30),
+          SizedBox(height: size.height * 0.03),
           SizedBox(
             height: isMobile ? 420 : 400,
             child: PageView.builder(
@@ -119,18 +121,18 @@ class _ReviewsScreenState extends State<ReviewsScreen> {
               },
               itemCount: reviews.length,
               itemBuilder: (context, index) {
-                return _buildReviewCard(reviews[index], index, isMobile);
+                return _buildReviewCard(reviews[index], index, isMobile, size);
               },
             ),
           ),
-          const SizedBox(height: 30),
+          SizedBox(height: size.height * 0.03),
           _buildPageIndicator(),
         ],
       ),
     );
   }
 
-  Widget _buildHeader() {
+  Widget _buildHeader(Size size) {
     return Column(
       children: [
         Container(
@@ -149,13 +151,13 @@ class _ReviewsScreenState extends State<ReviewsScreen> {
             ),
           ),
         ),
-        const SizedBox(height: 16),
+        SizedBox(height: size.height * 0.016),
         Text(
           "What Clients Say",
           textAlign: TextAlign.center,
           style: AppStyles.heading.copyWith(fontSize: 32),
         ),
-        const SizedBox(height: 20),
+        SizedBox(height: size.height * 0.02),
         Container(
           height: 4,
           width: 40,
@@ -168,7 +170,7 @@ class _ReviewsScreenState extends State<ReviewsScreen> {
     ).animate().fadeIn().slideY(begin: 0.2);
   }
 
-  Widget _buildReviewCard(ReviewData data, int index, bool isMobile) {
+  Widget _buildReviewCard(ReviewData data, int index, bool isMobile, Size size) {
     double scale = _currentPage == index ? 1.0 : 0.85;
     
     return AnimatedScale(
@@ -236,7 +238,7 @@ class _ReviewsScreenState extends State<ReviewsScreen> {
                           ],
                         ),
                       ),
-                      const SizedBox(height: 20),
+                      SizedBox(height: size.height * 0.02),
                       Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: List.generate(5, (i) {
@@ -247,7 +249,7 @@ class _ReviewsScreenState extends State<ReviewsScreen> {
                           );
                         }),
                       ),
-                      const SizedBox(height: 20),
+                      SizedBox(height: size.height * 0.02),
                       Text(
                         data.review,
                         textAlign: TextAlign.center,
@@ -257,7 +259,7 @@ class _ReviewsScreenState extends State<ReviewsScreen> {
                           height: 1.6,
                         ),
                       ),
-                      const SizedBox(height: 24),
+                      SizedBox(height: size.height * 0.024),
                       Text(
                         data.name,
                         textAlign: TextAlign.center,

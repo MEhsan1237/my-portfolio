@@ -67,14 +67,16 @@ class ServicesScreen extends StatelessWidget {
     ];
 
     return Container(
-      padding: EdgeInsets.symmetric(
-        vertical: 100,
-        horizontal: isMobile ? 20 : size.width * 0.08,
+      padding: EdgeInsets.only(
+        top: size.height * 0.06,
+        bottom: 50,
+        left: isMobile ? 20 : size.width * 0.08,
+        right: isMobile ? 20 : size.width * 0.08,
       ),
       child: Column(
         children: [
-          _buildHeader(),
-          const SizedBox(height: 80),
+          _buildHeader(size),
+          SizedBox(height: size.height * 0.08),
           LayoutBuilder(
             builder: (context, constraints) {
               // Row logic: 3 per row on Desktop, 2 on Tablet, 1 on Mobile
@@ -107,7 +109,7 @@ class ServicesScreen extends StatelessWidget {
     );
   }
 
-  Widget _buildHeader() {
+  Widget _buildHeader(Size size) {
     return Column(
       children: [
         Container(
@@ -126,13 +128,13 @@ class ServicesScreen extends StatelessWidget {
             ),
           ),
         ),
-        const SizedBox(height: 16),
+        SizedBox(height: size.height * 0.016),
         Text(
           "Solutions I Provide",
           textAlign: TextAlign.center,
           style: AppStyles.heading.copyWith(fontSize: 32),
         ),
-        const SizedBox(height: 20),
+        SizedBox(height: size.height * 0.02),
         Container(
           height: 4,
           width: 40,
@@ -154,6 +156,7 @@ class _ServiceCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final size = MediaQuery.of(context).size;
     return HoverItem(
       builder: (isHovered) => AnimatedContainer(
         duration: const Duration(milliseconds: 300),
@@ -199,7 +202,7 @@ class _ServiceCard extends StatelessWidget {
               ),
             ),
             
-            const SizedBox(height: 32),
+            SizedBox(height: size.height * 0.032),
             
             // Title
             Text(
@@ -212,7 +215,7 @@ class _ServiceCard extends StatelessWidget {
               ),
             ),
             
-            const SizedBox(height: 16),
+            SizedBox(height: size.height * 0.016),
             
             // Description
             Text(
@@ -224,7 +227,7 @@ class _ServiceCard extends StatelessWidget {
               ),
             ),
             
-            const SizedBox(height: 32),
+            SizedBox(height: size.height * 0.032),
             
             // Animated indicator or arrow
             AnimatedContainer(

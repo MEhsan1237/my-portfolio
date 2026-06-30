@@ -13,21 +13,23 @@ class QualificationRequiredWidget extends StatelessWidget {
     final bool isMobile = size.width < 900;
 
     return Container(
-      padding: EdgeInsets.symmetric(
-        vertical: 100,
-        horizontal: isMobile ? 20 : size.width * 0.1,
+      padding: EdgeInsets.only(
+        top: size.height * 0.06,
+        bottom: 50,
+        left: isMobile ? 20 : size.width * 0.1,
+        right: isMobile ? 20 : size.width * 0.1,
       ),
       child: Column(
         children: [
-          _buildHeader(),
-          const SizedBox(height: 80),
-          _buildTimeline(isMobile),
+          _buildHeader(size),
+          SizedBox(height: size.height * 0.08),
+          _buildTimeline(isMobile, size),
         ],
       ),
     );
   }
 
-  Widget _buildHeader() {
+  Widget _buildHeader(Size size) {
     return Column(
       children: [
         Container(
@@ -46,13 +48,13 @@ class QualificationRequiredWidget extends StatelessWidget {
             ),
           ),
         ),
-        const SizedBox(height: 16),
+        SizedBox(height: size.height * 0.016),
         Text(
           "Education & Background",
           textAlign: TextAlign.center,
           style: AppStyles.heading.copyWith(fontSize: 32),
         ),
-        const SizedBox(height: 20),
+        SizedBox(height: size.height * 0.02),
         Container(
           height: 4,
           width: 40,
@@ -65,7 +67,7 @@ class QualificationRequiredWidget extends StatelessWidget {
     ).animate().fadeIn().slideY(begin: 0.2);
   }
 
-  Widget _buildTimeline(bool isMobile) {
+  Widget _buildTimeline(bool isMobile, Size size) {
     return Column(
       children: [
         _timelineItem(
@@ -77,6 +79,7 @@ class QualificationRequiredWidget extends StatelessWidget {
           AppColors.primary,
           false,
           isMobile,
+          size,
         ),
         _timelineItem(
           "2020 - 2022",
@@ -87,6 +90,7 @@ class QualificationRequiredWidget extends StatelessWidget {
           AppColors.accent,
           false,
           isMobile,
+          size,
         ),
         _timelineItem(
           "2018 - 2020",
@@ -97,6 +101,7 @@ class QualificationRequiredWidget extends StatelessWidget {
           AppColors.secondary,
           true,
           isMobile,
+          size,
         ),
       ],
     );
@@ -111,6 +116,7 @@ class QualificationRequiredWidget extends StatelessWidget {
     Color color,
     bool isLast,
     bool isMobile,
+    Size size,
   ) {
     return Row(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -162,7 +168,7 @@ class QualificationRequiredWidget extends StatelessWidget {
         const SizedBox(width: 20),
         Expanded(
           child: Padding(
-            padding: const EdgeInsets.only(bottom: 30),
+            padding: EdgeInsets.only(bottom: size.height * 0.03),
             child: _EducationCard(
               period: period,
               title: title,
@@ -197,6 +203,7 @@ class _EducationCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final size = MediaQuery.of(context).size;
     return HoverItem(
       builder: (isHovered) => AnimatedContainer(
         duration: const Duration(milliseconds: 500),
@@ -228,7 +235,7 @@ class _EducationCard extends StatelessWidget {
           children: [
             if (isMobile)
               Padding(
-                padding: const EdgeInsets.only(bottom: 8),
+                padding: EdgeInsets.only(bottom: size.height * 0.008),
                 child: Text(
                   period,
                   style: GoogleFonts.inter(
@@ -246,7 +253,7 @@ class _EducationCard extends StatelessWidget {
                 fontWeight: FontWeight.bold,
               ),
             ),
-            const SizedBox(height: 8),
+            SizedBox(height: size.height * 0.008),
             Text(
               subtitle,
               style: GoogleFonts.inter(
@@ -255,7 +262,7 @@ class _EducationCard extends StatelessWidget {
                 fontWeight: FontWeight.w600,
               ),
             ),
-            const SizedBox(height: 16),
+            SizedBox(height: size.height * 0.016),
             Text(
               desc,
               softWrap: true, // Ensures text wraps correctly

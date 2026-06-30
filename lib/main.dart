@@ -11,6 +11,8 @@ import 'package:practice_web/widgets/methodology_screen.dart';
 import 'package:practice_web/widgets/languages_screen.dart';
 import 'package:practice_web/widgets/stats_screen.dart';
 import 'package:practice_web/widgets/about_me_screen.dart';
+import 'package:practice_web/widgets/animated_background.dart';
+import 'package:practice_web/widgets/experience_screen.dart';
 import 'package:practice_web/widgets/reviews_screen.dart';
 
 void main() {
@@ -46,7 +48,7 @@ class MyWebApp extends StatefulWidget {
 
 class _MyWebAppState extends State<MyWebApp> {
   final ScrollController _scrollController = ScrollController();
-  final List<GlobalKey> _keys = List.generate(9, (index) => GlobalKey());
+  final List<GlobalKey> _keys = List.generate(10, (index) => GlobalKey());
   int _activeIndex = 0;
   bool _showBackToTop = false;
 
@@ -139,12 +141,13 @@ class _MyWebAppState extends State<MyWebApp> {
                     : [
                         _navItem("Home", 0),
                         _navItem("About", 1),
-                        _navItem("Projects", 2),
-                        _navItem("Services", 3),
-                        _navItem("Skills", 4),
-                        _navItem("Education", 6),
-                        _navItem("Reviews", 7),
-                        _navItem("Contact", 8),
+                        _navItem("Journey", 2),
+                        _navItem("Projects", 3),
+                        _navItem("Services", 4),
+                        _navItem("Skills", 5),
+                        _navItem("Education", 7),
+                        _navItem("Reviews", 8),
+                        _navItem("Contact", 9),
                         const SizedBox(width: 20),
                       ],
                 ),
@@ -156,9 +159,10 @@ class _MyWebAppState extends State<MyWebApp> {
       drawer: isMobile ? _buildDrawer() : null,
       floatingActionButton: _showBackToTop 
         ? FloatingActionButton(
+        mini: true,
             onPressed: () => _onMenuClick(0),
-            backgroundColor: AppColors.primary,
-            child: const Icon(Icons.arrow_upward, color: Colors.white),
+            backgroundColor: AppColors.surface,
+            child: const Icon(Icons.keyboard_arrow_up, color: Colors.white),
           )
         : null,
       body: Stack(
@@ -169,6 +173,8 @@ class _MyWebAppState extends State<MyWebApp> {
               gradient: AppColors.backgroundGradient,
             ),
           ),
+
+          const AnimatedBackground(),
           
           // Floating background elements
           Positioned(
@@ -190,14 +196,15 @@ class _MyWebAppState extends State<MyWebApp> {
               children: [
                 HomeScreen(key: _keys[0]),
                 AboutMeScreen(key: _keys[1]),
-                ProjectScreen(key: _keys[2]),
-                ServicesScreen(key: _keys[3]),
-                MethodologyScreen(key: _keys[4]),
-                LanguagesScreen(key: _keys[5]),
-                QualificationRequiredWidget(key: _keys[6]),
-                ReviewsScreen(key: _keys[7]),
+                ExperienceScreen(key: _keys[2]),
+                ProjectScreen(key: _keys[3]),
+                ServicesScreen(key: _keys[4]),
+                MethodologyScreen(key: _keys[5]),
+                LanguagesScreen(key: _keys[6]),
+                QualificationRequiredWidget(key: _keys[7]),
+                ReviewsScreen(key: _keys[8]),
                 ContactMeScreen(
-                  key: _keys[8],
+                  key: _keys[9],
                   onFooterNav: (index) => _onMenuClick(index),
                 ),
               ],
@@ -275,12 +282,13 @@ class _MyWebAppState extends State<MyWebApp> {
           ),
           _drawerItem("Home", 0, Icons.home_outlined),
           _drawerItem("About", 1, Icons.person_outline),
-          _drawerItem("Projects", 2, Icons.work_outline),
-          _drawerItem("Services", 3, Icons.bolt_outlined),
-          _drawerItem("Skills", 4, Icons.code_outlined),
-          _drawerItem("Education", 6, Icons.history_outlined),
-          _drawerItem("Reviews", 7, Icons.star_outline),
-          _drawerItem("Contact", 8, Icons.mail_outline),
+          _drawerItem("Journey", 2, Icons.trending_up),
+          _drawerItem("Projects", 3, Icons.work_outline),
+          _drawerItem("Services", 4, Icons.bolt_outlined),
+          _drawerItem("Skills", 5, Icons.code_outlined),
+          _drawerItem("Education", 7, Icons.history_outlined),
+          _drawerItem("Reviews", 8, Icons.star_outline),
+          _drawerItem("Contact", 9, Icons.mail_outline),
         ],
       ),
     );
@@ -288,7 +296,7 @@ class _MyWebAppState extends State<MyWebApp> {
 
   Widget _drawerItem(String title, int index, IconData icon) {
     bool isActive = _activeIndex == index;
-    if (index == 4 && (_activeIndex == 4 || _activeIndex == 5)) {
+    if (index == 5 && (_activeIndex == 5 || _activeIndex == 6)) {
       isActive = true;
     }
     
@@ -310,7 +318,7 @@ class _MyWebAppState extends State<MyWebApp> {
 
   Widget _navItem(String title, int index) {
     bool isActive = _activeIndex == index;
-    if (index == 4 && (_activeIndex == 4 || _activeIndex == 5)) {
+    if (index == 5 && (_activeIndex == 5 || _activeIndex == 6)) {
       isActive = true;
     }
 

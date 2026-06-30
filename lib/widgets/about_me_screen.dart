@@ -15,217 +15,40 @@ class AboutMeScreen extends StatelessWidget {
     final bool isMobile = size.width < 900;
 
     return Container(
-      padding: EdgeInsets.symmetric(
-        vertical: 100,
-        horizontal: isMobile ? 20 : size.width * 0.1,
+      padding: EdgeInsets.only(
+        top: size.height * 0.06,
+        bottom: 50,
+        left: isMobile ? 20 : size.width * 0.1,
+        right: isMobile ? 20 : size.width * 0.1,
       ),
       child: Column(
         children: [
-          _buildHeader(),
-          const SizedBox(height: 80),
+          _buildHeader(size),
+          SizedBox(height: size.height * 0.04),
           isMobile 
             ? Column(
                 children: [
                   _buildAboutImage(size),
-                  const SizedBox(height: 60),
-                  _buildAboutContent(),
+                  SizedBox(height: size.height * 0.03),
+                  _buildAboutContent(size),
                 ],
               )
             : Row(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Expanded(flex: 2, child: _buildAboutImage(size)),
-                  const SizedBox(width: 80),
-                  Expanded(flex: 3, child: _buildAboutContent()),
+                  SizedBox(width: size.width * 0.04),
+                  Expanded(flex: 3, child: _buildAboutContent(size)),
                 ],
               ),
-          const SizedBox(height: 80),
+          SizedBox(height: 50 + size.height * 0.06),
           const StatsSection(),
-          const SizedBox(height: 100),
-          _buildExperienceSection(isMobile),
         ],
       ),
     );
   }
 
-  Widget _buildExperienceSection(bool isMobile) {
-    return Column(
-      children: [
-        Text(
-          "CAREER JOURNEY",
-          style: GoogleFonts.inter(
-            color: AppColors.primary,
-            fontSize: 14,
-            letterSpacing: 4,
-            fontWeight: FontWeight.bold,
-          ),
-        ),
-        const SizedBox(height: 16),
-        Text(
-          "Professional Experience",
-          textAlign: TextAlign.center,
-          style: AppStyles.heading.copyWith(fontSize: 32),
-        ),
-        const SizedBox(height: 60),
-        Wrap(
-          spacing: 25,
-          runSpacing: 25,
-          alignment: WrapAlignment.center,
-          children: [
-            _experienceCard(
-              "DevelopersHub Corp",
-              "India (Remote)",
-              "Flutter Developer Intern",
-              "May 2024 - June 2024",
-              FontAwesomeIcons.laptopCode,
-              Colors.tealAccent,
-              isMobile,
-            ),
-            _experienceCard(
-              "Future Dev Solution",
-              "Lahore (Onsite)",
-              "Junior Web Developer",
-              "2025 - 2026",
-              FontAwesomeIcons.code,
-              AppColors.accent,
-              isMobile,
-            ),
-            _experienceCard(
-              "Excelerate Talent Dis",
-              "Dubai (Remote)",
-              "Flutter Development Intern",
-              "June 2025 - July 2025",
-              FontAwesomeIcons.mobileScreen,
-              AppColors.primary,
-              isMobile,
-            ),
-            _experienceCard(
-              "Apexify Technologies",
-              "India (Remote)",
-              "Flutter Developer Intern",
-              "March 2026 - April 2026",
-              FontAwesomeIcons.flutter,
-              Colors.orangeAccent,
-              isMobile,
-            ),
-            _experienceCard(
-              "CodeAlpha",
-              "Bahawalpur (Remote)",
-              "Full Stack Web Intern",
-              "May 2026 - June 2026",
-              FontAwesomeIcons.layerGroup,
-              AppColors.secondary,
-              isMobile,
-            ),
-          ],
-        ),
-      ],
-    ).animate().fadeIn(delay: 600.ms).slideY(begin: 0.1);
-  }
-
-  Widget _experienceCard(
-    String company,
-    String location,
-    String role,
-    String period,
-    IconData icon,
-    Color color,
-    bool isMobile,
-  ) {
-    return HoverItem(
-      builder: (isHovered) => AnimatedContainer(
-        duration: const Duration(milliseconds: 300),
-        width: isMobile ? double.infinity : 320,
-        padding: const EdgeInsets.all(28),
-        decoration: BoxDecoration(
-          color: isHovered ? color.withValues(alpha: 0.05) : AppColors.surface,
-          borderRadius: BorderRadius.circular(24),
-          border: Border.all(
-            color: isHovered ? color.withValues(alpha: 0.5) : Colors.white.withValues(alpha: 0.05),
-            width: 1.5,
-          ),
-          boxShadow: [
-            BoxShadow(
-              color: isHovered ? color.withValues(alpha: 0.15) : Colors.black.withValues(alpha: 0.2),
-              blurRadius: isHovered ? 40 : 20,
-              offset: Offset(0, isHovered ? 20 : 10),
-            )
-          ],
-        ),
-        transform: isHovered ? Matrix4.translationValues(0, -12, 0) : Matrix4.identity(),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Container(
-                  padding: const EdgeInsets.all(12),
-                  decoration: BoxDecoration(
-                    color: color.withValues(alpha: 0.1),
-                    borderRadius: BorderRadius.circular(12),
-                  ),
-                  child: Icon(icon, color: color, size: 22),
-                ),
-                Container(
-                  padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
-                  decoration: BoxDecoration(
-                    color: Colors.white.withValues(alpha: 0.05),
-                    borderRadius: BorderRadius.circular(20),
-                  ),
-                  child: Text(
-                    period,
-                    style: GoogleFonts.inter(
-                      color: Colors.white70,
-                      fontSize: 10,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                ),
-              ],
-            ),
-            const SizedBox(height: 24),
-            Text(
-              company,
-              style: GoogleFonts.poppins(
-                color: Colors.white,
-                fontSize: 20,
-                fontWeight: FontWeight.bold,
-              ),
-            ),
-            const SizedBox(height: 4),
-            Text(
-              location,
-              style: GoogleFonts.inter(
-                color: color,
-                fontSize: 12,
-                fontWeight: FontWeight.w600,
-                letterSpacing: 1,
-              ),
-            ),
-            const SizedBox(height: 16),
-            Text(
-              role,
-              style: AppStyles.body.copyWith(
-                fontSize: 14,
-                color: Colors.white.withValues(alpha: 0.6),
-                fontWeight: FontWeight.w500,
-              ),
-            ),
-            const SizedBox(height: 24),
-            AnimatedContainer(
-              duration: const Duration(milliseconds: 300),
-              height: 2,
-              width: isHovered ? 50 : 0,
-              color: color,
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-
-  Widget _buildHeader() {
+  Widget _buildHeader(Size size) {
     return Column(
       children: [
         Container(
@@ -244,12 +67,12 @@ class AboutMeScreen extends StatelessWidget {
             ),
           ),
         ),
-        const SizedBox(height: 16),
+        SizedBox(height: size.height * 0.015),
         Text(
           "Crafting Digital Excellence",
           style: AppStyles.heading.copyWith(fontSize: 32),
         ),
-        const SizedBox(height: 20),
+        SizedBox(height: size.height * 0.02),
         Container(
           height: 4,
           width: 40,
@@ -320,7 +143,7 @@ class AboutMeScreen extends StatelessWidget {
                       duration: const Duration(milliseconds: 800),
                       curve: Curves.easeOutQuart,
                       child: Image.asset(
-                        "assets/images/man3.png",
+                        "assets/images/mine.pic.png",
                         fit: BoxFit.cover,
                         height: double.infinity,
                         width: double.infinity,
@@ -352,7 +175,7 @@ class AboutMeScreen extends StatelessWidget {
           // 3. Floating Glassmorphic Stats
           Positioned(
             bottom: 30,
-            left: -45,
+            left: -30,
             child: AnimatedContainer(
               duration: const Duration(milliseconds: 600),
               padding: const EdgeInsets.symmetric(horizontal: 22, vertical: 18),
@@ -429,7 +252,7 @@ class AboutMeScreen extends StatelessWidget {
     );
   }
 
-  Widget _buildAboutContent() {
+  Widget _buildAboutContent(Size size) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -441,31 +264,31 @@ class AboutMeScreen extends StatelessWidget {
             height: 1.3,
           ),
         ),
-        const SizedBox(height: 24),
+        SizedBox(height: size.height * 0.025),
         Text(
           "I specialize in building high-end mobile and web applications using Flutter and the MERN stack. My approach combines technical excellence with a deep understanding of user psychology to create digital products that aren't just functional, but delightful to use.",
           style: AppStyles.body.copyWith(fontSize: 17),
         ),
-        const SizedBox(height: 40),
+        SizedBox(height: size.height * 0.04),
         Wrap(
           spacing: 20,
           runSpacing: 20,
           children: [
-            _buildExpertiseCard("High Performance", FontAwesomeIcons.bolt, AppColors.primary),
-            _buildExpertiseCard("Responsive Design", FontAwesomeIcons.expand, AppColors.accent),
-            _buildExpertiseCard("Clean Architecture", FontAwesomeIcons.code, AppColors.secondary),
-            _buildExpertiseCard("Modern Technology", FontAwesomeIcons.microchip, Colors.orangeAccent),
+            _buildExpertiseCard("High Performance", FontAwesomeIcons.bolt, AppColors.primary, size),
+            _buildExpertiseCard("Responsive Design", FontAwesomeIcons.expand, AppColors.accent, size),
+            _buildExpertiseCard("Clean Architecture", FontAwesomeIcons.code, AppColors.secondary, size),
+            _buildExpertiseCard("Modern Technology", FontAwesomeIcons.microchip, Colors.orangeAccent, size),
           ],
         ),
-        const SizedBox(height: 48),
-        _buildDetailsGrid(),
-        const SizedBox(height: 48),
-        _buildHireButton(),
+        SizedBox(height: size.height * 0.05),
+        _buildDetailsGrid(size),
+        SizedBox(height: size.height * 0.05),
+        _buildHireButton(size),
       ],
     ).animate().fadeIn(delay: 400.ms).slideX(begin: 0.1);
   }
 
-  Widget _buildExpertiseCard(String title, IconData icon, Color color) {
+  Widget _buildExpertiseCard(String title, IconData icon, Color color, Size size) {
     return HoverItem(
       builder: (isHovered) => AnimatedContainer(
         duration: const Duration(milliseconds: 300),
@@ -489,7 +312,7 @@ class AboutMeScreen extends StatelessWidget {
           mainAxisSize: MainAxisSize.min,
           children: [
             Icon(icon, color: color, size: 20),
-            const SizedBox(width: 16),
+            SizedBox(width: size.width * 0.01),
             Text(
               title,
               style: GoogleFonts.inter(
@@ -504,7 +327,7 @@ class AboutMeScreen extends StatelessWidget {
     );
   }
 
-  Widget _buildDetailsGrid() {
+  Widget _buildDetailsGrid(Size size) {
     return Container(
       padding: const EdgeInsets.all(12),
       decoration: BoxDecoration(
@@ -516,16 +339,16 @@ class AboutMeScreen extends StatelessWidget {
         spacing: 12,
         runSpacing: 12,
         children: [
-          _detailItem("NAME", "Muhammad Ehsan", FontAwesomeIcons.user, AppColors.primary),
-          _detailItem("EMAIL", "mehsan4270@gmail.com", FontAwesomeIcons.envelope, AppColors.accent),
-          _detailItem("LOCATION", "Lahore,Punjab,Pk", FontAwesomeIcons.locationDot, Colors.orangeAccent),
-          _detailItem("AVAILABILITY", "Turning Ideas Into Reality", FontAwesomeIcons.briefcase, AppColors.secondary),
+          _detailItem("NAME", "Muhammad Ehsan", FontAwesomeIcons.user, AppColors.primary, size),
+          _detailItem("EMAIL", "mehsan4270@gmail.com", FontAwesomeIcons.envelope, AppColors.accent, size),
+          _detailItem("LOCATION", "Lahore,Punjab,Pk", FontAwesomeIcons.locationDot, Colors.orangeAccent, size),
+          _detailItem("AVAILABILITY", "Turning Ideas Into Reality", FontAwesomeIcons.briefcase, AppColors.secondary, size),
         ],
       ),
     );
   }
 
-  Widget _detailItem(String label, String value, IconData icon, Color color) {
+  Widget _detailItem(String label, String value, IconData icon, Color color, Size size) {
     return HoverItem(
       builder: (isHovered) => AnimatedContainer(
         duration: const Duration(milliseconds: 300),
@@ -549,7 +372,7 @@ class AboutMeScreen extends StatelessWidget {
               ),
               child: Icon(icon, color: color, size: 16),
             ),
-            const SizedBox(width: 16),
+            SizedBox(width: size.width * 0.01),
             Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
@@ -562,7 +385,7 @@ class AboutMeScreen extends StatelessWidget {
                     letterSpacing: 1,
                   ),
                 ),
-                const SizedBox(height: 4),
+                SizedBox(height: size.height * 0.005),
                 Text(
                   value,
                   style: GoogleFonts.inter(
@@ -579,7 +402,7 @@ class AboutMeScreen extends StatelessWidget {
     );
   }
 
-  Widget _buildHireButton() {
+  Widget _buildHireButton(Size size) {
     return HoverItem(
       builder: (isHovered) => Container(
         padding: const EdgeInsets.symmetric(horizontal: 32, vertical: 16),
@@ -606,7 +429,7 @@ class AboutMeScreen extends StatelessWidget {
                 letterSpacing: 1,
               ),
             ),
-            const SizedBox(width: 12),
+            SizedBox(width: size.width * 0.01),
             const Icon(FontAwesomeIcons.arrowRight, color: Colors.white, size: 14),
           ],
         ),

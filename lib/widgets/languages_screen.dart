@@ -24,14 +24,16 @@ class LanguagesScreen extends StatelessWidget {
     ];
 
     return Container(
-      padding: EdgeInsets.symmetric(
-        vertical: 80,
-        horizontal: isMobile ? 20 : size.width * 0.1,
+      padding: EdgeInsets.only(
+        top: size.height * 0.06,
+        bottom: 50,
+        left: isMobile ? 20 : size.width * 0.1,
+        right: isMobile ? 20 : size.width * 0.1,
       ),
       child: Column(
         children: [
-          _buildHeader(),
-          const SizedBox(height: 60),
+          _buildHeader(size),
+          SizedBox(height: size.height * 0.06),
           Wrap(
             spacing: 55,
             runSpacing: 55,
@@ -43,6 +45,7 @@ class LanguagesScreen extends StatelessWidget {
                 skills[index]["color"] as Color,
                 skills[index]["level"] as double,
                 index,
+                size,
               );
             }),
           ).animate().fadeIn(delay: 200.ms).scale(),
@@ -51,7 +54,7 @@ class LanguagesScreen extends StatelessWidget {
     );
   }
 
-  Widget _buildHeader() {
+  Widget _buildHeader(Size size) {
     return Column(
       children: [
         Text(
@@ -63,7 +66,7 @@ class LanguagesScreen extends StatelessWidget {
             fontWeight: FontWeight.bold,
           ),
         ),
-        const SizedBox(height: 10),
+        SizedBox(height: size.height * 0.01),
         Text(
           "Languages & Tools",
           textAlign: TextAlign.center,
@@ -73,7 +76,7 @@ class LanguagesScreen extends StatelessWidget {
     ).animate().fadeIn().slideY(begin: 0.2);
   }
 
-  Widget _skillCard(String title, IconData icon, Color color, double level, int index) {
+  Widget _skillCard(String title, IconData icon, Color color, double level, int index, Size size) {
     return HoverItem(
       builder: (isHovered) => AnimatedContainer(
         duration: const Duration(milliseconds: 500),
@@ -119,7 +122,7 @@ class LanguagesScreen extends StatelessWidget {
               ),
               child: Icon(icon, color: isHovered ? Colors.white : color, size: 32),
             ).animate(target: isHovered ? 1 : 0).scale(end: const Offset(1.1, 1.1)),
-            const SizedBox(height: 20),
+            SizedBox(height: size.height * 0.02),
             Text(
               title,
               style: GoogleFonts.poppins(
@@ -128,7 +131,7 @@ class LanguagesScreen extends StatelessWidget {
                 fontSize: 16,
               ),
             ),
-            const SizedBox(height: 16),
+            SizedBox(height: size.height * 0.016),
             Stack(
               children: [
                 Container(

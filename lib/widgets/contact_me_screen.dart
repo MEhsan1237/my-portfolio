@@ -17,38 +17,39 @@ class ContactMeScreen extends StatelessWidget {
 
     return Container(
       padding: EdgeInsets.only(
-        top: 100,
+        top: size.height * 0.06,
         left: isMobile ? 20 : size.width * 0.1,
         right: isMobile ? 20 : size.width * 0.1,
+        bottom: size.height * 0.05,
       ),
       child: Column(
         children: [
-          _buildHeader(),
-          const SizedBox(height: 60),
+          _buildHeader(size),
+          SizedBox(height: size.height * 0.06),
           isMobile
               ? Column(
                   children: [
-                    _buildContactInfo(),
-                    const SizedBox(height: 40),
-                    _buildContactForm(),
+                    _buildContactInfo(size),
+                    SizedBox(height: size.height * 0.04),
+                    _buildContactForm(size),
                   ],
                 )
               : Row(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Expanded(flex: 2, child: _buildContactInfo()),
+                    Expanded(flex: 2, child: _buildContactInfo(size)),
                     const SizedBox(width: 60),
-                    Expanded(flex: 3, child: _buildContactForm()),
+                    Expanded(flex: 3, child: _buildContactForm(size)),
                   ],
                 ),
-          const SizedBox(height: 100),
-          _buildEliteFooter(context, isMobile),
+          SizedBox(height: size.height * 0.1),
+          _buildEliteFooter(context, isMobile, size),
         ],
       ),
     );
   }
 
-  Widget _buildHeader() {
+  Widget _buildHeader(Size size) {
     return Column(
       children: [
         Text(
@@ -60,13 +61,13 @@ class ContactMeScreen extends StatelessWidget {
             fontWeight: FontWeight.bold,
           ),
         ),
-        const SizedBox(height: 10),
+        SizedBox(height: size.height * 0.01),
         Text(
           "Let's Build Something Great",
           textAlign: TextAlign.center,
           style: AppStyles.heading.copyWith(fontSize: 32),
         ),
-        const SizedBox(height: 20),
+        SizedBox(height: size.height * 0.02),
         Container(
           height: 4,
           width: 60,
@@ -79,7 +80,7 @@ class ContactMeScreen extends StatelessWidget {
     ).animate().fadeIn().slideY(begin: 0.2);
   }
 
-  Widget _buildContactInfo() {
+  Widget _buildContactInfo(Size size) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -91,18 +92,18 @@ class ContactMeScreen extends StatelessWidget {
             color: Colors.white,
           ),
         ),
-        const SizedBox(height: 20),
+        SizedBox(height: size.height * 0.02),
         Text(
           "I'm currently available for freelance work and full-time opportunities. Feel free to reach out!",
           style: AppStyles.body,
         ),
-        const SizedBox(height: 40),
-        _contactItem(Icons.email_outlined, "Email", "mehsan4270@gmail.com"),
-        const SizedBox(height: 20),
-        _contactItem(Icons.phone_outlined, "Phone", "+92 303 9095463"),
-        const SizedBox(height: 20),
-        _contactItem(Icons.location_on_outlined, "Location", "Lahore, Punjab, Pakistan"),
-        const SizedBox(height: 40),
+        SizedBox(height: size.height * 0.04),
+        _contactItem(Icons.email_outlined, "Email", "mehsan4270@gmail.com", size),
+        SizedBox(height: size.height * 0.02),
+        _contactItem(Icons.phone_outlined, "Phone", "+92 303 9095463", size),
+        SizedBox(height: size.height * 0.02),
+        _contactItem(Icons.location_on_outlined, "Location", "Lahore, Punjab, Pakistan", size),
+        SizedBox(height: size.height * 0.04),
         Row(
           children: [
             _socialButton(
@@ -128,7 +129,7 @@ class ContactMeScreen extends StatelessWidget {
     ).animate().fadeIn(delay: 200.ms).slideX(begin: -0.1);
   }
 
-  Widget _contactItem(IconData icon, String label, String value) {
+  Widget _contactItem(IconData icon, String label, String value, Size size) {
     return Row(
       children: [
         Container(
@@ -189,7 +190,7 @@ class ContactMeScreen extends StatelessWidget {
     );
   }
 
-  Widget _buildContactForm() {
+  Widget _buildContactForm(Size size) {
     return Container(
       padding: const EdgeInsets.all(40),
       decoration: BoxDecoration(
@@ -199,19 +200,19 @@ class ContactMeScreen extends StatelessWidget {
       ),
       child: Column(
         children: [
-          _textField("Name"),
-          const SizedBox(height: 20),
-          _textField("Email"),
-          const SizedBox(height: 20),
-          _textField("Message", maxLines: 5),
-          const SizedBox(height: 30),
+          _textField("Name", size),
+          SizedBox(height: size.height * 0.02),
+          _textField("Email", size),
+          SizedBox(height: size.height * 0.02),
+          _textField("Message", size, maxLines: 5),
+          SizedBox(height: size.height * 0.03),
           _submitButton(),
         ],
       ),
     ).animate().fadeIn(delay: 400.ms).slideX(begin: 0.1);
   }
 
-  Widget _textField(String label, {int maxLines = 1}) {
+  Widget _textField(String label, Size size, {int maxLines = 1}) {
     return TextField(
       maxLines: maxLines,
       style: const TextStyle(color: Colors.white),
@@ -276,10 +277,10 @@ class ContactMeScreen extends StatelessWidget {
     );
   }
 
-  Widget _buildEliteFooter(BuildContext context, bool isMobile) {
+  Widget _buildEliteFooter(BuildContext context, bool isMobile, Size size) {
     return Container(
       width: double.infinity,
-      padding: const EdgeInsets.symmetric(vertical: 80),
+      padding: EdgeInsets.symmetric(vertical: size.height * 0.08),
       decoration: BoxDecoration(
         border: Border(top: BorderSide(color: Colors.white.withValues(alpha: 0.05))),
       ),
@@ -288,27 +289,27 @@ class ContactMeScreen extends StatelessWidget {
           isMobile 
             ? Column(
                 children: [
-                  _footerBrandSection(),
-                  const SizedBox(height: 50),
-                  _footerLinksGrid(isMobile),
+                  _footerBrandSection(size),
+                  SizedBox(height: size.height * 0.05),
+                  _footerLinksGrid(isMobile, size),
                 ],
               )
             : Row(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Expanded(flex: 2, child: _footerBrandSection()),
+                  Expanded(flex: 2, child: _footerBrandSection(size)),
                   const SizedBox(width: 80),
-                  Expanded(flex: 3, child: _footerLinksGrid(isMobile)),
+                  Expanded(flex: 3, child: _footerLinksGrid(isMobile, size)),
                 ],
               ),
-          const SizedBox(height: 80),
-          _footerBottomBar(),
+          SizedBox(height: size.height * 0.08),
+          _footerBottomBar(size),
         ],
       ),
     );
   }
 
-  Widget _footerBrandSection() {
+  Widget _footerBrandSection(Size size) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -335,7 +336,7 @@ class ContactMeScreen extends StatelessWidget {
             ),
           ],
         ),
-        const SizedBox(height: 24),
+        SizedBox(height: size.height * 0.024),
         Text(
           "A passionate developer focused on building high-end, production-ready applications with Flutter and the MERN stack. Turning complex problems into elegant digital solutions.",
           style: AppStyles.body.copyWith(fontSize: 14, height: 1.8),
@@ -344,7 +345,7 @@ class ContactMeScreen extends StatelessWidget {
     );
   }
 
-  Widget _footerLinksGrid(bool isMobile) {
+  Widget _footerLinksGrid(bool isMobile, Size size) {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -352,30 +353,31 @@ class ContactMeScreen extends StatelessWidget {
         _footerLinkColumn("PAGES", [
           _footerLink("Home", 0),
           _footerLink("About", 1),
-          _footerLink("Projects", 2),
-          _footerLink("Skills", 4),
-          _footerLink("Education", 6),
-          _footerLink("Reviews", 7),
-          _footerLink("Contact", 8),
-        ]),
+          _footerLink("Journey", 2),
+          _footerLink("Projects", 3),
+          _footerLink("Skills", 5),
+          _footerLink("Education", 7),
+          _footerLink("Reviews", 8),
+          _footerLink("Contact", 9),
+        ], size),
         _footerLinkColumn("TECH STACK", [
-          _footerLink("Flutter & Dart", 4),
-          _footerLink("MERN Stack", 3),
-          _footerLink("REST APIs", 3),
-          _footerLink("Firebase & SQL", 4),
-          _footerLink("UI/UX Design", 3),
-        ]),
+          _footerLink("Flutter & Dart", 5),
+          _footerLink("MERN Stack", 4),
+          _footerLink("REST APIs", 4),
+          _footerLink("Firebase & SQL", 5),
+          _footerLink("UI/UX Design", 4),
+        ], size),
         if (!isMobile) _footerLinkColumn("LATEST PROJECTS", [
           _footerText("News Insight Pro"),
           _footerText("LifeLine Blood"),
           _footerText("UrbanStore"),
           _footerText("SwiftTask"),
-        ]),
+        ], size),
       ],
     );
   }
 
-  Widget _footerLinkColumn(String title, List<Widget> children) {
+  Widget _footerLinkColumn(String title, List<Widget> children, Size size) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -388,7 +390,7 @@ class ContactMeScreen extends StatelessWidget {
             letterSpacing: 2,
           ),
         ),
-        const SizedBox(height: 24),
+        SizedBox(height: size.height * 0.024),
         ...children,
       ],
     );
@@ -426,9 +428,9 @@ class ContactMeScreen extends StatelessWidget {
     );
   }
 
-  Widget _footerBottomBar() {
+  Widget _footerBottomBar(Size size) {
     return Container(
-      padding: const EdgeInsets.only(top: 40),
+      padding: EdgeInsets.only(top: size.height * 0.04),
       decoration: BoxDecoration(
         border: Border(top: BorderSide(color: Colors.white.withValues(alpha: 0.05))),
       ),
