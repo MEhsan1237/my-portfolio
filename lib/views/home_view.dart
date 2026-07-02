@@ -1,12 +1,15 @@
 import 'package:animated_text_kit/animated_text_kit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:practice_web/utils/constants.dart';
 import 'package:simple_gradient_text/simple_gradient_text.dart';
+import '../components/custom_animations.dart';
+import '../view_models/home_view_model.dart';
 
-class HomeScreen extends StatelessWidget {
-  const HomeScreen({super.key});
+class HomeView extends StatelessWidget {
+  final HomeViewModel viewModel = HomeViewModel();
+  
+  HomeView({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -17,7 +20,7 @@ class HomeScreen extends StatelessWidget {
       constraints: BoxConstraints(minHeight: size.height),
       width: double.infinity,
       padding: EdgeInsets.only(
-        top: 150, // Increased top padding to move content further below AppBar
+        top: 150,
         left: isMobile ? 20 : size.width * 0.1,
         right: isMobile ? 20 : size.width * 0.1,
         bottom: 50,
@@ -55,64 +58,56 @@ class HomeScreen extends StatelessWidget {
             border: Border.all(color: AppColors.primary.withValues(alpha: 0.2)),
           ),
           child: Text(
-            "WELCOME TO MY PORTFOLIO",
-            style: GoogleFonts.inter(
-              color: AppColors.primary,
-              fontSize: 12,
-              letterSpacing: 2,
-              fontWeight: FontWeight.bold,
-            ),
+            viewModel.greeting,
+            style: AppStyles.sectionTag,
           ),
-        ).animate().fadeIn(duration: 600.ms).slideX(begin: -0.2),
+        ).animate().fadeIn(duration: 1000.ms).slideX(begin: -0.2),
         const SizedBox(height: 24),
-        _buildAnimatedName(centered).animate().fadeIn(delay: 200.ms, duration: 600.ms).slideX(begin: -0.2),
+        _buildAnimatedName(centered).animate().fadeIn(delay: 200.ms, duration: 1000.ms).slideX(begin: -0.2),
         const SizedBox(height: 16),
         Row(
           mainAxisAlignment: centered ? MainAxisAlignment.center : MainAxisAlignment.start,
+          mainAxisSize: MainAxisSize.min,
           children: [
             Text(
               "I'm a ",
-              style: GoogleFonts.inter(
-                fontSize: centered ? 20 : 28,
-                color: Colors.white,
-                fontWeight: FontWeight.w500,
-              ),
+              style: AppStyles.subHeading.copyWith(fontSize: centered ? 20 : 28),
             ),
             DefaultTextStyle(
-              style: GoogleFonts.inter(
+              style: AppStyles.subHeading.copyWith(
                 fontSize: centered ? 20 : 28,
                 fontWeight: FontWeight.bold,
                 color: AppColors.accent,
+                letterSpacing: 1.2,
               ),
               child: AnimatedTextKit(
                 repeatForever: true,
-                animatedTexts: [
-                  TypewriterAnimatedText("Flutter Developer."),
-                  TypewriterAnimatedText("Front End Web Developer."),
-                  TypewriterAnimatedText("MERN Stack Developer."),
-                  TypewriterAnimatedText("UI/UX Enthusiast."),
-                ],
+                pause: const Duration(milliseconds: 1000),
+                animatedTexts: viewModel.titles.map((title) => TypewriterAnimatedText(
+                  title,
+                  cursor: '|',
+                  speed: const Duration(milliseconds: 120),
+                )).toList(),
               ),
             ),
           ],
-        ).animate().fadeIn(delay: 400.ms, duration: 600.ms).slideX(begin: -0.2),
+        ).animate().fadeIn(delay: 400.ms, duration: 1000.ms).slideX(begin: -0.2),
         const SizedBox(height: 24),
         Text(
-          "I craft high-performance, visually stunning, and user-centric mobile and web applications. Turning complex problems into elegant digital solutions.",
+          viewModel.description,
           textAlign: centered ? TextAlign.center : TextAlign.start,
           style: AppStyles.body.copyWith(fontSize: 18),
-        ).animate().fadeIn(delay: 600.ms, duration: 600.ms).slideX(begin: -0.2),
+        ).animate().fadeIn(delay: 600.ms, duration: 1000.ms).slideX(begin: -0.2),
         const SizedBox(height: 40),
-        _buildActionButtons(centered).animate().fadeIn(delay: 800.ms, duration: 600.ms).slideY(begin: 0.2),
+        _buildActionButtons(centered).animate().fadeIn(delay: 800.ms, duration: 1000.ms).slideY(begin: 0.2),
       ],
     );
   }
 
   Widget _buildAnimatedName(bool centered) {
-    const String name = "Muhammad Ehsan";
     return Wrap(
       alignment: centered ? WrapAlignment.center : WrapAlignment.start,
-      children: name.split('').map((char) {
+      children: viewModel.name.split('').map((char) {
         if (char == ' ') {
           return SizedBox(width: centered ? 10 : 15);
         }
@@ -123,13 +118,11 @@ class HomeScreen extends StatelessWidget {
             transform: isHovered ? Matrix4.translationValues(0, -10, 0) : Matrix4.identity(),
             child: GradientText(
               char,
-              style: GoogleFonts.poppins(
+              style: AppStyles.heroName.copyWith(
                 fontSize: centered ? 34 : 54,
-                fontWeight: FontWeight.bold,
-                height: 1.1,
               ),
               colors: isHovered 
-                ? [const Color(0xFF1E1B4B), const Color(0xFF312E81)] // Darker professional colors
+                ? [const Color(0xFF1E1B4B), const Color(0xFF312E81)]
                 : const [
                     AppColors.primary,
                     AppColors.secondary,
@@ -183,11 +176,7 @@ class HomeScreen extends StatelessWidget {
               const SizedBox(width: 10),
               Text(
                 label,
-                style: GoogleFonts.inter(
-                  color: Colors.white,
-                  fontWeight: FontWeight.bold,
-                  fontSize: 14,
-                ),
+                style: AppStyles.navItem.copyWith(fontWeight: FontWeight.bold, fontSize: 14),
               ),
             ],
           ),
@@ -204,7 +193,6 @@ class HomeScreen extends StatelessWidget {
     return Stack(
       alignment: Alignment.center,
       children: [
-        // Decorative background glow
         Container(
           width: imgSize * 0.8,
           height: imgSize * 0.8,
@@ -225,7 +213,6 @@ class HomeScreen extends StatelessWidget {
           ),
         ).animate(onPlay: (c) => c.repeat()).rotate(duration: 10.seconds),
         
-        // Floating image container
         Container(
           width: imgSize,
           height: imgSize,
@@ -243,7 +230,7 @@ class HomeScreen extends StatelessWidget {
           child: ClipRRect(
             borderRadius: BorderRadius.circular(imgSize),
             child: Image.asset(
-              "assets/images/me_dp.one.png",
+              viewModel.profileImage,
               fit: BoxFit.cover,
             ),
           ),

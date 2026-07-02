@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:practice_web/utils/constants.dart';
+import '../components/custom_animations.dart';
 import '../components/launch_url.dart';
 
 class Row2ProjectScreen extends StatelessWidget {

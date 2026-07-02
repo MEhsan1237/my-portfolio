@@ -1,14 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:practice_web/utils/constants.dart';
+import 'package:practice_web/components/custom_animations.dart';
 import 'package:url_launcher/url_launcher.dart';
+import '../view_models/contact_view_model.dart';
 
-class ContactMeScreen extends StatelessWidget {
+class ContactMeView extends StatelessWidget {
+  final bool animate;
   final Function(int)? onFooterNav;
+  final ContactViewModel viewModel = ContactViewModel();
 
-  const ContactMeScreen({super.key, this.onFooterNav});
+  ContactMeView({super.key, this.onFooterNav, this.animate = false});
 
   @override
   Widget build(BuildContext context) {
@@ -53,17 +55,12 @@ class ContactMeScreen extends StatelessWidget {
     return Column(
       children: [
         Text(
-          "CONTACT ME",
-          style: GoogleFonts.inter(
-            color: AppColors.primary,
-            fontSize: 14,
-            letterSpacing: 4,
-            fontWeight: FontWeight.bold,
-          ),
+          viewModel.headerTag,
+          style: AppStyles.sectionTag.copyWith(letterSpacing: 4, fontSize: 14),
         ),
         SizedBox(height: size.height * 0.01),
         Text(
-          "Let's Build Something Great",
+          viewModel.headerTitle,
           textAlign: TextAlign.center,
           style: AppStyles.heading.copyWith(fontSize: 32),
         ),
@@ -77,7 +74,7 @@ class ContactMeScreen extends StatelessWidget {
           ),
         ),
       ],
-    ).animate().fadeIn().slideY(begin: 0.2);
+    ).animate(target: animate ? 1 : 0).fadeIn(duration: 1000.ms).slideY(begin: 0.2, duration: 1000.ms);
   }
 
   Widget _buildContactInfo(Size size) {
@@ -86,47 +83,28 @@ class ContactMeScreen extends StatelessWidget {
       children: [
         Text(
           "Contact Information",
-          style: GoogleFonts.poppins(
-            fontSize: 24,
-            fontWeight: FontWeight.bold,
-            color: Colors.white,
-          ),
+          style: AppStyles.subHeading,
         ),
         SizedBox(height: size.height * 0.02),
         Text(
-          "I'm currently available for freelance work and full-time opportunities. Feel free to reach out!",
+          viewModel.contactDescription,
           style: AppStyles.body,
         ),
         SizedBox(height: size.height * 0.04),
-        _contactItem(Icons.email_outlined, "Email", "mehsan4270@gmail.com", size),
+        _contactItem(Icons.email_outlined, "Email", viewModel.email, size),
         SizedBox(height: size.height * 0.02),
-        _contactItem(Icons.phone_outlined, "Phone", "+92 303 9095463", size),
+        _contactItem(Icons.phone_outlined, "Phone", viewModel.phone, size),
         SizedBox(height: size.height * 0.02),
-        _contactItem(Icons.location_on_outlined, "Location", "Lahore, Punjab, Pakistan", size),
+        _contactItem(Icons.location_on_outlined, "Location", viewModel.location, size),
         SizedBox(height: size.height * 0.04),
         Row(
-          children: [
-            _socialButton(
-              FontAwesomeIcons.github, 
-              "https://github.com/MEhsan1237",
-              const Color(0xFF181717),
-            ),
-            const SizedBox(width: 16),
-            _socialButton(
-              FontAwesomeIcons.linkedinIn, 
-              "https://www.linkedin.com/in/muhammad-ehsan-41680731b",
-              const Color(0xFF0077B5),
-            ),
-            const SizedBox(width: 16),
-            _socialButton(
-              FontAwesomeIcons.tiktok, 
-              "https://www.tiktok.com/@mehsan1237",
-              const Color(0xFFFE2C55),
-            ),
-          ],
+          children: viewModel.socials.map((social) => Padding(
+            padding: const EdgeInsets.only(right: 16),
+            child: _socialButton(social.icon, social.url, social.color),
+          )).toList(),
         ),
       ],
-    ).animate().fadeIn(delay: 200.ms).slideX(begin: -0.1);
+    ).animate(target: animate ? 1 : 0).fadeIn(delay: 200.ms, duration: 1000.ms).slideX(begin: -0.1, duration: 1000.ms);
   }
 
   Widget _contactItem(IconData icon, String label, String value, Size size) {
@@ -145,7 +123,7 @@ class ContactMeScreen extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(label, style: AppStyles.body.copyWith(fontSize: 12)),
-            Text(value, style: GoogleFonts.inter(color: Colors.white, fontWeight: FontWeight.bold)),
+            Text(value, style: AppStyles.contactLabel),
           ],
         ),
       ],
@@ -209,7 +187,7 @@ class ContactMeScreen extends StatelessWidget {
           _submitButton(),
         ],
       ),
-    ).animate().fadeIn(delay: 400.ms).slideX(begin: 0.1);
+    ).animate(target: animate ? 1 : 0).fadeIn(delay: 400.ms, duration: 1000.ms).slideX(begin: 0.1, duration: 1000.ms);
   }
 
   Widget _textField(String label, Size size, {int maxLines = 1}) {
@@ -266,7 +244,7 @@ class ContactMeScreen extends StatelessWidget {
         child: Center(
           child: Text(
             "Send Message",
-            style: GoogleFonts.inter(
+            style: AppStyles.navItem.copyWith(
               color: isHovered ? Colors.white : Colors.white.withValues(alpha: 0.7),
               fontWeight: FontWeight.bold,
               fontSize: 16,
@@ -327,18 +305,13 @@ class ContactMeScreen extends StatelessWidget {
             const SizedBox(width: 15),
             Text(
               "EHSAN PORTFOLIO",
-              style: GoogleFonts.poppins(
-                color: Colors.white, 
-                fontWeight: FontWeight.bold, 
-                fontSize: 20,
-                letterSpacing: 1.5,
-              ),
+              style: AppStyles.logo.copyWith(fontSize: 20, letterSpacing: 1.5),
             ),
           ],
         ),
         SizedBox(height: size.height * 0.024),
         Text(
-          "A passionate developer focused on building high-end, production-ready applications with Flutter and the MERN stack. Turning complex problems into elegant digital solutions.",
+          viewModel.footerDescription,
           style: AppStyles.body.copyWith(fontSize: 14, height: 1.8),
         ),
       ],
@@ -383,12 +356,7 @@ class ContactMeScreen extends StatelessWidget {
       children: [
         Text(
           title,
-          style: GoogleFonts.inter(
-            color: AppColors.primary,
-            fontSize: 12,
-            fontWeight: FontWeight.bold,
-            letterSpacing: 2,
-          ),
+          style: AppStyles.footerTitle,
         ),
         SizedBox(height: size.height * 0.024),
         ...children,
@@ -404,7 +372,7 @@ class ContactMeScreen extends StatelessWidget {
           padding: const EdgeInsets.only(bottom: 12),
           child: Text(
             label,
-            style: GoogleFonts.inter(
+            style: AppStyles.navItem.copyWith(
               color: isHovered ? AppColors.accent : Colors.white.withValues(alpha: 0.5),
               fontSize: 14,
               fontWeight: isHovered ? FontWeight.bold : FontWeight.normal,
@@ -420,7 +388,7 @@ class ContactMeScreen extends StatelessWidget {
       padding: const EdgeInsets.only(bottom: 12),
       child: Text(
         label,
-        style: GoogleFonts.inter(
+        style: AppStyles.body.copyWith(
           color: Colors.white.withValues(alpha: 0.5),
           fontSize: 14,
         ),
@@ -439,18 +407,18 @@ class ContactMeScreen extends StatelessWidget {
         children: [
           Text(
             "© 2026 Ehsan Portfolio. All rights reserved.",
-            style: GoogleFonts.inter(color: Colors.white.withValues(alpha: 0.3), fontSize: 13),
+            style: AppStyles.body.copyWith(color: Colors.white.withValues(alpha: 0.3), fontSize: 13),
           ),
           Row(
             children: [
               Text(
                 "Designed with ",
-                style: GoogleFonts.inter(color: Colors.white.withValues(alpha: 0.3), fontSize: 13),
+                style: AppStyles.body.copyWith(color: Colors.white.withValues(alpha: 0.3), fontSize: 13),
               ),
               const Icon(Icons.favorite, color: Colors.red, size: 14),
               Text(
                 " by Ehsan",
-                style: GoogleFonts.inter(color: Colors.white.withValues(alpha: 0.3), fontSize: 13),
+                style: AppStyles.body.copyWith(color: Colors.white.withValues(alpha: 0.3), fontSize: 13),
               ),
             ],
           ),

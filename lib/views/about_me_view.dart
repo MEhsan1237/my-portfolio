@@ -1,13 +1,23 @@
 import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:practice_web/utils/constants.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:practice_web/widgets/stats_screen.dart';
+import 'package:practice_web/components/custom_animations.dart';
+import 'stats_view.dart';
+import '../view_models/about_view_model.dart';
 
-class AboutMeScreen extends StatelessWidget {
-  const AboutMeScreen({super.key});
+class AboutMeView extends StatelessWidget {
+  final bool animate;
+  final Key? statsKey;
+  final bool animateStats;
+  final AboutViewModel viewModel = AboutViewModel();
+  
+  AboutMeView({
+    super.key, 
+    this.animate = false,
+    this.statsKey,
+    this.animateStats = false,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -42,7 +52,10 @@ class AboutMeScreen extends StatelessWidget {
                 ],
               ),
           SizedBox(height: 50 + size.height * 0.06),
-          const StatsSection(),
+          StatsView(
+            key: statsKey,
+            animate: animateStats,
+          ),
         ],
       ),
     );
@@ -58,18 +71,13 @@ class AboutMeScreen extends StatelessWidget {
             borderRadius: BorderRadius.circular(20),
           ),
           child: Text(
-            "ABOUT ME",
-            style: GoogleFonts.inter(
-              color: AppColors.primary,
-              fontSize: 12,
-              letterSpacing: 4,
-              fontWeight: FontWeight.bold,
-            ),
+            viewModel.headerTag,
+            style: AppStyles.sectionTag.copyWith(letterSpacing: 4),
           ),
         ),
         SizedBox(height: size.height * 0.015),
         Text(
-          "Crafting Digital Excellence",
+          viewModel.headerTitle,
           style: AppStyles.heading.copyWith(fontSize: 32),
         ),
         SizedBox(height: size.height * 0.02),
@@ -82,7 +90,7 @@ class AboutMeScreen extends StatelessWidget {
           ),
         ),
       ],
-    ).animate().fadeIn().slideY(begin: 0.2);
+    ).animate(target: animate ? 1 : 0).fadeIn(duration: 1000.ms).slideY(begin: 0.2, duration: 1000.ms);
   }
 
   Widget _buildAboutImage(Size size) {
@@ -118,7 +126,7 @@ class AboutMeScreen extends StatelessWidget {
             duration: const Duration(milliseconds: 600),
             width: 280,
             height: 400,
-            padding: const EdgeInsets.all(2), // Gradient border thickness
+            padding: const EdgeInsets.all(2),
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(30),
               gradient: LinearGradient(
@@ -143,13 +151,12 @@ class AboutMeScreen extends StatelessWidget {
                       duration: const Duration(milliseconds: 800),
                       curve: Curves.easeOutQuart,
                       child: Image.asset(
-                        "assets/images/mine.pic.png",
+                        viewModel.aboutImage,
                         fit: BoxFit.cover,
                         height: double.infinity,
                         width: double.infinity,
                       ),
                     ),
-                    // Senior-level Overlay Gradient
                     AnimatedContainer(
                       duration: const Duration(milliseconds: 600),
                       decoration: BoxDecoration(
@@ -172,7 +179,6 @@ class AboutMeScreen extends StatelessWidget {
           ).animate(target: isHovered ? 1 : 0)
            .moveY(end: -12, duration: 600.ms, curve: Curves.easeOutBack),
 
-          // 3. Floating Glassmorphic Stats
           Positioned(
             bottom: 30,
             left: -30,
@@ -199,16 +205,15 @@ class AboutMeScreen extends StatelessWidget {
                     mainAxisSize: MainAxisSize.min,
                     children: [
                       Text(
-                        "3+",
-                        style: GoogleFonts.poppins(
+                        viewModel.experienceYears,
+                        style: AppStyles.heading.copyWith(
                           fontSize: 30,
-                          fontWeight: FontWeight.bold,
                           color: AppColors.accent,
                         ),
                       ),
                       Text(
                         "Years Exp",
-                        style: GoogleFonts.inter(
+                        style: AppStyles.body.copyWith(
                           fontSize: 11,
                           color: Colors.white70,
                           fontWeight: FontWeight.w600,
@@ -224,11 +229,10 @@ class AboutMeScreen extends StatelessWidget {
              .moveX(end: 15),
           ),
 
-          // 4. Tech Accents (Corner Brackets)
           _techCorner(top: -15, left: -15, isHovered: isHovered, rotation: 0),
           _techCorner(bottom: -15, right: -15, isHovered: isHovered, rotation: 2),
         ],
-      ).animate().fadeIn(delay: 200.ms).slideX(begin: -0.1),
+      ).animate(target: animate ? 1 : 0).fadeIn(delay: 200.ms, duration: 1000.ms).slideX(begin: -0.1, duration: 1000.ms),
     );
   }
 
@@ -257,7 +261,7 @@ class AboutMeScreen extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text(
-          "Passionate Full-Stack Developer & UI/UX Designer",
+          viewModel.mainTitle,
           style: AppStyles.subHeading.copyWith(
             fontSize: 28, 
             color: Colors.white,
@@ -266,26 +270,21 @@ class AboutMeScreen extends StatelessWidget {
         ),
         SizedBox(height: size.height * 0.025),
         Text(
-          "I specialize in building high-end mobile and web applications using Flutter and the MERN stack. My approach combines technical excellence with a deep understanding of user psychology to create digital products that aren't just functional, but delightful to use.",
+          viewModel.description,
           style: AppStyles.body.copyWith(fontSize: 17),
         ),
         SizedBox(height: size.height * 0.04),
         Wrap(
           spacing: 20,
           runSpacing: 20,
-          children: [
-            _buildExpertiseCard("High Performance", FontAwesomeIcons.bolt, AppColors.primary, size),
-            _buildExpertiseCard("Responsive Design", FontAwesomeIcons.expand, AppColors.accent, size),
-            _buildExpertiseCard("Clean Architecture", FontAwesomeIcons.code, AppColors.secondary, size),
-            _buildExpertiseCard("Modern Technology", FontAwesomeIcons.microchip, Colors.orangeAccent, size),
-          ],
+          children: viewModel.expertise.map((exp) => _buildExpertiseCard(exp.title, exp.icon, exp.color, size)).toList(),
         ),
         SizedBox(height: size.height * 0.05),
         _buildDetailsGrid(size),
-        SizedBox(height: size.height * 0.05),
-        _buildHireButton(size),
+        // SizedBox(height: size.height * 0.05),
+        // _buildHireButton(size),
       ],
-    ).animate().fadeIn(delay: 400.ms).slideX(begin: 0.1);
+    ).animate(target: animate ? 1 : 0).fadeIn(delay: 400.ms, duration: 1000.ms).slideX(begin: 0.1, duration: 1000.ms);
   }
 
   Widget _buildExpertiseCard(String title, IconData icon, Color color, Size size) {
@@ -315,11 +314,7 @@ class AboutMeScreen extends StatelessWidget {
             SizedBox(width: size.width * 0.01),
             Text(
               title,
-              style: GoogleFonts.inter(
-                color: Colors.white,
-                fontWeight: FontWeight.w600,
-                fontSize: 15,
-              ),
+              style: AppStyles.navItem.copyWith(fontWeight: FontWeight.w600),
             ),
           ],
         ),
@@ -338,12 +333,7 @@ class AboutMeScreen extends StatelessWidget {
       child: Wrap(
         spacing: 12,
         runSpacing: 12,
-        children: [
-          _detailItem("NAME", "Muhammad Ehsan", FontAwesomeIcons.user, AppColors.primary, size),
-          _detailItem("EMAIL", "mehsan4270@gmail.com", FontAwesomeIcons.envelope, AppColors.accent, size),
-          _detailItem("LOCATION", "Lahore,Punjab,Pk", FontAwesomeIcons.locationDot, Colors.orangeAccent, size),
-          _detailItem("AVAILABILITY", "Turning Ideas Into Reality", FontAwesomeIcons.briefcase, AppColors.secondary, size),
-        ],
+        children: viewModel.details.map((detail) => _detailItem(detail.label, detail.value, detail.icon, detail.color, size)).toList(),
       ),
     );
   }
@@ -378,21 +368,14 @@ class AboutMeScreen extends StatelessWidget {
               children: [
                 Text(
                   label,
-                  style: GoogleFonts.inter(
+                  style: AppStyles.detailLabel.copyWith(
                     color: isHovered ? color : AppColors.textSecondary,
-                    fontSize: 10,
-                    fontWeight: FontWeight.bold,
-                    letterSpacing: 1,
                   ),
                 ),
                 SizedBox(height: size.height * 0.005),
                 Text(
                   value,
-                  style: GoogleFonts.inter(
-                    color: Colors.white,
-                    fontSize: 14,
-                    fontWeight: FontWeight.w600,
-                  ),
+                  style: AppStyles.detailValue,
                 ),
               ],
             ),
@@ -402,38 +385,43 @@ class AboutMeScreen extends StatelessWidget {
     );
   }
 
-  Widget _buildHireButton(Size size) {
-    return HoverItem(
-      builder: (isHovered) => Container(
-        padding: const EdgeInsets.symmetric(horizontal: 32, vertical: 16),
-        decoration: BoxDecoration(
-          gradient: AppColors.primaryGradient,
-          borderRadius: BorderRadius.circular(12),
-          boxShadow: [
-            BoxShadow(
-              color: AppColors.primary.withValues(alpha: 0.3),
-              blurRadius: 20,
-              offset: const Offset(0, 10),
-            )
-          ],
-        ),
-        child: Row(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            Text(
-              "LET'S WORK TOGETHER",
-              style: GoogleFonts.inter(
-                color: Colors.white,
-                fontWeight: FontWeight.bold,
-                fontSize: 14,
-                letterSpacing: 1,
-              ),
-            ),
-            SizedBox(width: size.width * 0.01),
-            const Icon(FontAwesomeIcons.arrowRight, color: Colors.white, size: 14),
-          ],
-        ),
-      ).animate(target: isHovered ? 1 : 0).scale(end: const Offset(1.05, 1.05)),
-    );
-  }
+  // Widget _buildHireButton(Size size) {
+  //   return HoverItem(
+  //     builder: (isHovered) => GestureDetector(
+  //       onTap: () {
+  //         // You can add navigation logic here, e.g., to Contact section
+  //       },
+  //       child: Container(
+  //         padding: const EdgeInsets.symmetric(horizontal: 32, vertical: 16),
+  //         decoration: BoxDecoration(
+  //           gradient: AppColors.primaryGradient,
+  //           borderRadius: BorderRadius.circular(12),
+  //           boxShadow: [
+  //             BoxShadow(
+  //               color: AppColors.primary.withValues(alpha: 0.3),
+  //               blurRadius: 20,
+  //               offset: const Offset(0, 10),
+  //             )
+  //           ],
+  //         ),
+  //         child: Row(
+  //           mainAxisSize: MainAxisSize.min,
+  //           children: [
+  //             Text(
+  //               "LET'S WORK TOGETHER",
+  //               style: GoogleFonts.inter(
+  //                 color: Colors.white,
+  //                 fontWeight: FontWeight.bold,
+  //                 fontSize: 14,
+  //                 letterSpacing: 1,
+  //               ),
+  //             ),
+  //             SizedBox(width: size.width * 0.01),
+  //             const Icon(FontAwesomeIcons.arrowRight, color: Colors.white, size: 14),
+  //           ],
+  //         ),
+  //       ).animate(target: isHovered ? 1 : 0).scale(end: const Offset(1.05, 1.05)),
+  //     ),
+  //   );
+  // }
 }

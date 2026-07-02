@@ -12,13 +12,13 @@ class AnimatedBackground extends StatefulWidget {
 class _AnimatedBackgroundState extends State<AnimatedBackground>
     with SingleTickerProviderStateMixin {
   late AnimationController _controller;
-  final Random _random = Random();
   
   // Layered particles for parallax depth
   late List<Particle> _backgroundLayer;
   late List<Particle> _midgroundLayer;
   late List<Particle> _foregroundLayer;
   late List<Nebula> _nebulae;
+  late List<RainbowWave> _waves;
 
   @override
   void initState() {
@@ -36,6 +36,7 @@ class _AnimatedBackgroundState extends State<AnimatedBackground>
     _midgroundLayer = List.generate(25, (_) => Particle(depth: 0.6));
     _foregroundLayer = List.generate(15, (_) => Particle(depth: 1.0));
     _nebulae = List.generate(4, (_) => Nebula());
+    _waves = List.generate(3, (index) => RainbowWave(index: index));
   }
 
   @override
@@ -55,6 +56,7 @@ class _AnimatedBackgroundState extends State<AnimatedBackground>
             midground: _midgroundLayer,
             foreground: _foregroundLayer,
             nebulae: _nebulae,
+            waves: _waves,
             time: _controller.value,
           ),
           child: Container(),
@@ -119,11 +121,26 @@ class Nebula {
   }
 }
 
+class RainbowWave {
+  final int index;
+  double phase = Random().nextDouble() * pi * 2;
+  final double speed = 0.002 + Random().nextDouble() * 0.003;
+  final double amplitude = 50 + Random().nextDouble() * 100;
+  final double frequency = 0.001 + Random().nextDouble() * 0.002;
+
+  RainbowWave({required this.index});
+
+  void update() {
+    phase += speed;
+  }
+}
+
 class DeepSpacePainter extends CustomPainter {
   final List<Particle> background;
   final List<Particle> midground;
   final List<Particle> foreground;
   final List<Nebula> nebulae;
+  final List<RainbowWave> waves;
   final double time;
 
   DeepSpacePainter({
@@ -131,12 +148,17 @@ class DeepSpacePainter extends CustomPainter {
     required this.midground,
     required this.foreground,
     required this.nebulae,
+    required this.waves,
     required this.time,
   });
 
   @override
   void paint(Canvas canvas, Size size) {
-    final rect = Rect.fromLTWH(0, 0, size.width, size.height);
+    // 0. Render Rainbow Waves (Aurora effect)
+    for (var wave in waves) {
+      wave.update();
+      _drawRainbowWave(canvas, size, wave);
+    }
 
     // 1. Render Nebulae with Screen Blending for organic light mixing
     for (var nebula in nebulae) {
@@ -161,6 +183,43 @@ class DeepSpacePainter extends CustomPainter {
     _drawLayer(canvas, size, background, 120, 0.08); // Far layer
     _drawLayer(canvas, size, midground, 160, 0.15);  // Mid layer
     _drawLayer(canvas, size, foreground, 200, 0.25); // Near layer
+  }
+
+  void _drawRainbowWave(Canvas canvas, Size size, RainbowWave wave) {
+    final paint = Paint()
+      ..style = PaintingStyle.stroke
+      ..strokeWidth = 2.0
+      ..blendMode = BlendMode.screen;
+
+    final path = Path();
+    final yOffset = size.height * (0.3 + wave.index * 0.2);
+
+    for (double x = 0; x <= size.width; x += 10) {
+      final y = yOffset + sin(x * wave.frequency + wave.phase) * wave.amplitude;
+      if (x == 0) {
+        path.moveTo(x, y);
+      } else {
+        path.lineTo(x, y);
+      }
+    }
+
+    final colors = [
+      Colors.red.withValues(alpha: 0.1),
+      Colors.orange.withValues(alpha: 0.1),
+      Colors.yellow.withValues(alpha: 0.1),
+      Colors.green.withValues(alpha: 0.1),
+      Colors.blue.withValues(alpha: 0.1),
+      Colors.indigo.withValues(alpha: 0.1),
+      Colors.purple.withValues(alpha: 0.1),
+    ];
+
+    // Draw multiple offset paths for a "rainbow band" effect
+    for (int i = 0; i < colors.length; i++) {
+      paint.color = colors[i];
+      final offsetPath = Path();
+      offsetPath.addPath(path, Offset(0, i * 8.0));
+      canvas.drawPath(offsetPath, paint);
+    }
   }
 
   void _drawLayer(Canvas canvas, Size size, List<Particle> particles, double maxDistance, double baseLineAlpha) {
